@@ -40,7 +40,7 @@ type StagePose = {
 // Theta accumulates +360° per transition = guaranteed full-spin between every section.
 // Effective view angle = theta % 360:
 //   180° = front face (top-down look),  90° = left side,  270° = right side,  0° = back
-const heroPose: StagePose = { x: 0, scale: 1.18, theta: 184, phi: 43, radius: 1.88, roll: -7 }; // Asymmetrical tilt: left corner up, right corner down
+const heroPose: StagePose = { x: 0, scale: 1.05, theta: 184, phi: 43, radius: 1.95, roll: -7 }; // Asymmetrical tilt: left corner up, right corner down
 
 const products: Product[] = [
   // ── GAMES ──────────────────────────────────
@@ -662,20 +662,25 @@ export default function StorefrontPage() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(max > 0 ? Math.min(1, scrollTop / max) : 0);
 
-      const categoryX = window.innerWidth <= 720 ? -16 : -52;
-      const featureX  = window.innerWidth <= 720 ?  10 : 38;
-      //
-      // Model transitions stop at .feature-section — no further transitions down into CTA or footer!
-      //
-      const stops: { selector: string; pose: StagePose }[] = [
+      const isMobile = window.innerWidth <= 768;
+
+      // Desktop poses (100% original):
+      const desktopStops: { selector: string; pose: StagePose }[] = [
         { selector: '.hero',             pose: heroPose },
-        // ① hero→categories: +360 full flip, lands at 180° — small, shifted left
-        { selector: '#categories',       pose: { x: categoryX, scale: 0.92, theta: 540,  phi: 52, radius: 2.45 } },
-        // ② categories→browse: +360 full flip, lands at 180° — back to center behind cards
-        { selector: '#browse',           pose: { x: 0,          scale: 1.15, theta: 900,  phi: 34, radius: 1.95 } },
-        // ③ browse→feature: +270 flip (¾ rotation) → lands at 270° (right-side view) — small, shifted right
-        { selector: '.feature-section',  pose: { x: featureX,   scale: 0.87, theta: 1170, phi: 68, radius: 2.52 } },
+        { selector: '#categories',       pose: { x: -52, scale: 0.92, theta: 540,  phi: 52, radius: 2.45 } },
+        { selector: '#browse',           pose: { x: 0,   scale: 1.15, theta: 900,  phi: 34, radius: 1.95 } },
+        { selector: '.feature-section',  pose: { x: 38,  scale: 0.87, theta: 1170, phi: 68, radius: 2.52 } },
       ];
+
+      // Mobile phone poses (Dynamic Floating Orbit):
+      const mobileStops: { selector: string; pose: StagePose }[] = [
+        { selector: '.hero',             pose: { x: 0,  scale: 0.88, theta: 184,  phi: 44, radius: 2.15, roll: -5 } },
+        { selector: '#categories',       pose: { x: 14, scale: 0.68, theta: 544,  phi: 56, radius: 2.65, roll: -3 } },
+        { selector: '#browse',           pose: { x: 0,  scale: 0.78, theta: 900,  phi: 36, radius: 2.30, roll: -6 } },
+        { selector: '.feature-section',  pose: { x: 10, scale: 0.65, theta: 1170, phi: 66, radius: 2.70, roll: 0 } },
+      ];
+
+      const stops = isMobile ? mobileStops : desktopStops;
       const measured: { center: number; pose: StagePose }[] = [];
       for (const stop of stops) {
         const section = document.querySelector<HTMLElement>(stop.selector);
