@@ -1,0 +1,7 @@
+import Link from 'next/link'
+import { getAdminCatalog } from '../actions'
+
+export default async function ProductsAdminPage() {
+  const products = await getAdminCatalog()
+  return <main className="site-shell min-h-screen px-5 py-8 md:px-10"><div className="mx-auto max-w-7xl"><div className="flex items-center justify-between gap-4"><div><Link href="/admin" className="text-sm text-primary">← Dashboard</Link><h1 className="mt-4 text-4xl font-bold">Products</h1></div><Link href="/admin/products/new" className="rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground">Add product</Link></div><div className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-black/20"><div className="grid grid-cols-[1fr_120px_120px] gap-4 border-b border-white/10 px-5 py-4 text-xs uppercase tracking-wider text-muted-foreground"><span>Product</span><span>Type</span><span>Status</span></div>{products.map((product) => <Link href={`/admin/products/${product.id}`} key={product.id} className="grid grid-cols-[1fr_120px_120px] gap-4 border-b border-white/10 px-5 py-5 last:border-0 hover:bg-white/[0.04]"><span className="font-semibold">{product.name}<small className="mt-1 block text-xs text-muted-foreground">/{product.slug}</small></span><span className="text-sm text-muted-foreground">{product.type}</span><span className="text-sm text-primary">{product.status}</span></Link>)}</div></div></main>
+}

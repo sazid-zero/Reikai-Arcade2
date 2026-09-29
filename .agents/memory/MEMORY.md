@@ -1,0 +1,1 @@
+- [3D viewer fallback](webgl-viewer-fallback.md) — check WebGL before registering model-viewer; a failed context can throw before element error handlers run.

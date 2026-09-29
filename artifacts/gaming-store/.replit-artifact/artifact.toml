@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Gaming Storefront"
+description = "A cinematic gaming shop homepage with scroll-driven 3D product storytelling, categories for games, consoles, accessories, and top-ups, and a responsive product showcase."
+version = "1.0.0"
+id = "artifacts/gaming-store"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22457
+
+[services.development]
+run = "pnpm --filter @workspace/gaming-store run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/gaming-store", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/gaming-store/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22457"
+BASE_PATH = "/"
