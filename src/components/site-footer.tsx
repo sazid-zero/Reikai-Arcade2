@@ -36,7 +36,7 @@ export function SiteFooter() {
               <Link href="/accessories">Accessories Vault</Link>
               <Link href="/games">PS5 Games Catalog</Link>
               <Link href="/#browse">All Drops</Link>
-              <Link href="/#signal">ReiKai Frequency</Link>
+              <Link href="/admin">Admin Control Room</Link>
             </div>
 
             <div>

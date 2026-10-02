@@ -639,8 +639,46 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (product: Pr
 
 
 
+function mapDbRowsToProducts(rows: any[]): Product[] {
+  const map = new Map<string, any>()
+  for (const r of rows) {
+    if (!map.has(r.id)) {
+      map.set(r.id, {
+        id: r.slug,
+        name: r.name,
+        type: r.type === 'game' ? 'games' : 'gear',
+        category: r.type === 'game' ? 'games' : 'accessories',
+        subCategory: r.category || (r.type === 'game' ? 'PS5 Game' : 'Gear'),
+        label: r.brand || (r.type === 'game' ? 'PS5 Game' : 'Gear'),
+        price: (r.price ?? 0) / 100,
+        glyph: (r.slug || r.name).slice(0, 4).toUpperCase(),
+        wash: r.type === 'game' ? 'hsl(272 90% 68% / .32)' : 'hsl(285 85% 72% / .32)',
+        badge: r.featured ? 'FEATURED DROP' : undefined,
+        spec: r.platform || '',
+        coverImage: r.imageUrl || (r.type === 'game' ? '/covers/astro-bot.jpg' : '/accessories/dualsense-edge.jpg'),
+        rating: r.rating || 4.9,
+        reviewsCount: r.reviewCount || 100,
+        inStock: (r.stockQuantity ?? 0) > 0,
+        shortDesc: r.shortDescription || '',
+        fullDesc: r.description || '',
+        features: Array.isArray(r.features) ? r.features : [],
+        specs: r.specs && typeof r.specs === 'object'
+          ? Object.entries(r.specs).map(([label, value]) => ({ label, value: String(value) }))
+          : [],
+      })
+    } else {
+      const existing = map.get(r.id)
+      if (r.price && (r.price / 100) < existing.price) {
+        existing.price = r.price / 100
+      }
+    }
+  }
+  return Array.from(map.values())
+}
+
 export default function StorefrontPage() {
   const { addToCart, cartCount, setCartOpen } = useCart();
+  const [liveProducts, setLiveProducts] = useState<Product[]>(products);
   const [filter, setFilter] = useState<'all' | Product['type']>('all');
   const [reducedMotion, setReducedMotion] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -650,6 +688,20 @@ export default function StorefrontPage() {
   const [signalSubscribed, setSignalSubscribed] = useState(false);
   const lenis = useLenis();
   useScrollAnimations(reducedMotion);
+
+  useEffect(() => {
+    fetch('/api/catalog')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = mapDbRowsToProducts(data);
+          if (mapped.length > 0) {
+            setLiveProducts(mapped);
+          }
+        }
+      })
+      .catch((err) => console.warn('Could not fetch live catalog:', err));
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -748,8 +800,8 @@ export default function StorefrontPage() {
   }, []);
 
   const filteredProducts = useMemo(
-    () => (filter === 'all' ? products : products.filter((product) => product.type === filter)),
-    [filter],
+    () => (filter === 'all' ? liveProducts : liveProducts.filter((product) => product.type === filter)),
+    [filter, liveProducts],
   );
 
   const setCategory = (category: 'all' | Product['type']) => {

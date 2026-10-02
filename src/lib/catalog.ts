@@ -2,6 +2,36 @@ import { and, asc, eq } from 'drizzle-orm'
 import { db } from '@lib/db'
 import { productVariants, products } from '@lib/db/src/schema'
 
+const productFields = {
+  id: products.id,
+  slug: products.slug,
+  name: products.name,
+  type: products.type,
+  shortDescription: products.shortDescription,
+  description: products.description,
+  brand: products.brand,
+  platform: products.platform,
+  category: products.category,
+  imageUrl: products.imageUrl,
+  galleryImages: products.galleryImages,
+  tags: products.tags,
+  features: products.features,
+  specs: products.specs,
+  rating: products.rating,
+  reviewCount: products.reviewCount,
+  featured: products.featured,
+  sortOrder: products.sortOrder,
+}
+
+const variantFields = {
+  variantId: productVariants.id,
+  variantTitle: productVariants.title,
+  sku: productVariants.sku,
+  price: productVariants.price,
+  compareAtPrice: productVariants.compareAtPrice,
+  stockQuantity: productVariants.stockQuantity,
+}
+
 export async function getActiveCatalog(type?: 'game' | 'accessory') {
   if (!process.env.DATABASE_URL) return []
   try {
@@ -9,26 +39,7 @@ export async function getActiveCatalog(type?: 'game' | 'accessory') {
     if (type) conditions.push(eq(products.type, type))
 
     return await db
-      .select({
-        id: products.id,
-        slug: products.slug,
-        name: products.name,
-        type: products.type,
-        shortDescription: products.shortDescription,
-        description: products.description,
-        brand: products.brand,
-        platform: products.platform,
-        category: products.category,
-        imageUrl: products.imageUrl,
-        featured: products.featured,
-        sortOrder: products.sortOrder,
-        variantId: productVariants.id,
-        variantTitle: productVariants.title,
-        sku: productVariants.sku,
-        price: productVariants.price,
-        compareAtPrice: productVariants.compareAtPrice,
-        stockQuantity: productVariants.stockQuantity,
-      })
+      .select({ ...productFields, ...variantFields })
       .from(products)
       .leftJoin(productVariants, and(eq(productVariants.productId, products.id), eq(productVariants.active, true)))
       .where(and(...conditions))
@@ -43,26 +54,7 @@ export async function getActiveProductBySlug(slug: string) {
   if (!process.env.DATABASE_URL) return []
   try {
     const rows = await db
-      .select({
-        id: products.id,
-        slug: products.slug,
-        name: products.name,
-        type: products.type,
-        shortDescription: products.shortDescription,
-        description: products.description,
-        brand: products.brand,
-        platform: products.platform,
-        category: products.category,
-        imageUrl: products.imageUrl,
-        featured: products.featured,
-        sortOrder: products.sortOrder,
-        variantId: productVariants.id,
-        variantTitle: productVariants.title,
-        sku: productVariants.sku,
-        price: productVariants.price,
-        compareAtPrice: productVariants.compareAtPrice,
-        stockQuantity: productVariants.stockQuantity,
-      })
+      .select({ ...productFields, ...variantFields })
       .from(products)
       .leftJoin(productVariants, and(eq(productVariants.productId, products.id), eq(productVariants.active, true)))
       .where(and(eq(products.slug, slug), eq(products.status, 'active')))
@@ -73,4 +65,27 @@ export async function getActiveProductBySlug(slug: string) {
     console.error('Error fetching product by slug:', error)
     return []
   }
+}
+
+// Helper to group flat join rows into a single product with variants array
+export function groupProductRows<T extends { id: string; variantId: string | null; variantTitle: string | null; sku: string | null; price: number | null; compareAtPrice: number | null; stockQuantity: number | null }>(rows: T[]) {
+  if (rows.length === 0) return null
+  const { variantId, variantTitle, sku, price, compareAtPrice, stockQuantity, ...base } = rows[0]
+  const product = {
+    ...base,
+    variants: [] as Array<{ id: string; title: string | null; sku: string | null; price: number; compareAtPrice: number | null; stockQuantity: number }>,
+  }
+  for (const row of rows) {
+    if (row.variantId) {
+      product.variants.push({
+        id: row.variantId,
+        title: row.variantTitle,
+        sku: row.sku,
+        price: row.price!,
+        compareAtPrice: row.compareAtPrice,
+        stockQuantity: row.stockQuantity!,
+      })
+    }
+  }
+  return product
 }

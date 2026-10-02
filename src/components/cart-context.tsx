@@ -1,11 +1,22 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { Product } from '@/lib/products';
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 
-export type CartItem = Product & {
+// Generic cart product — works with both static legacy products and DB products
+export type CartProduct = {
+  id: string;
+  name: string;
+  price: number; // in display currency (Taka), NOT paisa
+  image?: string | null;
+  type?: string;
+  // Legacy fields (optional)
+  glyph?: string;
+  [key: string]: unknown;
+};
+
+export type CartItem = CartProduct & {
   quantity: number;
   selectedColor?: string;
   selectedEdition?: string;
@@ -15,7 +26,7 @@ type CartContextType = {
   cart: CartItem[];
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
-  addToCart: (product: Product, options?: { color?: string; edition?: string; price?: number }) => void;
+  addToCart: (product: CartProduct, options?: { color?: string; edition?: string; price?: number }) => void;
   changeQuantity: (id: string, delta: number) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
@@ -46,11 +57,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } catch {}
   }, [cart]);
 
-  const addToCart = (product: Product, options?: { color?: string; edition?: string; price?: number }) => {
+  const addToCart = (product: CartProduct, options?: { color?: string; edition?: string; price?: number }) => {
     setCart((current) => {
       const itemPrice = options?.price ?? product.price;
-      const uniqueKey = `${product.id}-${options?.color || ''}-${options?.edition || ''}`;
-      
+
       const foundIndex = current.findIndex(
         (item) =>
           item.id === product.id &&
@@ -127,11 +137,49 @@ export function useCart() {
   return context;
 }
 
+function formatTaka(amount: number) {
+  return `৳${amount.toLocaleString('en-BD')}`;
+}
+
 function GlobalCartPanel() {
   const { cart, setCartOpen, changeQuantity, removeFromCart, cartTotal, cartCount, clearCart } = useCart();
   const [checkoutDone, setCheckoutDone] = useState(false);
+  const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
   const [checkoutBusy, setCheckoutBusy] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const handleCheckout = async () => {
+    setCheckoutBusy(true);
+    setCheckoutError(null);
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          items: cart.map((item) => ({
+            variantId: item.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.id) ? item.id : undefined,
+            productName: item.name,
+            variantTitle: item.selectedEdition,
+            quantity: item.quantity,
+            // price is in Taka, API expects paisa
+            unitPrice: Math.round(item.price * 100),
+            sku: item.id,
+          })),
+        }),
+      });
+      const data = await response.json();
+      if (response.ok && data?.id) {
+        clearCart();
+        setPlacedOrderId(data.id);
+        setCheckoutDone(true);
+      } else {
+        setCheckoutError('Checkout failed. Please try again.');
+      }
+    } catch {
+      setCheckoutError('Network error. Please try again.');
+    }
+    setCheckoutBusy(false);
+  };
 
   return (
     <div
@@ -162,27 +210,36 @@ function GlobalCartPanel() {
         {checkoutDone ? (
           <div className="cart-empty" style={{ margin: 'auto 0' }}>
             <div style={{ color: '#22c55e', fontSize: '2.5rem', marginBottom: '16px' }}>✓</div>
-            <strong>ORDER DISPATCHED // CONFIRMED</strong>
+            <strong>ORDER CONFIRMED!</strong>
             <p style={{ maxWidth: '300px', fontSize: '.85rem', color: '#94a3b8', lineHeight: 1.6 }}>
-              Your celestial hardware &amp; digital authorizations have been queued for ultra-fast orbital dispatch.
+              Your order has been recorded into the ReiKai database.
             </p>
+            {placedOrderId && (
+              <div style={{ marginTop: '20px' }}>
+                <Link
+                  href={`/orders/${placedOrderId}`}
+                  className="button-primary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+                  onClick={() => { setCheckoutDone(false); setCartOpen(false); }}
+                >
+                  Track Order Details →
+                </Link>
+              </div>
+            )}
             <button
               type="button"
-              className="button-primary"
-              style={{ marginTop: '24px' }}
-              onClick={() => {
-                setCheckoutDone(false);
-                setCartOpen(false);
-              }}
+              className="button-ghost"
+              style={{ marginTop: '12px' }}
+              onClick={() => { setCheckoutDone(false); setCartOpen(false); }}
             >
-              Back to Storefront
+              Continue Shopping
             </button>
           </div>
         ) : cart.length === 0 ? (
           <div className="cart-empty">
             <ShoppingBag size={48} className="text-[#a855f7] opacity-60 mb-3" />
             <strong>BAG IS EMPTY</strong>
-            <p>No celestial gear acquired yet.</p>
+            <p>No items added yet.</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
               <Link href="/accessories" onClick={() => setCartOpen(false)} className="cart-empty-link">
                 Browse Accessories →
@@ -198,7 +255,12 @@ function GlobalCartPanel() {
               {cart.map((item) => (
                 <div key={`${item.id}-${item.selectedColor || ''}-${item.selectedEdition || ''}`} className="cart-item">
                   <div className="cart-thumb">
-                    <span>{item.glyph}</span>
+                    {item.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.image as string} alt={item.name} className="h-full w-full object-cover" />
+                    ) : (
+                      <span>{item.glyph ?? (item.type === 'game' ? '🎮' : '🎧')}</span>
+                    )}
                   </div>
                   <div style={{ minWidth: 0 }}>
                     <div className="cart-item-name">{item.name}</div>
@@ -208,29 +270,16 @@ function GlobalCartPanel() {
                         {item.selectedColor && <span> · {item.selectedColor}</span>}
                       </div>
                     )}
-                    <div className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</div>
+                    <div className="cart-item-price">{formatTaka(item.price * item.quantity)}</div>
                     <div className="quantity-controls">
-                      <button
-                        type="button"
-                        onClick={() => changeQuantity(item.id, -1)}
-                        aria-label="Decrease quantity"
-                      >
+                      <button type="button" onClick={() => changeQuantity(item.id, -1)} aria-label="Decrease quantity">
                         <Minus size={11} />
                       </button>
                       <span>{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => changeQuantity(item.id, 1)}
-                        aria-label="Increase quantity"
-                      >
+                      <button type="button" onClick={() => changeQuantity(item.id, 1)} aria-label="Increase quantity">
                         <Plus size={11} />
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => removeFromCart(item.id)}
-                        className="cart-item-remove"
-                        aria-label="Remove item"
-                      >
+                      <button type="button" onClick={() => removeFromCart(item.id)} className="cart-item-remove" aria-label="Remove item">
                         <Trash2 size={12} />
                       </button>
                     </div>
@@ -242,19 +291,20 @@ function GlobalCartPanel() {
             <div className="cart-footer">
               <div className="cart-note">
                 <span className="cart-note-dot" />
-                <span>FREE EXPEDITED EXPRESS DISPATCH INCLUDED</span>
+                <span>FREE DELIVERY INCLUDED ON ORDERS OVER ৳5,000</span>
               </div>
               <div className="cart-total">
-                <span>TOTAL ESTIMATE</span>
-                <strong>${cartTotal.toFixed(2)}</strong>
+                <span>TOTAL</span>
+                <strong>{formatTaka(cartTotal)}</strong>
               </div>
               {checkoutError && <p role="alert" style={{ color: '#f87171', fontSize: '.8rem', marginBottom: '12px' }}>{checkoutError}</p>}
               <button
                 type="button"
                 className="button-primary checkout-btn"
-                onClick={async () => { setCheckoutBusy(true); setCheckoutError(null); const response = await fetch('/api/orders', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items: cart.map((item) => ({ productName: item.name, quantity: item.quantity, unitPrice: Math.round(item.price), sku: item.id })) }) }); if (response.ok) { clearCart(); setCheckoutDone(true); } else { setCheckoutError('Checkout could not be recorded. Please try again.'); } setCheckoutBusy(false); }} disabled={checkoutBusy}
+                onClick={handleCheckout}
+                disabled={checkoutBusy}
               >
-                <span>{checkoutBusy ? 'TRANSMITTING…' : 'TRANSMIT CHECKOUT'}</span>
+                <span>{checkoutBusy ? 'PROCESSING…' : 'PLACE ORDER'}</span>
                 <ArrowRight size={16} />
               </button>
             </div>

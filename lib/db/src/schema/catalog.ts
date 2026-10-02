@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { boolean, integer, jsonb, pgTable, text, timestamp, uuid, index } from 'drizzle-orm/pg-core'
+import { boolean, integer, jsonb, pgTable, text, timestamp, uuid, index, real } from 'drizzle-orm/pg-core'
 
 export const adminUsers = pgTable('admin_users', {
   userId: text('user_id').primaryKey(),
@@ -10,14 +10,20 @@ export const products = pgTable('products', {
   id: uuid('id').defaultRandom().primaryKey(),
   slug: text('slug').notNull().unique(),
   name: text('name').notNull(),
-  type: text('type').notNull(),
+  type: text('type').notNull(), // 'game' | 'accessory'
   shortDescription: text('short_description'),
   description: text('description'),
   brand: text('brand'),
   platform: text('platform'),
   category: text('category'),
   imageUrl: text('image_url'),
-  status: text('status').notNull().default('draft'),
+  galleryImages: jsonb('gallery_images').notNull().default(sql`'[]'::jsonb`),
+  tags: jsonb('tags').notNull().default(sql`'[]'::jsonb`),
+  features: jsonb('features').notNull().default(sql`'[]'::jsonb`),
+  specs: jsonb('specs').notNull().default(sql`'{}'::jsonb`),
+  rating: real('rating').notNull().default(0),
+  reviewCount: integer('review_count').notNull().default(0),
+  status: text('status').notNull().default('draft'), // 'draft' | 'active' | 'archived'
   featured: boolean('featured').notNull().default(false),
   sortOrder: integer('sort_order').notNull().default(0),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -32,7 +38,7 @@ export const productVariants = pgTable('product_variants', {
   productId: uuid('product_id').notNull().references(() => products.id, { onDelete: 'cascade' }),
   title: text('title').notNull(),
   sku: text('sku').notNull().unique(),
-  price: integer('price').notNull(),
+  price: integer('price').notNull(), // in smallest currency unit (paisa/cent)
   compareAtPrice: integer('compare_at_price'),
   stockQuantity: integer('stock_quantity').notNull().default(0),
   active: boolean('active').notNull().default(true),
@@ -46,6 +52,7 @@ export const productVariants = pgTable('product_variants', {
 export type Product = typeof products.$inferSelect
 type ProductInsert = typeof products.$inferInsert
 export type ProductVariant = typeof productVariants.$inferSelect
+
 export const inventoryAdjustments = pgTable('inventory_adjustments', {
   id: uuid('id').defaultRandom().primaryKey(),
   variantId: uuid('variant_id').notNull().references(() => productVariants.id, { onDelete: 'cascade' }),
@@ -57,13 +64,17 @@ export const inventoryAdjustments = pgTable('inventory_adjustments', {
 
 export const orders = pgTable('orders', {
   id: uuid('id').defaultRandom().primaryKey(),
-  status: text('status').notNull().default('draft'),
-  paymentStatus: text('payment_status').notNull().default('unpaid'),
-  fulfillmentStatus: text('fulfillment_status').notNull().default('unfulfilled'),
+  status: text('status').notNull().default('pending'), // 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+  paymentStatus: text('payment_status').notNull().default('unpaid'), // 'unpaid' | 'paid' | 'refunded'
+  fulfillmentStatus: text('fulfillment_status').notNull().default('unfulfilled'), // 'unfulfilled' | 'partial' | 'fulfilled' | 'shipped'
   customerEmail: text('customer_email'),
   customerName: text('customer_name'),
+  customerPhone: text('customer_phone'),
+  shippingAddress: jsonb('shipping_address').default(sql`'{}'::jsonb`),
   total: integer('total').notNull().default(0),
   notes: text('notes'),
+  adminNotes: text('admin_notes'),
+  trackingNumber: text('tracking_number'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 }, (table) => ({ statusIdx: index('orders_status_idx').on(table.status, table.createdAt) }))
@@ -73,6 +84,7 @@ export const orderItems = pgTable('order_items', {
   orderId: uuid('order_id').notNull().references(() => orders.id, { onDelete: 'cascade' }),
   variantId: uuid('variant_id').references(() => productVariants.id),
   productName: text('product_name').notNull(),
+  variantTitle: text('variant_title'),
   sku: text('sku'),
   quantity: integer('quantity').notNull(),
   unitPrice: integer('unit_price').notNull(),
