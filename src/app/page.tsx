@@ -559,6 +559,164 @@ function Header({
     </header>
   );
 }
+function MobileBottomNav({
+  cartCount,
+  onCart,
+  onScrollTo,
+}: {
+  cartCount: number;
+  onCart: () => void;
+  onScrollTo: (id: string) => void;
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState<'home' | 'browse' | 'categories' | 'cart' | 'menu'>('home');
+
+  const handleHome = () => { setActive('home'); onScrollTo('top'); setMenuOpen(false); };
+  const handleBrowse = () => { setActive('browse'); onScrollTo('browse'); setMenuOpen(false); };
+  const handleCategories = () => { setActive('categories'); onScrollTo('categories'); setMenuOpen(false); };
+  const handleCart = () => { setActive('cart'); onCart(); setMenuOpen(false); };
+  const handleMenuToggle = () => {
+    setActive(menuOpen ? active : 'menu');
+    setMenuOpen((o) => !o);
+  };
+
+  return (
+    <>
+      {/* Slide-up menu sheet */}
+      {menuOpen && (
+        <>
+          <div className="mobile-menu-overlay" onClick={() => { setMenuOpen(false); setActive('home'); }} aria-hidden="true" />
+          <div className="mobile-menu-sheet" role="dialog" aria-label="Navigation menu">
+            <div className="mobile-menu-handle" />
+            <Link
+              href="/accessories"
+              className="mobile-menu-sheet__link"
+              onClick={() => setMenuOpen(false)}
+              data-testid="link-sheet-accessories"
+            >
+              <span className="mobile-menu-sheet__link-icon">
+                <Gamepad2 size={18} />
+              </span>
+              Accessories Vault
+            </Link>
+            <Link
+              href="/games"
+              className="mobile-menu-sheet__link"
+              onClick={() => setMenuOpen(false)}
+              data-testid="link-sheet-games"
+            >
+              <span className="mobile-menu-sheet__link-icon">
+                <Sparkles size={18} />
+              </span>
+              PS5 Games Catalog
+            </Link>
+            <div className="mobile-menu-sheet__divider" />
+            <Link
+              href="/top-up"
+              className="mobile-menu-sheet__link"
+              onClick={() => setMenuOpen(false)}
+              data-testid="link-sheet-top-up"
+            >
+              <span className="mobile-menu-sheet__link-icon">
+                <Zap size={18} />
+              </span>
+              Top-up
+            </Link>
+            <Link
+              href="/gift-cards"
+              className="mobile-menu-sheet__link"
+              onClick={() => setMenuOpen(false)}
+              data-testid="link-sheet-gift-cards"
+            >
+              <span className="mobile-menu-sheet__link-icon">
+                <Gem size={18} />
+              </span>
+              Gift Cards
+            </Link>
+          </div>
+        </>
+      )}
+
+      {/* Bottom nav bar */}
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+        {/* Home */}
+        <button
+          type="button"
+          className={`mobile-bottom-nav__item${active === 'home' ? ' active' : ''}`}
+          onClick={handleHome}
+          aria-label="Go to top"
+          data-testid="mobile-nav-home"
+        >
+          <span className="mobile-bottom-nav__icon">
+            <Gamepad2 size={20} />
+          </span>
+          <span className="mobile-bottom-nav__label">Home</span>
+        </button>
+
+        {/* Browse */}
+        <button
+          type="button"
+          className={`mobile-bottom-nav__item${active === 'browse' ? ' active' : ''}`}
+          onClick={handleBrowse}
+          aria-label="Browse products"
+          data-testid="mobile-nav-browse"
+        >
+          <span className="mobile-bottom-nav__icon">
+            <Search size={20} />
+          </span>
+          <span className="mobile-bottom-nav__label">Browse</span>
+        </button>
+
+        {/* Categories */}
+        <button
+          type="button"
+          className={`mobile-bottom-nav__item${active === 'categories' ? ' active' : ''}`}
+          onClick={handleCategories}
+          aria-label="View categories"
+          data-testid="mobile-nav-categories"
+        >
+          <span className="mobile-bottom-nav__icon">
+            <Globe size={20} />
+          </span>
+          <span className="mobile-bottom-nav__label">Categories</span>
+        </button>
+
+        {/* Cart */}
+        <button
+          type="button"
+          className={`mobile-bottom-nav__item${active === 'cart' ? ' active' : ''}`}
+          onClick={handleCart}
+          aria-label={`Open cart, ${cartCount} items`}
+          data-testid="mobile-nav-cart"
+        >
+          <span className="mobile-bottom-nav__icon">
+            <ShoppingBag size={20} />
+            {cartCount > 0 && (
+              <span className="mobile-bottom-nav__badge">{cartCount}</span>
+            )}
+          </span>
+          <span className="mobile-bottom-nav__label">Cart</span>
+        </button>
+
+        {/* More / Hamburger */}
+        <button
+          type="button"
+          className={`mobile-bottom-nav__item${active === 'menu' ? ' active' : ''}`}
+          onClick={handleMenuToggle}
+          aria-label="More navigation options"
+          aria-expanded={menuOpen}
+          data-testid="mobile-nav-menu"
+        >
+          <span className="mobile-bottom-nav__icon">
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </span>
+          <span className="mobile-bottom-nav__label">More</span>
+        </button>
+      </nav>
+    </>
+  );
+}
+
 
 function ProductCard({ product, onAdd }: { product: Product; onAdd: (product: Product) => void }) {
   const detailHref =
@@ -1295,6 +1453,13 @@ export default function StorefrontPage() {
           </div>
         </div>
       </footer>
+
+      {/* Mobile bottom nav – only renders at ≤768px via CSS */}
+      <MobileBottomNav
+        cartCount={cartCount}
+        onCart={() => setCartOpen(true)}
+        onScrollTo={(id) => scrollToId(id, lenis)}
+      />
     </main>
   );
 }
