@@ -501,7 +501,7 @@ function Header({
           {/* Search icon button */}
           <button
             type="button"
-            className="header-icon-button"
+            className="header-icon-button md:hidden"
             onClick={() => openSearch()}
             aria-label="Search products"
             data-testid="button-search"
@@ -862,10 +862,11 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
         wash: r.type === 'game' ? 'hsl(272 90% 68% / .32)' : 'hsl(285 85% 72% / .32)',
         badge: r.featured ? 'FEATURED DROP' : undefined,
         spec: r.platform || '',
-        coverImage: r.imageUrl || (r.type === 'game' ? '/covers/astro-bot.jpg' : '/accessories/dualsense-edge.jpg'),
+        coverImage: r.imageUrl || (r.type === 'game' ? '/astro-bot.jpg' : '/dualsense-edge.jpg'),
         rating: r.rating || 4.9,
         reviewsCount: r.reviewCount || 100,
         inStock: (r.stockQuantity ?? 0) > 0,
+        totalStock: r.stockQuantity ?? 0,
         shortDesc: r.shortDescription || '',
         fullDesc: r.description || '',
         features: Array.isArray(r.features) ? r.features : [],
@@ -875,6 +876,10 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
       })
     } else {
       const existing = map.get(r.id)
+      // Accumulate stock across all variants
+      existing.totalStock += r.stockQuantity ?? 0
+      existing.inStock = existing.totalStock > 0
+      // Use lowest price variant
       if (r.price && (r.price / 100) < existing.price) {
         existing.price = r.price / 100
       }
@@ -882,6 +887,7 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
   }
   return Array.from(map.values())
 }
+
 
 export default function StorefrontPage() {
   const { addToCart, cartCount, setCartOpen } = useCart();

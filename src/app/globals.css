@@ -7204,6 +7204,56 @@
   flex-wrap: wrap;
 }
 
+/* Catalog in-page search sort container */
+.catalog-search-sort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Catalog inline search wrapper */
+.catalog-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Catalog inline search icon */
+.catalog-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #a855f7;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Catalog inline search input */
+.catalog-search-input {
+  height: 38px;
+  padding: 0 36px 0 36px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+  font-size: 0.8rem;
+  font-family: 'Space Grotesk', sans-serif;
+  min-width: 200px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.catalog-search-input::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.catalog-search-input:focus {
+  border-color: rgba(168, 85, 247, 0.5);
+  background: rgba(168, 85, 247, 0.06);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+
 .catalog-search-clear-btn {
   position: absolute;
   right: 12px;

@@ -77,8 +77,18 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
           const map = new Map<string, Product>();
           ALL_PRODUCTS.forEach((p) => map.set(p.id, p));
 
+          // Group rows by slug since API returns one row per variant
+          const grouped = new Map<string, any>();
           data.forEach((r: any) => {
-            const id = r.slug || r.id;
+            const key = r.slug || r.id;
+            if (!grouped.has(key)) {
+              grouped.set(key, { ...r, _totalStock: 0 });
+            }
+            const g = grouped.get(key)!;
+            g._totalStock += r.stockQuantity ?? 0;
+          });
+
+          grouped.forEach((r, id) => {
             const mappedType = r.type === 'game' ? 'games' : 'gear';
             const mappedCategory = r.type === 'game' ? 'games' : 'accessories';
             const price = (r.price ?? 0) / 100;
@@ -96,10 +106,10 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
                 wash: r.type === 'game' ? 'hsl(272 90% 68% / .32)' : 'hsl(285 85% 72% / .32)',
                 badge: r.featured ? 'FEATURED DROP' : undefined,
                 spec: r.platform || '',
-                coverImage: r.imageUrl || (r.type === 'game' ? '/covers/astro-bot.jpg' : '/accessories/dualsense-edge.jpg'),
+                coverImage: r.imageUrl || (r.type === 'game' ? '/astro-bot.jpg' : '/dualsense-edge.jpg'),
                 rating: r.rating || 4.9,
                 reviewsCount: r.reviewCount || 100,
-                inStock: (r.stockQuantity ?? 0) > 0,
+                inStock: r._totalStock > 0,
                 shortDesc: r.shortDescription || '',
                 fullDesc: r.description || '',
                 features: Array.isArray(r.features) ? r.features : [],

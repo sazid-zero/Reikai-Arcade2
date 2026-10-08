@@ -1,4 +1,4 @@
-import { and, asc, eq } from 'drizzle-orm'
+import { and, asc, eq, or } from 'drizzle-orm'
 import { db } from '@lib/db'
 import { productVariants, products } from '@lib/db/src/schema'
 
@@ -53,11 +53,16 @@ export async function getActiveCatalog(type?: 'game' | 'accessory') {
 export async function getActiveProductBySlug(slug: string) {
   if (!process.env.DATABASE_URL) return []
   try {
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)
+    const matchCondition = isUUID
+      ? or(eq(products.slug, slug), eq(products.id, slug))
+      : eq(products.slug, slug)
+
     const rows = await db
       .select({ ...productFields, ...variantFields })
       .from(products)
       .leftJoin(productVariants, and(eq(productVariants.productId, products.id), eq(productVariants.active, true)))
-      .where(and(eq(products.slug, slug), eq(products.status, 'active')))
+      .where(and(matchCondition, eq(products.status, 'active')))
       .orderBy(asc(productVariants.price))
 
     return rows
