@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import type { Product } from '@/lib/products';
 import { ProductCard as StandardProductCard } from '@/components/product-card';
+import { useSearch } from '@/components/search-modal';
 
 type StagePose = {
   x: number;
@@ -450,6 +451,8 @@ function Header({
   onCart: () => void;
 }) {
   const [mobileNav, setMobileNav] = useState(false);
+  const { openSearch } = useSearch();
+
   return (
     <header className="site-header">
       <div className="header-inner">
@@ -482,10 +485,24 @@ function Header({
           </Link>
         </nav>
         <div className="header-actions">
+          {/* Desktop Search Bar */}
+          <button
+            type="button"
+            className="header-search-bar hidden md:inline-flex"
+            onClick={() => openSearch()}
+            aria-label="Search store"
+            data-testid="header-search-bar"
+          >
+            <Search size={14} className="header-search-bar-icon" />
+            <span className="header-search-bar-text">Search store...</span>
+            <kbd className="header-search-bar-kbd">⌘K</kbd>
+          </button>
+
+          {/* Search icon button */}
           <button
             type="button"
             className="header-icon-button"
-            onClick={() => scrollToId('browse')}
+            onClick={() => openSearch()}
             aria-label="Search products"
             data-testid="button-search"
           >
@@ -514,6 +531,19 @@ function Header({
       </div>
       {mobileNav && (
         <div className="absolute left-0 right-0 top-full border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 md:hidden">
+          <button
+            type="button"
+            className="mobile-nav-search-btn mb-3 w-full"
+            onClick={() => {
+              setMobileNav(false);
+              openSearch();
+            }}
+            data-testid="mobile-menu-search"
+          >
+            <Search size={16} className="text-[#c084fc]" />
+            <span>Search games, gear &amp; codes...</span>
+            <span className="mobile-search-pill">Search</span>
+          </button>
           <Link
             href="/accessories"
             onClick={() => setMobileNav(false)}
@@ -559,6 +589,7 @@ function Header({
     </header>
   );
 }
+
 function MobileBottomNav({
   cartCount,
   onCart,
@@ -569,10 +600,15 @@ function MobileBottomNav({
   onScrollTo: (id: string) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState<'home' | 'browse' | 'categories' | 'cart' | 'menu'>('home');
+  const [active, setActive] = useState<'home' | 'search' | 'categories' | 'cart' | 'menu'>('home');
+  const { openSearch } = useSearch();
 
   const handleHome = () => { setActive('home'); onScrollTo('top'); setMenuOpen(false); };
-  const handleBrowse = () => { setActive('browse'); onScrollTo('browse'); setMenuOpen(false); };
+  const handleSearch = () => {
+    setActive('search');
+    setMenuOpen(false);
+    openSearch();
+  };
   const handleCategories = () => { setActive('categories'); onScrollTo('categories'); setMenuOpen(false); };
   const handleCart = () => { setActive('cart'); onCart(); setMenuOpen(false); };
   const handleMenuToggle = () => {
@@ -588,6 +624,19 @@ function MobileBottomNav({
           <div className="mobile-menu-overlay" onClick={() => { setMenuOpen(false); setActive('home'); }} aria-hidden="true" />
           <div className="mobile-menu-sheet" role="dialog" aria-label="Navigation menu">
             <div className="mobile-menu-handle" />
+            <button
+              type="button"
+              className="mobile-nav-search-btn mb-4 w-full"
+              onClick={() => {
+                setMenuOpen(false);
+                openSearch();
+              }}
+              data-testid="sheet-search-btn"
+            >
+              <Search size={16} className="text-[#c084fc]" />
+              <span>Search the entire vault...</span>
+              <span className="mobile-search-pill">Find</span>
+            </button>
             <Link
               href="/accessories"
               className="mobile-menu-sheet__link"
@@ -653,18 +702,18 @@ function MobileBottomNav({
           <span className="mobile-bottom-nav__label">Home</span>
         </button>
 
-        {/* Browse */}
+        {/* Search */}
         <button
           type="button"
-          className={`mobile-bottom-nav__item${active === 'browse' ? ' active' : ''}`}
-          onClick={handleBrowse}
-          aria-label="Browse products"
+          className={`mobile-bottom-nav__item${active === 'search' ? ' active' : ''}`}
+          onClick={handleSearch}
+          aria-label="Search products"
           data-testid="mobile-nav-browse"
         >
           <span className="mobile-bottom-nav__icon">
             <Search size={20} />
           </span>
-          <span className="mobile-bottom-nav__label">Browse</span>
+          <span className="mobile-bottom-nav__label">Search</span>
         </button>
 
         {/* Categories */}
@@ -838,6 +887,7 @@ export default function StorefrontPage() {
   const { addToCart, cartCount, setCartOpen } = useCart();
   const [liveProducts, setLiveProducts] = useState<Product[]>(products);
   const [filter, setFilter] = useState<'all' | Product['type']>('all');
+  const [catalogSearch, setCatalogSearch] = useState('');
   const [reducedMotion, setReducedMotion] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [stagePose, setStagePose] = useState<StagePose>(heroPose);
@@ -957,10 +1007,21 @@ export default function StorefrontPage() {
     };
   }, []);
 
-  const filteredProducts = useMemo(
-    () => (filter === 'all' ? liveProducts : liveProducts.filter((product) => product.type === filter)),
-    [filter, liveProducts],
-  );
+  const filteredProducts = useMemo(() => {
+    const q = catalogSearch.trim().toLowerCase();
+    return liveProducts.filter((product) => {
+      const matchesCategory = filter === 'all' || product.type === filter;
+      if (!matchesCategory) return false;
+      if (!q) return true;
+      const nameMatch = product.name.toLowerCase().includes(q);
+      const labelMatch = (product.label || '').toLowerCase().includes(q);
+      const subCatMatch = (product.subCategory || '').toLowerCase().includes(q);
+      const descMatch = (product.shortDesc || '').toLowerCase().includes(q);
+      const badgeMatch = (product.badge || '').toLowerCase().includes(q);
+      const specMatch = (product.spec || '').toLowerCase().includes(q);
+      return nameMatch || labelMatch || subCatMatch || descMatch || badgeMatch || specMatch;
+    });
+  }, [filter, liveProducts, catalogSearch]);
 
   const setCategory = (category: 'all' | Product['type']) => {
     setFilter(category);
@@ -1224,24 +1285,70 @@ export default function StorefrontPage() {
               <div className="section-kicker">02 / The current drop</div>
               <h2 className="section-title" id="browse-title" data-reveal>Good stuff. <span>Right now.</span></h2>
             </div>
-            <div className="filter-bar" data-reveal role="group" aria-label="Filter products">
-              {filterLabels.map((item) => (
-                <button
-                  type="button"
-                  key={item.id}
-                  className={`filter-button ${filter === item.id ? 'active' : ''}`}
-                  onClick={() => setFilter(item.id)}
-                  data-testid={`button-filter-${item.id}`}
-                >
-                  {item.label}
-                </button>
-              ))}
+            <div className="browse-controls-row" data-reveal>
+              <div className="filter-bar" role="group" aria-label="Filter products">
+                {filterLabels.map((item) => (
+                  <button
+                    type="button"
+                    key={item.id}
+                    className={`filter-button ${filter === item.id ? 'active' : ''}`}
+                    onClick={() => setFilter(item.id)}
+                    data-testid={`button-filter-${item.id}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+              <div className="catalog-search-sort">
+                <div className="catalog-search-wrap">
+                  <Search size={14} className="catalog-search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search current drop..."
+                    value={catalogSearch}
+                    onChange={(e) => setCatalogSearch(e.target.value)}
+                    className="catalog-search-input"
+                    aria-label="Filter products in current drop"
+                    data-testid="input-catalog-search"
+                  />
+                  {catalogSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setCatalogSearch('')}
+                      className="catalog-search-clear-btn"
+                      aria-label="Clear filter search"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div className="product-grid" data-testid="grid-products">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} onAdd={addToCart} />
-            ))}
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} onAdd={addToCart} />
+              ))
+            ) : (
+              <div className="catalog-empty-wrap">
+                <Search size={32} className="text-[#a855f7] opacity-60 mb-2" />
+                <h3 className="text-lg font-bold">No products match &ldquo;{catalogSearch}&rdquo;</h3>
+                <p className="text-sm text-white/50 mt-1 max-w-sm">
+                  Try searching another keyword or reset the filter to view all available drops.
+                </p>
+                <button
+                  type="button"
+                  className="button-primary mt-4 text-xs py-2 px-5 inline-flex items-center gap-2"
+                  onClick={() => {
+                    setCatalogSearch('');
+                    setFilter('all');
+                  }}
+                >
+                  Reset Search &amp; Filters
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>

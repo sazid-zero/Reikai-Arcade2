@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import LenisProvider from '@/components/lenis-provider';
 import { CartProvider } from '@/components/cart-context';
+import { SearchProvider } from '@/components/search-modal';
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -15,7 +16,9 @@ export function Providers({ children }: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <CartProvider>
-            {children}
+            <SearchProvider>
+              {children}
+            </SearchProvider>
             <Toaster />
           </CartProvider>
         </TooltipProvider>

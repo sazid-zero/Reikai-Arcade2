@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/components/cart-context';
+import { useSearch } from '@/components/search-modal';
 import { ChevronDown, Gamepad2, Menu, Search, ShoppingBag, Sparkles, X } from 'lucide-react';
 
 export function SiteHeader({
@@ -15,6 +16,7 @@ export function SiteHeader({
 }) {
   const pathname = usePathname();
   const { cartCount, setCartOpen } = useCart();
+  const { openSearch } = useSearch();
   const [mobileNav, setMobileNav] = useState(false);
   const [shopDropdown, setShopDropdown] = useState(false);
 
@@ -99,6 +101,19 @@ export function SiteHeader({
         </nav>
 
         <div className="header-actions">
+          {/* Desktop Search Bar */}
+          <button
+            type="button"
+            className="header-search-bar hidden md:inline-flex"
+            onClick={() => openSearch()}
+            aria-label="Search store"
+            data-testid="header-search-bar"
+          >
+            <Search size={14} className="header-search-bar-icon" />
+            <span className="header-search-bar-text">Search store...</span>
+            <kbd className="header-search-bar-kbd">⌘K</kbd>
+          </button>
+
           {onMotionToggle && (
             <button
               type="button"
@@ -112,13 +127,16 @@ export function SiteHeader({
             </button>
           )}
 
-          <Link
-            href="/#browse"
-            className="header-icon-button"
+          {/* Icon search button (mobile / tablet or compact action) */}
+          <button
+            type="button"
+            className="header-icon-button md:hidden"
+            onClick={() => openSearch()}
             aria-label="Search products"
+            data-testid="button-search"
           >
             <Search size={16} />
-          </Link>
+          </button>
 
           <button
             type="button"
@@ -144,6 +162,19 @@ export function SiteHeader({
 
       {mobileNav && (
         <div className="mobile-nav-menu">
+          <button
+            type="button"
+            className="mobile-nav-search-btn"
+            onClick={() => {
+              setMobileNav(false);
+              openSearch();
+            }}
+            data-testid="mobile-menu-search"
+          >
+            <Search size={16} className="text-[#c084fc]" />
+            <span>Search games, gear &amp; codes...</span>
+            <span className="mobile-search-pill">Search</span>
+          </button>
           <Link href="/" onClick={() => setMobileNav(false)}>Home</Link>
           <Link href="/accessories" onClick={() => setMobileNav(false)}>Accessories</Link>
           <Link href="/games" onClick={() => setMobileNav(false)}>Games</Link>
