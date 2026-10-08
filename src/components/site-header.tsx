@@ -81,10 +81,6 @@ export function SiteHeader({
             Games
           </Link>
 
-          <Link href="/#categories" className="nav-link">
-            Categories
-          </Link>
-
           <Link
             href="/top-up"
             className={`nav-link ${pathname.startsWith('/top-up') ? 'nav-link-active' : ''}`}
@@ -178,7 +174,6 @@ export function SiteHeader({
           <Link href="/" onClick={() => setMobileNav(false)}>Home</Link>
           <Link href="/accessories" onClick={() => setMobileNav(false)}>Accessories</Link>
           <Link href="/games" onClick={() => setMobileNav(false)}>Games</Link>
-          <Link href="/#categories" onClick={() => setMobileNav(false)}>Categories</Link>
           <Link href="/top-up" onClick={() => setMobileNav(false)}>Top-up</Link>
           <Link href="/gift-cards" onClick={() => setMobileNav(false)}>Gift cards</Link>
         </div>

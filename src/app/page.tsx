@@ -26,6 +26,7 @@ import {
 import type { Product } from '@/lib/products';
 import { ProductCard as StandardProductCard } from '@/components/product-card';
 import { useSearch } from '@/components/search-modal';
+import { normalizeProductImageUrl } from '@/lib/utils';
 
 type StagePose = {
   x: number;
@@ -474,9 +475,6 @@ function Header({
           <Link href="/games" className="nav-dropdown-link" data-testid="link-games">
             Games
           </Link>
-          <a href="#categories" className="nav-dropdown-link" data-testid="link-categories">
-            Categories
-          </a>
           <Link href="/top-up" className="nav-dropdown-link" data-testid="link-top-up">
             Top-up
           </Link>
@@ -560,14 +558,6 @@ function Header({
           >
             PS5 Games Catalog
           </Link>
-          <a
-            href="#categories"
-            onClick={() => setMobileNav(false)}
-            className="block border-b border-[hsl(var(--border))] py-3 font-mono-ui text-xs uppercase tracking-[.12em]"
-            data-testid="link-mobile-categories"
-          >
-            Categories
-          </a>
           <Link
             href="/top-up"
             onClick={() => setMobileNav(false)}
@@ -600,7 +590,7 @@ function MobileBottomNav({
   onScrollTo: (id: string) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState<'home' | 'search' | 'categories' | 'cart' | 'menu'>('home');
+  const [active, setActive] = useState<'home' | 'search' | 'games' | 'cart' | 'menu'>('home');
   const { openSearch } = useSearch();
 
   const handleHome = () => { setActive('home'); onScrollTo('top'); setMenuOpen(false); };
@@ -609,7 +599,6 @@ function MobileBottomNav({
     setMenuOpen(false);
     openSearch();
   };
-  const handleCategories = () => { setActive('categories'); onScrollTo('categories'); setMenuOpen(false); };
   const handleCart = () => { setActive('cart'); onCart(); setMenuOpen(false); };
   const handleMenuToggle = () => {
     setActive(menuOpen ? active : 'menu');
@@ -716,19 +705,18 @@ function MobileBottomNav({
           <span className="mobile-bottom-nav__label">Search</span>
         </button>
 
-        {/* Categories */}
-        <button
-          type="button"
-          className={`mobile-bottom-nav__item${active === 'categories' ? ' active' : ''}`}
-          onClick={handleCategories}
-          aria-label="View categories"
-          data-testid="mobile-nav-categories"
+        {/* Games */}
+        <Link
+          href="/games"
+          className="mobile-bottom-nav__item"
+          aria-label="View games"
+          data-testid="mobile-nav-games"
         >
           <span className="mobile-bottom-nav__icon">
-            <Globe size={20} />
+            <Gamepad2 size={20} />
           </span>
-          <span className="mobile-bottom-nav__label">Categories</span>
-        </button>
+          <span className="mobile-bottom-nav__label">Games</span>
+        </Link>
 
         {/* Cart */}
         <button
@@ -862,7 +850,7 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
         wash: r.type === 'game' ? 'hsl(272 90% 68% / .32)' : 'hsl(285 85% 72% / .32)',
         badge: r.featured ? 'FEATURED DROP' : undefined,
         spec: r.platform || '',
-        coverImage: r.imageUrl || (r.type === 'game' ? '/astro-bot.jpg' : '/dualsense-edge.jpg'),
+        coverImage: normalizeProductImageUrl(r.imageUrl, r.type),
         rating: r.rating || 4.9,
         reviewsCount: r.reviewCount || 100,
         inStock: (r.stockQuantity ?? 0) > 0,

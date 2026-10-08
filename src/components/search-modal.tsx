@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Search, X, ShoppingBag, ArrowRight, Sparkles, Gamepad2, Zap, Check, CornerDownLeft } from 'lucide-react';
 import { ALL_PRODUCTS, formatTaka, type Product } from '@/lib/products';
 import { useCart } from '@/components/cart-context';
+import { normalizeProductImageUrl } from '@/lib/utils';
 
 type SearchContextType = {
   isOpen: boolean;
@@ -106,7 +107,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
                 wash: r.type === 'game' ? 'hsl(272 90% 68% / .32)' : 'hsl(285 85% 72% / .32)',
                 badge: r.featured ? 'FEATURED DROP' : undefined,
                 spec: r.platform || '',
-                coverImage: r.imageUrl || (r.type === 'game' ? '/astro-bot.jpg' : '/dualsense-edge.jpg'),
+                coverImage: normalizeProductImageUrl(r.imageUrl, r.type),
                 rating: r.rating || 4.9,
                 reviewsCount: r.reviewCount || 100,
                 inStock: r._totalStock > 0,

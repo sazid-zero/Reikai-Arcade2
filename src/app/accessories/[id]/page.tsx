@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getActiveProductBySlug, groupProductRows, getActiveCatalog } from '@/lib/catalog'
+import { getActiveProductBySlug, groupProductRows, getActiveCatalog, normalizeProductImageUrl } from '@/lib/catalog'
 import { AccessoryDetailClient } from './accessory-detail-client'
 
 type Props = { params: Promise<{ id: string }> }
@@ -22,14 +22,14 @@ export default async function AccessoryDetailPage({ params }: Props) {
         id: row.id,
         slug: row.slug,
         name: row.name,
-        imageUrl: row.imageUrl,
+        imageUrl: normalizeProductImageUrl(row.imageUrl, 'accessory'),
         brand: row.brand,
         category: row.category,
         price: row.price,
       })
     }
   }
-  const relatedAccessories = Array.from(relatedMap.values()).slice(0, 4)
+  const relatedAccessories = Array.from(relatedMap.values()).slice(0, 6)
 
   return (
     <AccessoryDetailClient

@@ -1,4 +1,4 @@
-import { getActiveCatalog } from '@/lib/catalog'
+import { getActiveCatalog, normalizeProductImageUrl } from '@/lib/catalog'
 import AccessoriesPageClient from './accessories-client'
 
 export default async function AccessoriesPage() {
@@ -45,8 +45,8 @@ export default async function AccessoriesPage() {
         brand: row.brand,
         platform: row.platform,
         category: row.category,
-        imageUrl: row.imageUrl,
-        galleryImages: (row.galleryImages as string[] | null) ?? [],
+        imageUrl: normalizeProductImageUrl(row.imageUrl, row.type),
+        galleryImages: ((row.galleryImages as string[] | null) ?? []).map((img) => normalizeProductImageUrl(img, row.type)),
         tags: (row.tags as string[] | null) ?? [],
         features: (row.features as string[] | null) ?? [],
         specs: (row.specs as Record<string, string> | null) ?? {},

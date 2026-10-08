@@ -72,12 +72,19 @@ export async function getActiveProductBySlug(slug: string) {
   }
 }
 
+import { normalizeProductImageUrl } from '@/lib/utils'
+export { normalizeProductImageUrl }
+
 // Helper to group flat join rows into a single product with variants array
-export function groupProductRows<T extends { id: string; variantId: string | null; variantTitle: string | null; sku: string | null; price: number | null; compareAtPrice: number | null; stockQuantity: number | null }>(rows: T[]) {
+export function groupProductRows<T extends { id: string; type: string; imageUrl: string | null; galleryImages: any; variantId: string | null; variantTitle: string | null; sku: string | null; price: number | null; compareAtPrice: number | null; stockQuantity: number | null }>(rows: T[]) {
   if (rows.length === 0) return null
   const { variantId, variantTitle, sku, price, compareAtPrice, stockQuantity, ...base } = rows[0]
   const product = {
     ...base,
+    imageUrl: normalizeProductImageUrl(base.imageUrl, base.type),
+    galleryImages: Array.isArray(base.galleryImages)
+      ? base.galleryImages.map((img: string) => normalizeProductImageUrl(img, base.type))
+      : [],
     variants: [] as Array<{ id: string; title: string | null; sku: string | null; price: number; compareAtPrice: number | null; stockQuantity: number }>,
   }
   for (const row of rows) {

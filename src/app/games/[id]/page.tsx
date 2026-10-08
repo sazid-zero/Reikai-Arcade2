@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
-import { getActiveProductBySlug, groupProductRows } from '@/lib/catalog'
+import { getActiveProductBySlug, groupProductRows, getActiveCatalog, normalizeProductImageUrl } from '@/lib/catalog'
 import { GameDetailClient } from './game-detail-client'
-import { getActiveCatalog } from '@/lib/catalog'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -24,14 +23,14 @@ export default async function GameDetailPage({ params }: Props) {
         id: row.id,
         slug: row.slug,
         name: row.name,
-        imageUrl: row.imageUrl,
+        imageUrl: normalizeProductImageUrl(row.imageUrl, 'game'),
         category: row.category,
         platform: row.platform,
         price: row.price,
       })
     }
   }
-  const relatedGames = Array.from(relatedMap.values()).slice(0, 4)
+  const relatedGames = Array.from(relatedMap.values()).slice(0, 6)
 
   return (
     <GameDetailClient
