@@ -15,9 +15,13 @@ export function SiteFooter() {
               className="wordmark border-0 bg-transparent p-0 cursor-pointer flex items-center gap-2.5"
               data-testid="button-footer-home"
             >
-              <Gamepad2 size={24} className="text-[#a855f7]" />
-              <span className="wordmark-text">
-                REIKAI <span className="wordmark-highlight">ARCADE</span>
+              <img
+                src="/logo.jpeg"
+                alt="Reikai Arcade"
+                className="w-8 h-8 rounded-lg object-cover border border-[#00f0ff]/40 shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-transform duration-300 hover:scale-110"
+              />
+              <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
+                REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
               </span>
             </Link>
             <p className="footer-blurb">
@@ -37,6 +41,15 @@ export function SiteFooter() {
               <Link href="/games">PS5 Games Catalog</Link>
               <Link href="/#browse">All Drops</Link>
               <Link href="/admin">Admin Control Room</Link>
+            </div>
+
+            <div>
+              <h3>Digital Store</h3>
+              <Link href="/top-up">Game Top-Up</Link>
+              <Link href="/gift-cards">Gift Cards</Link>
+              <Link href="/subscriptions">Subscriptions</Link>
+              <Link href="/subscriptions">PS Plus / Game Pass</Link>
+              <Link href="/top-up">Valorant / PUBG Top-Up</Link>
             </div>
 
             <div>

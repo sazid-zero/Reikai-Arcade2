@@ -1,0 +1,10 @@
+{
+  "videoUrl": "/tutorial-sample.mp4",
+  "posterUrl": "/cat-panel-ps5.jpg",
+  "title": "PLAY YOUR WAY",
+  "kicker": "01 // TUTORIAL GUIDE",
+  "tagline": "WATCH OUR STEP-BY-STEP ORDERING & REDEMPTION WALKTHROUGH.",
+  "autoPlay": true,
+  "loop": true,
+  "muted": true
+}

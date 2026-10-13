@@ -1,0 +1,134 @@
+'use client'
+
+import React, { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { LogOut, Shield, User, ChevronDown, Key } from 'lucide-react'
+
+export interface AuthUser {
+  id: string
+  email: string
+  name: string
+  role: string
+}
+
+export function UserAuthButton() {
+  const router = useRouter()
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.user) {
+          setUser(data.user)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/sign-out', { method: 'POST' })
+      setUser(null)
+      setDropdownOpen(false)
+      router.refresh()
+    } catch (e) {
+      console.error('Logout error:', e)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="h-8 w-20 animate-pulse rounded-full bg-white/5" />
+    )
+  }
+
+  if (!user) {
+    return (
+      <Link
+        href="/sign-in"
+        className="header-signin-btn inline-flex items-center gap-2 rounded-full border border-[#00f0ff]/40 bg-[#00f0ff]/10 px-3.5 py-1.5 font-['DM_Mono'] text-xs font-bold text-white transition-all duration-200 hover:border-[#00f0ff] hover:bg-[#00f0ff]/20 hover:shadow-[0_0_18px_rgba(0,240,255,0.4)] active:scale-95"
+        data-testid="header-sign-in"
+      >
+        <User size={13} className="text-[#00f0ff]" />
+        <span>SIGN IN</span>
+      </Link>
+    )
+  }
+
+  const initials = (user.name || user.email || 'A').slice(0, 2).toUpperCase()
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        type="button"
+        onClick={() => setDropdownOpen((prev) => !prev)}
+        className="flex items-center gap-2 rounded-full border border-[#00f0ff]/50 bg-black/40 p-1 pr-2.5 transition-all hover:border-[#00f0ff] hover:shadow-[0_0_20px_rgba(0,240,255,0.35)]"
+        aria-label="User profile menu"
+        data-testid="header-user-profile"
+      >
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#a855f7] to-[#00f0ff] text-[11px] font-black text-white shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+          {initials}
+        </div>
+        <span className="hidden sm:inline font-['DM_Mono'] text-[11px] font-bold text-zinc-200">
+          {user.name || 'Admin'}
+        </span>
+        <ChevronDown size={12} className="text-[#00f0ff]" />
+      </button>
+
+      {dropdownOpen && (
+        <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+          <div className="border-b border-white/10 px-3 py-2.5">
+            <p className="text-xs font-bold text-white truncate">{user.name || 'Admin'}</p>
+            <p className="font-mono text-[10px] text-zinc-400 truncate">{user.email}</p>
+          </div>
+
+          <div className="py-1">
+            <Link
+              href="/admin"
+              onClick={() => setDropdownOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-[#a855f7]/15 hover:text-[#00f0ff] transition"
+            >
+              <Shield size={14} className="text-[#00f0ff]" />
+              <span>Admin Control Room</span>
+            </Link>
+            <Link
+              href="/admin/orders"
+              onClick={() => setDropdownOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-[#a855f7]/15 hover:text-[#00f0ff] transition"
+            >
+              <Key size={14} className="text-[#00f0ff]" />
+              <span>Manage Orders</span>
+            </Link>
+          </div>
+
+          <div className="border-t border-white/10 pt-1">
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-rose-300 hover:bg-rose-500/10 hover:text-rose-200 transition"
+            >
+              <LogOut size={14} />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

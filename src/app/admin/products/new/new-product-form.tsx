@@ -13,7 +13,7 @@ export function NewProductForm() {
 
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
-  const [type, setType] = useState<'game' | 'accessory'>('game')
+  const [type, setType] = useState<'game' | 'accessory' | 'topup' | 'giftcard' | 'subscription'>('game')
   const [status, setStatus] = useState<'draft' | 'active'>('draft')
   const [brand, setBrand] = useState('')
   const [platform, setPlatform] = useState('')
@@ -103,11 +103,14 @@ export function NewProductForm() {
           <select
             name="type"
             value={type}
-            onChange={(e) => setType(e.target.value as 'game' | 'accessory')}
+            onChange={(e) => setType(e.target.value as 'game' | 'accessory' | 'topup' | 'giftcard' | 'subscription')}
             className={inputCls}
           >
             <option value="game">Game</option>
             <option value="accessory">Accessory</option>
+            <option value="topup">Game Top-Up</option>
+            <option value="giftcard">Gift Card</option>
+            <option value="subscription">Subscription</option>
           </select>
         </label>
 

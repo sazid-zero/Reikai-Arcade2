@@ -1,11 +1,10 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { auth } from '@lib/auth'
+import { getAdminSession } from '@lib/admin-auth'
 import { NewProductForm } from './new-product-form'
 
 export default async function NewProductPage() {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   return (

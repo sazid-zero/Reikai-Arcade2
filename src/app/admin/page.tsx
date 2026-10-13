@@ -1,12 +1,11 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { Package, Store, ShieldCheck, ShoppingCart, TrendingUp, Users, Layers, AlertCircle } from 'lucide-react'
-import { auth } from '@lib/auth'
-import { getAdminCatalog, getAdminMetrics, getAdminOrders } from './actions'
+import { Package, Store, ShieldCheck, ShoppingCart, TrendingUp, Users, Layers, AlertCircle, Key, LogOut, Video, Crown } from 'lucide-react'
+import { getAdminSession } from '@lib/admin-auth'
+import { getAdminCatalog, getAdminMetrics, getAdminOrders, logoutAdminAction } from './actions'
 
 export default async function AdminPage() {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   const [catalog, metrics, recentOrders] = await Promise.all([
@@ -25,10 +24,10 @@ export default async function AdminPage() {
   const statCards = [
     { label: 'Total Products', value: catalog.length, icon: Package, href: '/admin/products', color: 'text-violet-400' },
     { label: 'Live Products', value: active, icon: Store, href: '/admin/products', color: 'text-emerald-400' },
-    { label: 'Games', value: games, icon: Layers, href: '/admin/products?type=game', color: 'text-blue-400' },
-    { label: 'Accessories', value: accessories, icon: ShieldCheck, href: '/admin/products?type=accessory', color: 'text-amber-400' },
-    { label: 'Total Orders', value: recentOrders.length, icon: ShoppingCart, href: '/admin/orders', color: 'text-pink-400' },
-    { label: 'Pending Orders', value: pendingOrders, icon: AlertCircle, href: '/admin/orders', color: 'text-orange-400' },
+    { label: 'Games', value: games, icon: Layers, href: '/admin/products?type=game', color: 'text-primary' },
+    { label: 'Accessories', value: accessories, icon: ShieldCheck, href: '/admin/products?type=accessory', color: 'text-pink-400' },
+    { label: 'Total Orders', value: recentOrders.length, icon: ShoppingCart, href: '/admin/orders', color: 'text-fuchsia-400' },
+    { label: 'Pending Orders', value: pendingOrders, icon: AlertCircle, href: '/admin/orders', color: 'text-amber-400' },
   ]
 
   return (
@@ -36,14 +35,37 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <header className="flex flex-col justify-between gap-5 border-b border-white/10 pb-8 md:flex-row md:items-end">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary">ReiKai Control Room</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">Admin Dashboard</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Signed in as <span className="text-foreground">{session.user.email}</span></p>
+          <div className="flex items-center gap-4">
+            <img
+              src="/logo.jpeg"
+              alt="ReiKai Arcade"
+              className="w-14 h-14 rounded-2xl object-cover border border-[#00f0ff]/40 shadow-[0_0_20px_rgba(0,240,255,0.35)] shrink-0"
+            />
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#00f0ff]">ReiKai Control Room</p>
+              <h1 className="mt-1 text-3xl font-black tracking-tight md:text-4xl text-white">
+                Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-[#00f0ff]">Dashboard</span>
+              </h1>
+              <p className="mt-1 text-xs text-muted-foreground">Signed in as <span className="text-foreground">{session.user.email}</span></p>
+            </div>
           </div>
-          <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-primary-foreground hover:opacity-90 transition-opacity">
-            + New Product
-          </Link>
+          <div className="flex items-center gap-3">
+            <form action={async () => {
+              'use server'
+              await logoutAdminAction()
+              redirect('/sign-in')
+            }}>
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition"
+              >
+                <LogOut className="h-4 w-4" /> Sign Out
+              </button>
+            </form>
+            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-5 py-3 font-extrabold text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all">
+              + New Product
+            </Link>
+          </div>
         </header>
 
         {/* Stats Grid */}
@@ -92,6 +114,9 @@ export default async function AdminPage() {
             <h2 className="text-xl font-bold">Quick Actions</h2>
             {[
               { href: '/admin/products', label: 'Manage Products', desc: `${catalog.length} total`, icon: Package },
+              { href: '/admin/subscriptions', label: 'Subscriptions', desc: 'PS Plus, Game Pass & more', icon: Crown },
+              { href: '/admin/tutorial-video', label: 'Tutorial Video', desc: 'Homepage video player & uploads', icon: Video },
+              { href: '/admin/digital-codes', label: 'Digital Codes Vault', desc: 'Keys & Instant Delivery', icon: Key },
               { href: '/admin/inventory', label: 'Inventory', desc: 'Stock levels', icon: Layers },
               { href: '/admin/orders', label: 'Orders', desc: `${recentOrders.length} total`, icon: ShoppingCart },
               { href: '/admin/users', label: 'Admin Users', desc: 'Manage access', icon: Users },
@@ -136,7 +161,7 @@ export default async function AdminPage() {
                       <td className="py-3">{order.customerEmail ?? 'Guest'}</td>
                       <td className="py-3 font-semibold">৳{order.total.toLocaleString()}</td>
                       <td className="py-3">
-                        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${order.status === 'delivered' ? 'bg-emerald-500/15 text-emerald-400' : order.status === 'cancelled' ? 'bg-red-500/15 text-red-400' : order.status === 'shipped' ? 'bg-blue-500/15 text-blue-400' : 'bg-amber-500/15 text-amber-400'}`}>
+                        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${order.status === 'delivered' ? 'bg-emerald-500/15 text-emerald-400' : order.status === 'cancelled' ? 'bg-red-500/15 text-red-400' : order.status === 'shipped' ? 'bg-violet-500/15 text-violet-400' : 'bg-fuchsia-500/15 text-fuchsia-400'}`}>
                           {order.status}
                         </span>
                       </td>

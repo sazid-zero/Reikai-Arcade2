@@ -10,9 +10,13 @@ const ALLOWED_MIME_TYPES = new Set([
   'image/gif',
   'image/avif',
   'image/svg+xml',
+  'video/mp4',
+  'video/webm',
+  'video/quicktime',
+  'video/ogg',
 ])
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +29,7 @@ export async function POST(request: Request) {
 
     if (!ALLOWED_MIME_TYPES.has(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only JPEG, PNG, WebP, GIF, AVIF, and SVG are allowed.' },
+        { error: 'Invalid file type. Only JPEG, PNG, WebP, GIF, AVIF, SVG, and MP4/WebM/MOV videos are allowed.' },
         { status: 400 }
       )
     }

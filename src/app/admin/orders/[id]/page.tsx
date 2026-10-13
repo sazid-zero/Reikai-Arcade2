@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { auth } from '@lib/auth'
+import { Key } from 'lucide-react'
+import { getAdminSession } from '@lib/admin-auth'
 import { getAdminOrder } from '../../actions'
 import { OrderManagePanel } from './order-manage-panel'
 
@@ -17,12 +17,17 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export default async function OrderDetailPage({ params }: Props) {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   const { id } = await params
   const order = await getAdminOrder(id)
   if (!order) notFound()
+
+  const deliveredCodes = order.codes || []
+  const hasDigitalItems = order.items.some(
+    (item) => item.sku?.startsWith('TOPUP-') || item.sku?.startsWith('GIFT-') || Boolean(item.variantId)
+  )
 
   return (
     <main className="site-shell min-h-screen px-5 py-8 md:px-10">
@@ -49,6 +54,50 @@ export default async function OrderDetailPage({ params }: Props) {
                 {order.status}
               </span>
             </div>
+
+            {/* Delivered Digital Codes */}
+            {deliveredCodes.length > 0 && (
+              <section className="rounded-2xl border border-primary/30 bg-primary/5 p-5 shadow-[0_0_30px_rgba(168,85,247,0.1)]">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="font-bold flex items-center gap-2 text-primary">
+                    <Key className="h-4 w-4" /> Delivered Digital Codes ({deliveredCodes.length})
+                  </h2>
+                  <span className="text-xs font-mono uppercase bg-emerald-500/15 text-emerald-400 px-2.5 py-0.5 rounded-full font-semibold">
+                    Fulfilled
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {deliveredCodes.map((codeItem) => (
+                    <div
+                      key={codeItem.id}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-white/10 bg-black/40 p-4"
+                    >
+                      <div>
+                        <span className="text-xs text-muted-foreground block">{codeItem.variantTitle}</span>
+                        <span className="font-mono text-lg font-bold text-white tracking-widest selection:bg-primary">
+                          {codeItem.code}
+                        </span>
+                        {codeItem.pin && (
+                          <span className="text-xs font-mono text-muted-foreground ml-3">
+                            PIN: {codeItem.pin}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-muted-foreground font-mono">
+                        {codeItem.deliveredAt
+                          ? new Date(codeItem.deliveredAt).toLocaleDateString('en-GB', {
+                              day: '2-digit',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })
+                          : ''}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Customer Info */}
             <section className="rounded-2xl border border-white/10 bg-black/20 p-5">
@@ -119,6 +168,8 @@ export default async function OrderDetailPage({ params }: Props) {
               currentFulfillmentStatus={order.fulfillmentStatus}
               adminNotes={order.adminNotes}
               trackingNumber={order.trackingNumber}
+              hasDigitalItems={hasDigitalItems}
+              deliveredCodesCount={deliveredCodes.length}
             />
           </div>
         </div>

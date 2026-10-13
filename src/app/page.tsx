@@ -9,9 +9,16 @@ import {
   ArrowDownRight,
   ArrowRight,
   ChevronDown,
+  ChevronRight,
+  CreditCard,
+  Crown,
   Gamepad2,
   Gem,
+  Gift,
   Globe,
+  Headphones,
+  Heart,
+  Layers,
   Menu,
   Minus,
   Plus,
@@ -27,9 +34,12 @@ import type { Product } from '@/lib/products';
 import { ProductCard as StandardProductCard } from '@/components/product-card';
 import { useSearch } from '@/components/search-modal';
 import { normalizeProductImageUrl } from '@/lib/utils';
+import { TutorialVideoPlayer } from '@/components/tutorial-video-player';
+import { UserAuthButton } from '@/components/user-auth-button';
 
 type StagePose = {
   x: number;
+  y?: number;
   scale: number;
   theta: number;
   phi: number;
@@ -42,7 +52,7 @@ type StagePose = {
 // Theta accumulates +360° per transition = guaranteed full-spin between every section.
 // Effective view angle = theta % 360:
 //   180° = front face (top-down look),  90° = left side,  270° = right side,  0° = back
-const heroPose: StagePose = { x: 0, scale: 1.05, theta: 184, phi: 43, radius: 1.95, roll: -7 }; // Asymmetrical tilt: left corner up, right corner down
+const heroPose: StagePose = { x: 0, y: 0, scale: 1.10, theta: 184, phi: 43, radius: 1.95, roll: -7 }; // Centered initial pose
 
 const products: Product[] = [
   // ── GAMES ──────────────────────────────────
@@ -282,7 +292,7 @@ const products: Product[] = [
     name: 'PlayStation® Store Wallet / $100 Card',
     type: 'top-ups',
     category: 'top-ups',
-    subCategory: 'Digital Top-ups',
+    subCategory: 'Gift Cards',
     label: 'Digital top-up',
     price: 11800,
     glyph: '$100',
@@ -298,14 +308,119 @@ const products: Product[] = [
     features: ['Instant Digital Delivery', 'Safe & Encrypted Code', 'Use for Games & DLC'],
     specs: [{ label: 'Region', value: 'Global / US PSN' }],
   },
+  {
+    id: 'ps-plus-deluxe',
+    name: 'PlayStation® Plus Deluxe – 12 Month',
+    type: 'top-ups',
+    category: 'top-ups',
+    subCategory: 'Subscriptions',
+    label: 'Annual Subscription',
+    price: 13500,
+    glyph: 'PS+',
+    wash: 'hsl(260 90% 70% / .32)',
+    badge: 'FLAGSHIP PASS',
+    spec: 'Game Catalog · Classic Games · Cloud Streaming',
+    coverImage: '/covers/wallet-50.jpg',
+    rating: 4.97,
+    reviewsCount: 3410,
+    inStock: true,
+    shortDesc: 'Hundreds of incredible games, game trials, and online multiplayer access on PS5 & PS4.',
+    fullDesc: 'Enjoy all the PlayStation Plus benefits from the Extra and Essential plans, plus game trials and the Classics Catalog with hundreds of classic games.',
+    features: ['Hundreds of PS5/PS4 Games', 'Time-Limited Game Trials', 'Online Multiplayer & Cloud Saves'],
+    specs: [{ label: 'Duration', value: '12 Months' }],
+  },
+  {
+    id: 'xbox-game-pass',
+    name: 'Xbox Game Pass Ultimate – 3 Months',
+    type: 'top-ups',
+    category: 'top-ups',
+    subCategory: 'Subscriptions',
+    label: 'Gaming Pass',
+    price: 5200,
+    glyph: 'XGPU',
+    wash: 'hsl(142 70% 50% / .3)',
+    badge: 'DAY ONE GAMES',
+    spec: 'Day One Releases · EA Play Included',
+    coverImage: '/covers/wallet-50.jpg',
+    rating: 4.95,
+    reviewsCount: 2890,
+    inStock: true,
+    shortDesc: 'Play hundreds of high-quality games on console, PC, and cloud with Xbox Game Pass Ultimate.',
+    fullDesc: 'Includes day one new titles, EA Play membership, online multiplayer, and member discounts.',
+    features: ['Day 1 Release Access', 'EA Play Membership Included', 'Cloud Gaming on Any Device'],
+    specs: [{ label: 'Duration', value: '3 Months' }],
+  },
+  {
+    id: 'valorant-points-2050',
+    name: 'Valorant 2,050 Riot Points',
+    type: 'top-ups',
+    category: 'top-ups',
+    subCategory: 'Game Top-Up',
+    label: 'Instant Top-Up',
+    price: 2450,
+    glyph: 'VAL',
+    wash: 'hsl(350 85% 65% / .3)',
+    badge: 'POPULAR DROP',
+    spec: 'Direct Riot ID Credit · Instant Delivery',
+    coverImage: '/covers/wallet-50.jpg',
+    rating: 4.94,
+    reviewsCount: 7600,
+    inStock: true,
+    shortDesc: 'Instant Valorant Riot Points credited directly to your Riot account ID for skins and battle passes.',
+    fullDesc: 'Upgrade your weapon skins, unlock new agent tiers, and level up your current battle pass with official VP.',
+    features: ['Direct Riot ID Credit', 'Instant Automatic Delivery', 'Safe & Ban-Free'],
+    specs: [{ label: 'Delivery', value: 'Instant via Player ID' }],
+  },
+  {
+    id: 'pubg-uc-660',
+    name: 'PUBG Mobile 660 Unknown Cash (UC)',
+    type: 'top-ups',
+    category: 'top-ups',
+    subCategory: 'Game Top-Up',
+    label: 'Instant Top-Up',
+    price: 1150,
+    glyph: 'UC',
+    wash: 'hsl(45 95% 55% / .3)',
+    badge: 'ROYALE PASS',
+    spec: 'Player ID Direct Top-Up · 60s Delivery',
+    coverImage: '/covers/wallet-50.jpg',
+    rating: 4.96,
+    reviewsCount: 8900,
+    inStock: true,
+    shortDesc: 'Get 660 UC to unlock the Royale Pass and premium crates in PUBG Mobile instantly.',
+    fullDesc: 'Official PUBG Mobile UC delivered in seconds via your numeric Player ID.',
+    features: ['Instant Delivery', 'Unlock Royale Pass', 'Official Midasbuy Partner Code'],
+    specs: [{ label: 'Delivery', value: 'Player ID Instant' }],
+  },
+  {
+    id: 'steam-wallet-50',
+    name: 'Steam Wallet $50 Global Digital Code',
+    type: 'top-ups',
+    category: 'top-ups',
+    subCategory: 'Gift Cards',
+    label: 'Digital Code',
+    price: 6100,
+    glyph: 'STEAM',
+    wash: 'hsl(215 80% 60% / .3)',
+    badge: 'NO EXPIRY',
+    spec: 'Global Region · Instant Digital Redeem Code',
+    coverImage: '/covers/wallet-50.jpg',
+    rating: 4.99,
+    reviewsCount: 6150,
+    inStock: true,
+    shortDesc: 'Add $50 USD to your Steam balance for purchasing games, DLC, and community items.',
+    fullDesc: 'Redeem immediately on Steam client or browser without fees or credit cards.',
+    features: ['100% Genuine Code', 'No Expiration Date', 'Global Compatibility'],
+    specs: [{ label: 'Region', value: 'Global' }],
+  },
 ];
 
 const filterLabels: { id: 'all' | Product['type']; label: string }[] = [
-  { id: 'all', label: 'All drops' },
-  { id: 'consoles', label: 'Consoles' },
+  { id: 'all', label: 'All Vault' },
   { id: 'games', label: 'Games' },
-  { id: 'gear', label: 'Gear' },
-  { id: 'top-ups', label: 'Top-ups' },
+  { id: 'gear', label: 'Accessories' },
+  { id: 'top-ups', label: 'Top-Ups & Subs' },
+  { id: 'consoles', label: 'Consoles' },
 ];
 
 function supportsWebGL() {
@@ -332,16 +447,16 @@ function scrollToId(id: string, lenis?: ReturnType<typeof useLenis>) {
 function ModelStage({
   orbit,
   modelScale,
-  parallax,
   stageX,
+  stageY = 0,
   roll,
   reducedMotion,
   opacity = 1,
 }: {
   orbit: string;
   modelScale: number;
-  parallax: number;
   stageX: number;
+  stageY?: number;
   roll: number;
   reducedMotion: boolean;
   opacity?: number;
@@ -352,21 +467,12 @@ function ModelStage({
   const [failed, setFailed] = useState(false);
   const modelRef = useRef<HTMLElement | null>(null);
 
-  // Effect 1: detect WebGL support only — no DOM interaction here.
-  // Splitting from the mount effect is critical: this sets webglSupported=true which
-  // triggers a re-render that puts the model-host div in the DOM. The second effect
-  // then runs after that re-render, so hostRef.current is guaranteed to be non-null.
   useEffect(() => {
     const supported = supportsWebGL();
     setWebglSupported(supported);
     if (!supported) setReady(true);
   }, []);
 
-  // Effect 2: mount model-viewer — only runs when webglSupported is true, which means
-  // the model-host div is already rendered and hostRef.current is populated.
-  // This fixes the "model missing after client-side navigation" bug where
-  // customElements.get('model-viewer') returned immediately (no async delay),
-  // causing mount() to run before the host div existed in the DOM.
   useEffect(() => {
     if (!webglSupported) return;
 
@@ -376,14 +482,17 @@ function ModelStage({
       try {
         const model = document.createElement('model-viewer');
         model.setAttribute('src', '/ps5.glb');
-        model.setAttribute('alt', 'A white PlayStation 5 DualSense controller facing forward');
+        model.setAttribute('alt', 'PlayStation 5 DualSense wireless controller');
         model.setAttribute('camera-controls', '');
         model.setAttribute('disable-zoom', '');
         model.setAttribute('interaction-prompt', 'none');
-        model.setAttribute('shadow-intensity', '1.1');
-        model.setAttribute('exposure', '1.05');
+        model.setAttribute('shadow-intensity', '1.4');
+        model.setAttribute('shadow-softness', '0.7');
+        model.setAttribute('exposure', '1.15');
         model.setAttribute('camera-orbit', orbit);
         model.setAttribute('interpolation-decay', '0');
+        model.setAttribute('loading', 'eager');
+        model.setAttribute('reveal', 'auto');
         model.addEventListener('load', () => active && setReady(true));
         model.addEventListener('error', () => active && setFailed(true));
         hostRef.current.appendChild(model);
@@ -395,9 +504,6 @@ function ModelStage({
 
     const existing = customElements.get('model-viewer');
     if (existing) {
-      // Custom element already registered (e.g. returning from another page):
-      // mount() is safe to call immediately because this effect runs after the
-      // re-render triggered by webglSupported=true, so hostRef.current is set.
       mount();
     } else {
       const script = document.createElement('script');
@@ -413,25 +519,25 @@ function ModelStage({
       modelRef.current = null;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webglSupported]); // intentionally omit `orbit` — camera-orbit updates are handled below
+  }, [webglSupported]);
 
   useEffect(() => {
     if (modelRef.current) modelRef.current.setAttribute('camera-orbit', orbit);
   }, [orbit]);
 
   const dockStyle = {
-    '--parallax': `${reducedMotion ? 0 : parallax}px`,
     '--model-scale': `${modelScale}`,
     '--stage-x': `${stageX}vw`,
+    '--stage-y': `${stageY}px`,
     '--model-roll': `${reducedMotion ? 0 : roll}deg`,
     opacity,
     pointerEvents: opacity < 0.05 ? 'none' : undefined,
     visibility: opacity < 0.01 ? 'hidden' : 'visible',
-    transition: 'opacity 0.25s ease-out, transform 0.45s ease-out',
+    transition: 'opacity 0.25s ease-out',
   } as CSSProperties;
 
   return (
-    <div className="model-dock" style={dockStyle} aria-label="Interactive PS5 controller model">
+    <div className="hero-model-stage" style={dockStyle} aria-label="Interactive PS5 DualSense Controller 3D Model">
       {webglSupported && (
         <div
           ref={hostRef}
@@ -439,7 +545,6 @@ function ModelStage({
           style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}
         />
       )}
-
     </div>
   );
 }
@@ -447,11 +552,14 @@ function ModelStage({
 function Header({
   cartCount,
   onCart,
+  onStageJump,
 }: {
   cartCount: number;
   onCart: () => void;
+  onStageJump?: (index: number) => void;
 }) {
   const [mobileNav, setMobileNav] = useState(false);
+  const [categoriesDropdown, setCategoriesDropdown] = useState(false);
   const { openSearch } = useSearch();
 
   return (
@@ -459,30 +567,117 @@ function Header({
       <div className="header-inner">
         <button
           type="button"
-          className="wordmark border-0 bg-transparent p-0 cursor-pointer flex items-center gap-2.5"
-          onClick={() => scrollToId('top')}
+          className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-3 shrink-0"
+          onClick={() => {
+            if (onStageJump) onStageJump(0);
+            else scrollToId('top');
+          }}
           data-testid="button-home"
         >
-          <Gamepad2 size={24} className="text-[#a855f7]" />
-          <span className="wordmark-text">
-            REIKAI <span className="wordmark-highlight">ARCADE</span>
+          <img
+            src="/logo.jpeg"
+            alt="Reikai Arcade Logo"
+            className="header-logo-img"
+          />
+          <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
+            REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
           </span>
         </button>
-        <nav className="header-nav" aria-label="Main navigation">
-          <Link href="/accessories" className="nav-dropdown-link" data-testid="link-accessories">
-            Accessories
-          </Link>
-          <Link href="/games" className="nav-dropdown-link" data-testid="link-games">
-            Games
-          </Link>
-          <Link href="/top-up" className="nav-dropdown-link" data-testid="link-top-up">
-            Top-up
-          </Link>
-          <Link href="/gift-cards" className="nav-dropdown-link" data-testid="link-gift-cards">
-            Gift cards
-          </Link>
+
+        <nav className="header-nav flex items-center" aria-label="Main navigation">
+          {/* Categories Dropdown Menu */}
+          <div
+            className="nav-dropdown-wrapper relative"
+            onMouseEnter={() => setCategoriesDropdown(true)}
+            onMouseLeave={() => setCategoriesDropdown(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setCategoriesDropdown((prev) => !prev)}
+              className="nav-dropdown-link flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition"
+              data-testid="button-categories-dropdown"
+            >
+              <Layers size={13} className="text-[#00f0ff]" />
+              <span className="hidden xs:inline">Categories</span>
+              <ChevronDown size={12} className="nav-chevron text-zinc-400" />
+            </button>
+            {categoriesDropdown && (
+              <div className="nav-dropdown-menu absolute top-full left-0 mt-2 w-64 rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl z-50">
+                <Link
+                  href="/games"
+                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                  onClick={() => setCategoriesDropdown(false)}
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#00f0ff]">
+                    <Gamepad2 size={16} />
+                  </div>
+                  <div>
+                    <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">PS5 Games</strong>
+                    <span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/top-up"
+                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                  onClick={() => setCategoriesDropdown(false)}
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#00f0ff]">
+                    <Zap size={16} />
+                  </div>
+                  <div>
+                    <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Game Top-Up</strong>
+                    <span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/accessories"
+                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                  onClick={() => setCategoriesDropdown(false)}
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-[#00f0ff]">
+                    <Headphones size={16} />
+                  </div>
+                  <div>
+                    <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Accessories</strong>
+                    <span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/subscriptions"
+                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                  onClick={() => setCategoriesDropdown(false)}
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-[#00f0ff]">
+                    <Crown size={16} />
+                  </div>
+                  <div>
+                    <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Subscriptions</strong>
+                    <span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/gift-cards"
+                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                  onClick={() => setCategoriesDropdown(false)}
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-[#00f0ff]">
+                    <Gift size={16} />
+                  </div>
+                  <div>
+                    <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Gift Cards</strong>
+                    <span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span>
+                  </div>
+                </Link>
+              </div>
+            )}
+          </div>
         </nav>
-        <div className="header-actions">
+
+        <div className="header-actions flex items-center gap-1.5 sm:gap-2">
           {/* Desktop Search Bar */}
           <button
             type="button"
@@ -496,7 +691,7 @@ function Header({
             <kbd className="header-search-bar-kbd">⌘K</kbd>
           </button>
 
-          {/* Search icon button */}
+          {/* Mobile Search icon button */}
           <button
             type="button"
             className="header-icon-button md:hidden"
@@ -504,8 +699,20 @@ function Header({
             aria-label="Search products"
             data-testid="button-search"
           >
-            <Search size={16} />
+            <Search size={15} />
           </button>
+
+          {/* Wishlist Button */}
+          <Link
+            href="/wishlist"
+            className="header-icon-button"
+            aria-label="View saved wishlist"
+            data-testid="header-wishlist"
+          >
+            <Heart size={15} className="text-pink-400 hover:fill-pink-400/40 transition" />
+          </Link>
+
+          {/* Cart Button */}
           <button
             type="button"
             className="header-icon-button cart-pill-btn"
@@ -513,22 +720,16 @@ function Header({
             aria-label={`Open cart with ${cartCount} items`}
             data-testid="button-open-cart"
           >
-            <ShoppingBag size={16} />
+            <ShoppingBag size={15} />
             <span className="cart-count" data-testid="text-cart-count">{cartCount}</span>
           </button>
-          <button
-            type="button"
-            className="header-icon-button mobile-only md:hidden"
-            aria-label="Open navigation"
-            onClick={() => setMobileNav((open) => !open)}
-            data-testid="button-mobile-menu"
-          >
-            <Menu size={18} />
-          </button>
+
+          {/* User Profile Avatar or Sign In button */}
+          <UserAuthButton />
         </div>
       </div>
       {mobileNav && (
-        <div className="absolute left-0 right-0 top-full border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 md:hidden">
+        <div className="absolute left-0 right-0 top-full border-b border-[hsl(var(--border))] bg-[#0b0618]/95 backdrop-blur-xl p-5 md:hidden z-50">
           <button
             type="button"
             className="mobile-nav-search-btn mb-3 w-full"
@@ -538,42 +739,52 @@ function Header({
             }}
             data-testid="mobile-menu-search"
           >
-            <Search size={16} className="text-[#c084fc]" />
+            <Search size={16} className="text-[#00f0ff]" />
             <span>Search games, gear &amp; codes...</span>
             <span className="mobile-search-pill">Search</span>
           </button>
-          <Link
-            href="/accessories"
-            onClick={() => setMobileNav(false)}
-            className="block border-b border-[hsl(var(--border))] py-3 font-mono-ui text-xs uppercase tracking-[.12em]"
-            data-testid="link-mobile-accessories"
-          >
-            Accessories Vault
-          </Link>
-          <Link
-            href="/games"
-            onClick={() => setMobileNav(false)}
-            className="block border-b border-[hsl(var(--border))] py-3 font-mono-ui text-xs uppercase tracking-[.12em]"
-            data-testid="link-mobile-games"
-          >
-            PS5 Games Catalog
-          </Link>
-          <Link
-            href="/top-up"
-            onClick={() => setMobileNav(false)}
-            className="block border-b border-[hsl(var(--border))] py-3 font-mono-ui text-xs uppercase tracking-[.12em]"
-            data-testid="link-mobile-top-up"
-          >
-            Top-up
-          </Link>
-          <Link
-            href="/gift-cards"
-            onClick={() => setMobileNav(false)}
-            className="block py-3 font-mono-ui text-xs uppercase tracking-[.12em]"
-            data-testid="link-mobile-gift-cards"
-          >
-            Gift cards
-          </Link>
+          <div className="py-2 border-b border-[hsl(var(--border))]">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 font-bold block mb-2">Categories</span>
+            <Link
+              href="/games"
+              onClick={() => setMobileNav(false)}
+              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
+            >
+              <Gamepad2 size={14} className="text-purple-400" /> PS5 Games
+            </Link>
+            <Link
+              href="/top-up"
+              onClick={() => setMobileNav(false)}
+              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
+            >
+              <Zap size={14} className="text-[#00f0ff]" /> Game Top-Up
+            </Link>
+            <Link
+              href="/accessories"
+              onClick={() => setMobileNav(false)}
+              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
+            >
+              <Headphones size={14} className="text-pink-400" /> Accessories &amp; Gear
+            </Link>
+            <Link
+              href="/subscriptions"
+              onClick={() => setMobileNav(false)}
+              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
+            >
+              <Crown size={14} className="text-violet-400" /> Gaming Subscriptions
+            </Link>
+            <Link
+              href="/gift-cards"
+              onClick={() => setMobileNav(false)}
+              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
+            >
+              <Gift size={14} className="text-amber-400" /> Digital Gift Cards
+            </Link>
+          </div>
+          <div className="pt-3 flex justify-between items-center">
+            <span className="text-xs text-zinc-400 font-mono">Account</span>
+            <UserAuthButton />
+          </div>
         </div>
       )}
     </header>
@@ -756,98 +967,43 @@ function MobileBottomNav({
 
 
 function ProductCard({ product, onAdd }: { product: Product; onAdd: (product: Product) => void }) {
+  const rawType = (product as any).rawType;
   const detailHref =
-    product.type === 'games'
+    product.type === 'games' || rawType === 'game'
       ? `/games/${product.id}`
-      : product.type === 'gear'
+      : product.type === 'gear' || rawType === 'accessory'
       ? `/accessories/${product.id}`
-      : null;
+      : rawType === 'subscription' || product.subCategory?.toLowerCase().includes('subscription')
+      ? `/subscriptions`
+      : rawType === 'giftcard' || product.subCategory?.toLowerCase().includes('gift')
+      ? `/gift-cards`
+      : `/top-up`;
 
   return (
     <StandardProductCard product={product} href={detailHref ?? undefined} onAdd={onAdd} />
   );
-
-  /* legacy card markup retained below for safe incremental migration */
-  return (
-    <article className="product-card" data-testid={`card-product-${product.id}`}>
-      {detailHref ? (
-        <Link href={detailHref ?? '/'} className="product-card-art-link">
-          <div className="product-art" style={{ '--product-wash': product.wash } as CSSProperties}>
-            {product.badge && (
-              <span className="product-badge">
-                <span className="product-badge-dot" />
-                {product.badge}
-              </span>
-            )}
-            <div className="product-glyph">
-              <span>{product.glyph}</span>
-            </div>
-            <div className="product-hud-corner" aria-hidden="true" />
-          </div>
-        </Link>
-      ) : (
-        <div className="product-art" style={{ '--product-wash': product.wash } as CSSProperties}>
-          {product.badge && (
-            <span className="product-badge">
-              <span className="product-badge-dot" />
-              {product.badge}
-            </span>
-          )}
-          <div className="product-glyph">
-            <span>{product.glyph}</span>
-          </div>
-          <div className="product-hud-corner" aria-hidden="true" />
-        </div>
-      )}
-      <div className="product-info">
-        <div className="product-meta-row">
-          <span className="product-type">{product.label}</span>
-          {product.spec && <span className="product-spec">{product.spec}</span>}
-        </div>
-        {detailHref ? (
-          <Link href={detailHref ?? '/'} className="product-name-link">
-            <h3 className="product-name" data-testid={`text-product-${product.id}`}>{product.name}</h3>
-          </Link>
-        ) : (
-          <h3 className="product-name" data-testid={`text-product-${product.id}`}>{product.name}</h3>
-        )}
-        <div className="product-bottom">
-          <div className="product-price-col">
-            <span className="product-price-label">PRICE</span>
-            <span className="product-price">${product.price.toFixed(2)}</span>
-          </div>
-          <button
-            type="button"
-            className="add-button"
-            onClick={() => onAdd(product)}
-            aria-label={`Add ${product.name} to bag`}
-            data-testid={`button-add-${product.id}`}
-          >
-            <Plus size={15} />
-            <span className="add-button-text">ADD</span>
-          </button>
-        </div>
-      </div>
-    </article>
-  );
 }
-
-
 
 function mapDbRowsToProducts(rows: any[]): Product[] {
   const map = new Map<string, any>()
   for (const r of rows) {
     if (!map.has(r.id)) {
+      const isGame = r.type === 'game';
+      const isTopUpOrSub = r.type === 'topup' || r.type === 'giftcard' || r.type === 'subscription';
+      const mappedType: Product['type'] = isGame ? 'games' : isTopUpOrSub ? 'top-ups' : 'gear';
+      const mappedCategory = isGame ? 'games' : isTopUpOrSub ? 'top-ups' : 'accessories';
+
       map.set(r.id, {
         id: r.slug,
+        rawType: r.type,
         name: r.name,
-        type: r.type === 'game' ? 'games' : 'gear',
-        category: r.type === 'game' ? 'games' : 'accessories',
-        subCategory: r.category || (r.type === 'game' ? 'PS5 Game' : 'Gear'),
-        label: r.brand || (r.type === 'game' ? 'PS5 Game' : 'Gear'),
+        type: mappedType,
+        category: mappedCategory,
+        subCategory: r.category || (isGame ? 'PS5 Game' : r.type === 'subscription' ? 'Subscription' : r.type === 'giftcard' ? 'Gift Cards' : r.type === 'topup' ? 'Game Top-Up' : 'Gear'),
+        label: r.brand || (isGame ? 'PS5 Game' : r.type === 'subscription' ? 'Subscription' : r.type === 'giftcard' ? 'Gift Card' : r.type === 'topup' ? 'Top-Up' : 'Gear'),
         price: (r.price ?? 0) / 100,
         glyph: (r.slug || r.name).slice(0, 4).toUpperCase(),
-        wash: r.type === 'game' ? 'hsl(272 90% 68% / .32)' : 'hsl(285 85% 72% / .32)',
+        wash: isGame ? 'hsl(272 90% 68% / .32)' : isTopUpOrSub ? 'hsl(180 85% 65% / .3)' : 'hsl(285 85% 72% / .32)',
         badge: r.featured ? 'FEATURED DROP' : undefined,
         spec: r.platform || '',
         coverImage: normalizeProductImageUrl(r.imageUrl, r.type),
@@ -877,6 +1033,183 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
 }
 
 
+const heroStages = [
+  {
+    num: '01',
+    badge: 'REIKAI VOID PROTOCOL // DISCOVER',
+    title: 'Reikai Arcade',
+    p1: 'Power your games. Own your digital world. A premium marketplace for digital gaming products, subscriptions, and accessories.',
+    p2: 'Experience the future of digital gaming with instant delivery, secure wallet system, and exclusive offers on game top-ups, gift cards, and more.',
+    ctaPrimary: 'Shop The Drop',
+    ctaPrimaryTarget: 'browse',
+    ctaSecondary: 'Explore Categories',
+    ctaSecondaryTarget: 'categories',
+  },
+  {
+    num: '02',
+    badge: 'INSTANT PLATFORM RELOAD // SPEED',
+    title: 'Power Your Game',
+    p1: 'Game top-ups for all major platforms. From mobile hits to PC masterpieces. Fuel your gaming journey with seamless digital delivery.',
+    p2: 'Instant code dispatch, 100% verified publisher vouchers, zero waiting time directly to your player account.',
+    ctaPrimary: 'Instant Top-Up',
+    ctaPrimaryTarget: 'top-up',
+    ctaSecondary: 'Browse Games',
+    ctaSecondaryTarget: 'browse',
+  },
+  {
+    num: '03',
+    badge: 'ENCRYPTED ESCROW // ZERO FRICTION',
+    title: 'Digital Wallet',
+    p1: 'Next-generation digital gaming wallet with encrypted instant checkout, reward cashback tokens, and multi-currency support.',
+    p2: 'Zero transaction friction. Deposit, top-up, and unlock members-only vault drops in a single tap.',
+    ctaPrimary: 'Explore Drops',
+    ctaPrimaryTarget: 'browse',
+    ctaSecondary: 'Protocol Specs',
+    ctaSecondaryTarget: 'signal',
+  },
+  {
+    num: '04',
+    badge: 'OBSIDIAN SANCTUM // DROPS & PASSES',
+    title: 'Play Beyond',
+    p1: 'Console games, gift cards, subscriptions, and premium gaming accessories. Everything you need to elevate your gaming experience, all in one cinematic destination.',
+    p2: 'Enter the Reikai realm and curate your ultimate digital arsenal with genuine hardware and instant access.',
+    ctaPrimary: 'Browse Vault',
+    ctaPrimaryTarget: 'browse',
+    ctaSecondary: 'Join Frequency',
+    ctaSecondaryTarget: 'signal',
+  },
+];
+
+const categoryRail = [
+  {
+    title: 'Game Top-Up',
+    desc: 'Instant mobile & PC top-up',
+    icon: Zap,
+    href: '/top-up',
+  },
+  {
+    title: 'Subscriptions',
+    desc: 'Gaming & digital pass',
+    icon: Sparkles,
+    href: '/gift-cards',
+  },
+  {
+    title: 'Gift Cards',
+    desc: 'Global digital codes',
+    icon: Gem,
+    href: '/gift-cards',
+  },
+  {
+    title: 'Console Games',
+    desc: 'PlayStation, Xbox, PC',
+    icon: Gamepad2,
+    href: '/games',
+  },
+  {
+    title: 'Accessories',
+    desc: 'Gaming gear & perks',
+    icon: ShoppingBag,
+    href: '/accessories',
+  },
+];
+
+const HERO_POSES: StagePose[] = [
+  // Stage 0: REIKAI ARCADE (Centered frontal hero view with sleek tilt)
+  { theta: 184, phi: 43, radius: 1.95, roll: -7, x: 0, y: 0, scale: 1.10 },
+  // Stage 1: POWER YOUR GAME (360° spin to back triggers, centered elevated floating)
+  { theta: 544, phi: 55, radius: 2.15, roll: 8, x: 0, y: -20, scale: 1.15 },
+  // Stage 2: DIGITAL WALLET (180° turn showcasing glowing touchpad & buttons close-up)
+  { theta: 724, phi: 30, radius: 1.82, roll: -10, x: 0, y: 16, scale: 1.20 },
+  // Stage 3: PLAY BEYOND (Heroic elevated finish)
+  { theta: 904, phi: 45, radius: 2.00, roll: 4, x: 0, y: 0, scale: 1.12 },
+];
+
+const MOBILE_HERO_POSES: StagePose[] = [
+  { theta: 184, phi: 44, radius: 2.25, roll: -5, x: 0, y: 0, scale: 0.82 },
+  { theta: 544, phi: 56, radius: 2.40, roll: 6, x: 0, y: 0, scale: 0.80 },
+  { theta: 724, phi: 34, radius: 2.15, roll: -6, x: 0, y: 0, scale: 0.84 },
+  { theta: 904, phi: 46, radius: 2.30, roll: 4, x: 0, y: 0, scale: 0.82 },
+];
+
+const STAGE_WINDOWS = [
+  // Stage 0: starts visible, then scrolls down & fades completely gone between 0.15 and 0.23
+  { enterStart: -0.05, enterEnd: 0.00, exitStart: 0.15, exitEnd: 0.23, center: 0.07 },
+  // Stage 1: scrolls UP (0.26..0.33), plateaus, then scrolls DOWN completely gone (0.43..0.50)
+  { enterStart: 0.26, enterEnd: 0.33, exitStart: 0.43, exitEnd: 0.50, center: 0.38 },
+  // Stage 2: scrolls UP (0.53..0.60), plateaus, then scrolls DOWN completely gone (0.70..0.77)
+  { enterStart: 0.53, enterEnd: 0.60, exitStart: 0.70, exitEnd: 0.77, center: 0.65 },
+  // Stage 3: scrolls UP (0.80..0.87), plateaus, exits towards categories (0.96..1.00)
+  { enterStart: 0.80, enterEnd: 0.87, exitStart: 0.96, exitEnd: 1.00, center: 0.91 },
+];
+
+const STAGE_CENTERS = STAGE_WINDOWS.map((w) => w.center);
+
+type StageMotion = {
+  opacity: number;
+  translateY: number;
+  blur: number;
+  active: boolean;
+};
+
+function getStageMotion(progress: number, stageIdx: number): StageMotion {
+  const win = STAGE_WINDOWS[stageIdx];
+  const { enterStart, enterEnd, exitStart, exitEnd } = win;
+
+  // 1. Before entering: waiting below
+  if (progress < enterStart) {
+    return {
+      opacity: 0,
+      translateY: 110,
+      blur: 8,
+      active: false,
+    };
+  }
+
+  // 2. Entering: scrolls UP slowly into place (+110px -> 0px)
+  if (progress >= enterStart && progress < enterEnd) {
+    const t = enterEnd > enterStart ? (progress - enterStart) / (enterEnd - enterStart) : 1;
+    const ease = t * t * (3 - 2 * t);
+    return {
+      opacity: ease,
+      translateY: (1 - ease) * 110,
+      blur: (1 - ease) * 8,
+      active: ease > 0.5,
+    };
+  }
+
+  // 3. Plateau: centered, slow subtle parallax breathing drift
+  if (progress >= enterEnd && progress < exitStart) {
+    const plateauProgress = (progress - enterEnd) / (exitStart - enterEnd);
+    const drift = (plateauProgress - 0.5) * 12;
+    return {
+      opacity: 1,
+      translateY: drift,
+      blur: 0,
+      active: true,
+    };
+  }
+
+  // 4. Exiting: scrolls DOWN and parallax, completely gone (0px -> +110px)
+  if (progress >= exitStart && progress < exitEnd) {
+    const t = (progress - exitStart) / (exitEnd - exitStart);
+    const ease = t * t * (3 - 2 * t);
+    return {
+      opacity: 1 - ease,
+      translateY: ease * 110,
+      blur: ease * 8,
+      active: ease < 0.5,
+    };
+  }
+
+  // 5. Completely gone
+  return {
+    opacity: 0,
+    translateY: 110,
+    blur: 8,
+    active: false,
+  };
+}
+
 export default function StorefrontPage() {
   const { addToCart, cartCount, setCartOpen } = useCart();
   const [liveProducts, setLiveProducts] = useState<Product[]>(products);
@@ -888,8 +1221,24 @@ export default function StorefrontPage() {
   const [modelOpacity, setModelOpacity] = useState(1);
   const [signalEmail, setSignalEmail] = useState('');
   const [signalSubscribed, setSignalSubscribed] = useState(false);
+  const [heroScrollProgress, setHeroScrollProgress] = useState(0);
+  const [activeStage, setActiveStage] = useState(0);
+  const heroTrackRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   useScrollAnimations(reducedMotion);
+
+  const jumpToStage = (idx: number) => {
+    const track = heroTrackRef.current;
+    if (!track) return;
+    const trackTop = window.scrollY + track.getBoundingClientRect().top;
+    const trackScrollable = track.offsetHeight - window.innerHeight;
+    const targetScroll = trackTop + (STAGE_CENTERS[idx] ?? 0) * trackScrollable;
+    if (lenis) {
+      lenis.scrollTo(targetScroll, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     fetch('/api/catalog')
@@ -918,76 +1267,62 @@ export default function StorefrontPage() {
 
       const isMobile = window.innerWidth <= 768;
 
-      // Desktop poses (100% original):
-      const desktopStops: { selector: string; pose: StagePose }[] = [
-        { selector: '.hero',             pose: heroPose },
-        { selector: '#categories',       pose: { x: -52, scale: 0.92, theta: 540,  phi: 52, radius: 2.45 } },
-        { selector: '#browse',           pose: { x: 0,   scale: 1.15, theta: 900,  phi: 34, radius: 1.95 } },
-        { selector: '.feature-section',  pose: { x: 38,  scale: 0.87, theta: 1170, phi: 68, radius: 2.52 } },
-      ];
+      // Measure multi-stage hero track
+      const track = heroTrackRef.current;
+      if (track) {
+        const rect = track.getBoundingClientRect();
+        const trackScrollable = track.offsetHeight - window.innerHeight;
+        if (trackScrollable > 0) {
+          const rawProgress = -rect.top / trackScrollable;
+          const clamped = Math.max(0, Math.min(1, rawProgress));
+          setHeroScrollProgress(clamped);
 
-      // Mobile phone poses (Dynamic Floating Orbit):
-      const mobileStops: { selector: string; pose: StagePose }[] = [
-        { selector: '.hero',             pose: { x: 0,  scale: 0.88, theta: 184,  phi: 44, radius: 2.15, roll: -5 } },
-        { selector: '#categories',       pose: { x: 14, scale: 0.68, theta: 544,  phi: 56, radius: 2.65, roll: -3 } },
-        { selector: '#browse',           pose: { x: 0,  scale: 0.78, theta: 900,  phi: 36, radius: 2.30, roll: -6 } },
-        { selector: '.feature-section',  pose: { x: 10, scale: 0.65, theta: 1170, phi: 66, radius: 2.70, roll: 0 } },
-      ];
-
-      const stops = isMobile ? mobileStops : desktopStops;
-      const measured: { center: number; pose: StagePose }[] = [];
-      for (const stop of stops) {
-        const section = document.querySelector<HTMLElement>(stop.selector);
-        if (section) {
-          measured.push({
-            center: scrollTop + section.getBoundingClientRect().top + section.offsetHeight / 2,
-            pose: stop.pose,
+          // Find active / nearest stage center
+          let nearestStage = 0;
+          let minDiff = 999;
+          STAGE_CENTERS.forEach((c, i) => {
+            const d = Math.abs(clamped - c);
+            if (d < minDiff) {
+              minDiff = d;
+              nearestStage = i;
+            }
           });
-        }
-      }
-      if (measured.length === 0) return;
+          setActiveStage(nearestStage);
 
-      const focusY = scrollTop + window.innerHeight * 0.52;
-      let from = measured[0];
-      let to = measured[0];
-      const last = measured[measured.length - 1];
-      if (focusY >= last.center) {
-        from = last;
-        to = last;
-      } else {
-        for (let index = 0; index < measured.length - 1; index += 1) {
-          if (focusY <= measured[index + 1].center) {
-            from = measured[index];
-            to = measured[index + 1];
-            break;
+          // Continuous 3D controller interpolation across the 4 hero stages:
+          const poses = isMobile ? MOBILE_HERO_POSES : HERO_POSES;
+          let segIndex = 0;
+          if (clamped >= STAGE_CENTERS[2]) segIndex = 2;
+          else if (clamped >= STAGE_CENTERS[1]) segIndex = 1;
+          else segIndex = 0;
+
+          const span = (STAGE_CENTERS[segIndex + 1] ?? 1) - STAGE_CENTERS[segIndex];
+          const segT = span > 0 ? Math.max(0, Math.min(1, (clamped - STAGE_CENTERS[segIndex]) / span)) : 0;
+          const eased = segT * segT * (3 - 2 * segT);
+          const p0 = poses[segIndex];
+          const p1 = poses[segIndex + 1] ?? poses[segIndex];
+          const mix = (a: number, b: number) => a + (b - a) * eased;
+
+          setStagePose({
+            theta: mix(p0.theta, p1.theta),
+            phi: mix(p0.phi, p1.phi),
+            radius: mix(p0.radius, p1.radius),
+            roll: mix(p0.roll ?? 0, p1.roll ?? 0),
+            x: mix(p0.x, p1.x),
+            y: mix(p0.y ?? 0, p1.y ?? 0),
+            scale: mix(p0.scale, p1.scale),
+          });
+
+          // Smoothly fade out model when scrolling past hero track:
+          if (rect.bottom < window.innerHeight) {
+            const exitDist = window.innerHeight - rect.bottom;
+            const exitFade = Math.max(0, 1 - exitDist / 350);
+            setModelOpacity(exitFade);
+          } else {
+            setModelOpacity(1);
           }
         }
       }
-      const distance = to.center - from.center;
-      const amount = distance > 0 ? Math.max(0, Math.min(1, (focusY - from.center) / distance)) : 0;
-      const eased = amount * amount * (3 - 2 * amount);
-      const mix = (start: number, end: number) => start + (end - start) * eased;
-      setStagePose({
-        x: mix(from.pose.x, to.pose.x),
-        scale: mix(from.pose.scale, to.pose.scale),
-        theta: mix(from.pose.theta, to.pose.theta),
-        phi: mix(from.pose.phi, to.pose.phi),
-        radius: mix(from.pose.radius, to.pose.radius),
-        roll: mix(from.pose.roll ?? 0, to.pose.roll ?? 0),
-      });
-
-      // Smoothly fade out model as user scrolls past the feature section towards CTA and footer
-      let currentOpacity = 1;
-      const featureSec = document.querySelector<HTMLElement>('.feature-section');
-      if (featureSec) {
-        const featureRect = featureSec.getBoundingClientRect();
-        if (featureRect.bottom < window.innerHeight * 0.85) {
-          const fadeRange = window.innerHeight * 0.55;
-          const dist = (window.innerHeight * 0.85) - featureRect.bottom;
-          currentOpacity = Math.max(0, Math.min(1, 1 - (dist / fadeRange)));
-        }
-      }
-      setModelOpacity(currentOpacity);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -1017,6 +1352,48 @@ export default function StorefrontPage() {
     });
   }, [filter, liveProducts, catalogSearch]);
 
+  // Curated shelf groups for separate storefront sections
+  const gamesProducts = useMemo(() => {
+    return liveProducts.filter((p) => (p as any).rawType === 'game' || p.type === 'games' || p.category === 'games');
+  }, [liveProducts]);
+
+  const topUpProducts = useMemo(() => {
+    return liveProducts.filter(
+      (p) =>
+        (p as any).rawType === 'topup' ||
+        p.subCategory?.toLowerCase().includes('top-up') ||
+        p.id?.toLowerCase().includes('top-up') ||
+        p.name?.toLowerCase().includes('valorant') ||
+        p.name?.toLowerCase().includes('pubg') ||
+        p.name?.toLowerCase().includes('genshin')
+    );
+  }, [liveProducts]);
+
+  const gearProducts = useMemo(() => {
+    return liveProducts.filter((p) => (p as any).rawType === 'accessory' || p.type === 'gear' || p.category === 'accessories');
+  }, [liveProducts]);
+
+  const subscriptionProducts = useMemo(() => {
+    return liveProducts.filter(
+      (p) =>
+        (p as any).rawType === 'subscription' ||
+        p.subCategory?.toLowerCase().includes('subscription') ||
+        p.name?.toLowerCase().includes('plus') ||
+        p.name?.toLowerCase().includes('pass') ||
+        p.name?.toLowerCase().includes('ea play')
+    );
+  }, [liveProducts]);
+
+  const giftCardProducts = useMemo(() => {
+    return liveProducts.filter(
+      (p) =>
+        (p as any).rawType === 'giftcard' ||
+        p.subCategory?.toLowerCase().includes('gift') ||
+        p.name?.toLowerCase().includes('wallet') ||
+        p.name?.toLowerCase().includes('card')
+    );
+  }, [liveProducts]);
+
   const setCategory = (category: 'all' | Product['type']) => {
     setFilter(category);
     scrollToId('browse');
@@ -1034,110 +1411,199 @@ export default function StorefrontPage() {
     <main className="site-shell noise" id="top" style={{ '--scroll-pct': `${(scrollProgress * 100).toFixed(1)}%` } as CSSProperties}>
       {/* Scroll progress indicator */}
       <div className="scroll-progress-bar" aria-hidden="true" />
-      <Header cartCount={cartCount} onCart={() => setCartOpen(true)} />
 
-      <ModelStage
-        orbit={orbit}
-        modelScale={modelScale}
-        parallax={parallax}
-        stageX={stageX}
-        roll={stageRoll}
-        reducedMotion={reducedMotion}
-        opacity={modelOpacity}
-      />
-
-      <section className="hero" aria-labelledby="hero-title">
-        {/* Fixed Hero Neon Orbital Ring & Accent - stays anchored in hero, does NOT move with model */}
-        <div className="hero-orbital-stage" aria-hidden="true">
-          <div className="hero-orbital-tag">REIKAI // ARCADE-01</div>
-          <div className="hero-orbital-ring" />
-        </div>
-
-        <div className="hero-grid">
-          {/* Vertical HUD accent line on the left */}
-          <div className="hero-hud-rail" aria-hidden="true">
-            <span className="hud-star">✦</span>
-            <span className="hud-line" />
-            <span className="hud-star">✦</span>
+      {/* ── REDESIGNED 3D MULTI-STAGE SCROLL TRACK (LOGO PALETTE & VIDEO) ── */}
+      <section className="hero-scroll-track" ref={heroTrackRef} id="discover">
+        <div className="hero-sticky-viewport">
+          {/* Ambient Aurora Glow Ribbons */}
+          <div className="hero-aurora-bg">
+            <div
+              className="hero-aurora-ribbon hero-aurora-ribbon-1"
+              style={{
+                transform: `rotate(${-15 + heroScrollProgress * 30}deg) translateY(${heroScrollProgress * 60}px)`,
+                opacity: 0.5 + Math.sin(heroScrollProgress * Math.PI) * 0.35,
+              }}
+            />
+            <div
+              className="hero-aurora-ribbon hero-aurora-ribbon-2"
+              style={{
+                transform: `rotate(${18 - heroScrollProgress * 28}deg) translateY(${-heroScrollProgress * 50}px)`,
+                opacity: 0.45 + Math.sin(heroScrollProgress * Math.PI) * 0.4,
+              }}
+            />
           </div>
 
-          <div className="hero-copy" data-reveal-group>
-            <div className="eyebrow hero-protocol-badge" data-reveal>
-              <Sparkles size={11} className="text-[#d946ef]" />
-              <span>REIKAI VOID PROTOCOL</span>
-            </div>
+          {/* Sweeping Volumetric Atmospheric Spotlights */}
+          <div
+            className="hero-spotlight-beam hero-spotlight-left"
+            style={{
+              transform: `rotate(${-22 + heroScrollProgress * 36}deg) scaleX(${0.8 + Math.sin(heroScrollProgress * Math.PI) * 0.4})`,
+              opacity: 0.75 + Math.sin(heroScrollProgress * Math.PI) * 0.25,
+            }}
+          />
+          <div
+            className="hero-spotlight-beam hero-spotlight-right"
+            style={{
+              transform: `rotate(${24 - heroScrollProgress * 38}deg) scaleX(${0.8 + Math.cos(heroScrollProgress * Math.PI) * 0.3})`,
+              opacity: 0.7 + Math.sin(heroScrollProgress * Math.PI) * 0.3,
+            }}
+          />
 
-            <h1 id="hero-title" className="hero-title-sculpt" data-reveal>
-              <span className="title-play-row">PLAY</span>
-              <span className="title-beyond-row">
-                BEYOND.
-                <span className="title-sparkle" aria-hidden="true">✦</span>
-              </span>
-            </h1>
+          {/* Glowing Halo behind 3D Controller */}
+          <div
+            className="hero-model-glow-halo"
+            style={{
+              transform: `translate(calc(-50% + ${stagePose.x * 0.3}vw), calc(-50% + ${(stagePose.y ?? 0) * 0.5}px)) scale(${stagePose.scale})`,
+            }}
+          />
 
-            <div className="hero-subhead-tags" data-reveal>
-              <span>GAMES</span>
-              <span className="subhead-slash">//</span>
-              <span>ACCESSORIES</span>
-              <span className="subhead-slash">//</span>
-              <span>TOP UPS</span>
-            </div>
+          {/* Original PS5 Controller 3D Model with Continuous Dynamic Camera Orbit & Rotation */}
+          <ModelStage
+            orbit={orbit}
+            modelScale={modelScale}
+            stageX={stageX}
+            stageY={stagePose.y ?? 0}
+            roll={stageRoll}
+            reducedMotion={reducedMotion}
+            opacity={modelOpacity}
+          />
 
-            <p className="hero-intro" data-reveal>
-              Consoles, celestial drops, and the gear that turns a dark room into an obsidian sanctum. Reach beyond the void.
-            </p>
+          {/* Top Header */}
+          <Header
+            cartCount={cartCount}
+            onCart={() => setCartOpen(true)}
+            onStageJump={jumpToStage}
+          />
 
-            <div className="hero-ctas" data-reveal>
-              <button
-                type="button"
-                className="button-primary hero-btn-drop"
-                onClick={() => scrollToId('browse', lenis)}
-                data-testid="button-shop-the-drop"
-              >
-                <ShoppingCart size={16} />
-                <span>SHOP THE DROP</span>
-                <ArrowRight size={16} />
-              </button>
-              <button
-                type="button"
-                className="button-quiet hero-btn-explore"
-                onClick={() => scrollToId('categories', lenis)}
-                data-testid="button-explore-categories"
-              >
-                <Globe size={16} />
-                <span>EXPLORE THE WORLD</span>
-              </button>
-            </div>
+          {/* Right Vertical Category Rail (matching sample video) */}
+          <aside className="hero-right-dock" aria-label="Quick Category Access">
+            {categoryRail.map((cat, i) => {
+              const Icon = cat.icon;
+              return (
+                <Link
+                  key={cat.title}
+                  href={cat.href}
+                  className="hero-dock-card"
+                  data-testid={`dock-category-${i}`}
+                >
+                  <div className="hero-dock-icon">
+                    <Icon size={19} />
+                  </div>
+                  <div className="hero-dock-content">
+                    <span className="hero-dock-title">{cat.title}</span>
+                    <span className="hero-dock-desc">{cat.desc}</span>
+                  </div>
+                  <ArrowRight size={14} className="hero-dock-arrow" />
+                </Link>
+              );
+            })}
+          </aside>
 
-            <div className="hero-features-bar" data-reveal>
-              <div className="feature-item">
-                <div className="feature-icon"><Gamepad2 size={24} /></div>
-                <div className="feature-info">
-                  <strong>GAMING GEAR</strong>
-                  <span>Consoles &amp; Accessories</span>
+          {/* Left/Center Multi-Phase Story Hero Content (Sequential slow & smooth scroll up / scroll down parallax) */}
+          <div className="hero-story-container">
+            {heroStages.map((stage, idx) => {
+              const motion = getStageMotion(heroScrollProgress, idx);
+              const isVisible = motion.opacity > 0.005;
+              const y = motion.translateY;
+
+              return (
+                <div
+                  key={stage.num}
+                  className="hero-stage-item"
+                  style={{
+                    opacity: motion.opacity,
+                    filter: motion.blur > 0.15 ? `blur(${motion.blur.toFixed(1)}px)` : 'none',
+                    pointerEvents: motion.active ? 'auto' : 'none',
+                    visibility: isVisible ? 'visible' : 'hidden',
+                  }}
+                >
+                  {/* Eyebrow badge (Parallax factor 1.3 - moves faster) */}
+                  <div
+                    className="eyebrow hero-protocol-badge mb-3"
+                    style={{
+                      transform: `translate3d(0, ${(y * 1.3).toFixed(1)}px, 0)`,
+                    }}
+                  >
+                    <Sparkles size={11} className="text-[#00f0ff]" />
+                    <span>{stage.badge}</span>
+                  </div>
+
+                  {/* Editorial Headline (Parallax factor 1.0) */}
+                  <h1
+                    className="hero-editorial-headline hero-editorial-gradient"
+                    style={{
+                      transform: `translate3d(0, ${y.toFixed(1)}px, 0)`,
+                    }}
+                  >
+                    {stage.title}
+                  </h1>
+
+                  {/* Two-Column Paragraphs (Parallax factor 0.75 - subtle drag) */}
+                  <div
+                    className="hero-two-col-grid"
+                    style={{
+                      transform: `translate3d(0, ${(y * 0.75).toFixed(1)}px, 0)`,
+                    }}
+                  >
+                    <p className="hero-story-para">{stage.p1}</p>
+                    <p className="hero-story-para">{stage.p2}</p>
+                  </div>
+
+                  {/* Action Buttons (Parallax factor 0.55 - anchors composition) */}
+                  <div
+                    className="hero-action-buttons"
+                    style={{
+                      transform: `translate3d(0, ${(y * 0.55).toFixed(1)}px, 0)`,
+                    }}
+                  >
+                    <button
+                      type="button"
+                      className="hero-primary-btn"
+                      onClick={() => scrollToId(stage.ctaPrimaryTarget, lenis)}
+                      data-testid={`button-hero-primary-${idx}`}
+                    >
+                      <ShoppingCart size={15} />
+                      <span>{stage.ctaPrimary}</span>
+                      <ArrowRight size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      className="hero-secondary-btn"
+                      onClick={() => scrollToId(stage.ctaSecondaryTarget, lenis)}
+                      data-testid={`button-hero-secondary-${idx}`}
+                    >
+                      <Globe size={15} />
+                      <span>{stage.ctaSecondary}</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="feature-sep" aria-hidden="true" />
-              <div className="feature-item">
-                <div className="feature-icon"><Gem size={24} /></div>
-                <div className="feature-info">
-                  <strong>GAME TOP UPS</strong>
-                  <span>Fast &amp; Secure</span>
-                </div>
-              </div>
-              <div className="feature-sep" aria-hidden="true" />
-              <div className="feature-item">
-                <div className="feature-icon"><ShieldCheck size={24} /></div>
-                <div className="feature-info">
-                  <strong>TRUSTED STORE</strong>
-                  <span>Genuine Products</span>
-                </div>
-              </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom-Left Stage Navigator */}
+          <div className="hero-stage-nav" aria-label="Hero Stage Navigator">
+            <div className="hero-stage-pills">
+              {heroStages.map((s, idx) => (
+                <button
+                  key={s.num}
+                  type="button"
+                  className={`hero-stage-pill ${activeStage === idx ? 'active' : ''}`}
+                  onClick={() => jumpToStage(idx)}
+                  aria-label={`Jump to stage ${s.title}`}
+                >
+                  {s.num} {s.title.split(' ')[0].toUpperCase()}
+                </button>
+              ))}
+            </div>
+            <div className="hero-stage-indicator-bar" aria-hidden="true">
+              <div
+                className="hero-stage-indicator-fill"
+                style={{ width: `${heroScrollProgress * 100}%` }}
+              />
             </div>
           </div>
         </div>
-
-        <div className="hero-avatar-badge" aria-label="Brand seal">N</div>
       </section>
 
       <div className="marquee" aria-label="Store highlights">
@@ -1152,21 +1618,9 @@ export default function StorefrontPage() {
 
       <section className="section category-section" id="categories" aria-labelledby="categories-title">
         <div className="cat-split">
-          {/* ── LEFT PANEL ── big cinematic image with overlay */}
-          <div className="cat-panel-left" aria-hidden="true">
-            <img src="/cat-panel-ps5.jpg" alt="PS5 console standing on cosmic terrain" className="cat-panel-img" />
-            <div className="cat-panel-overlay" />
-            <div className="cat-panel-hud">
-              <div className="cat-panel-kicker">
-                <span className="cat-hud-dot" />
-                01 // PICK YOUR LANE
-              </div>
-              <div className="cat-panel-headline">
-                PLAY<br />
-                <span>YOUR WAY.</span>
-              </div>
-              <div className="cat-panel-tagline">THE ONLY RIGHT SETUP IS YOURS.</div>
-            </div>
+          {/* ── LEFT PANEL ── Interactive Tutorial Video Player (Admin Uploaded & Managed) */}
+          <div className="cat-panel-left" data-testid="tutorial-video-wrapper">
+            <TutorialVideoPlayer />
           </div>
 
           {/* ── RIGHT PANEL ── header + category rows */}
@@ -1319,31 +1773,145 @@ export default function StorefrontPage() {
               </div>
             </div>
           </div>
-          <div className="product-grid" data-testid="grid-products">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} onAdd={addToCart} />
-              ))
-            ) : (
-              <div className="catalog-empty-wrap">
-                <Search size={32} className="text-[#a855f7] opacity-60 mb-2" />
-                <h3 className="text-lg font-bold">No products match &ldquo;{catalogSearch}&rdquo;</h3>
-                <p className="text-sm text-white/50 mt-1 max-w-sm">
-                  Try searching another keyword or reset the filter to view all available drops.
-                </p>
-                <button
-                  type="button"
-                  className="button-primary mt-4 text-xs py-2 px-5 inline-flex items-center gap-2"
-                  onClick={() => {
-                    setCatalogSearch('');
-                    setFilter('all');
-                  }}
-                >
-                  Reset Search &amp; Filters
-                </button>
+          {filter === 'all' && !catalogSearch ? (
+            <div className="store-shelves-wrap flex flex-col gap-12 w-full">
+              {/* 1. TOP GAMES */}
+              <div className="store-shelf-section">
+                <div className="store-shelf-header">
+                  <div className="store-shelf-title-wrap">
+                    <span className="store-shelf-badge">
+                      <Gamepad2 size={13} /> 01 // Blockbuster Exclusives
+                    </span>
+                    <h3 className="store-shelf-title">Top <span>PS5 Games</span></h3>
+                    <p className="store-shelf-desc">Next-gen titles, 4K 60FPS ray tracing &amp; official physical discs.</p>
+                  </div>
+                  <Link href="/games" className="store-shelf-view-more" data-testid="link-view-more-games">
+                    <span>View More Games</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+                <div className="product-grid" data-testid="grid-top-games">
+                  {gamesProducts.slice(0, 4).map((p) => (
+                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
+
+              {/* 2. GAME TOP-UPS */}
+              <div className="store-shelf-section">
+                <div className="store-shelf-header">
+                  <div className="store-shelf-title-wrap">
+                    <span className="store-shelf-badge">
+                      <Zap size={13} /> 02 // Instant In-Game Currency
+                    </span>
+                    <h3 className="store-shelf-title">Game <span>Top-Ups</span></h3>
+                    <p className="store-shelf-desc">Fast, secure direct ID top-ups for Valorant, PUBG Mobile, Genshin &amp; Free Fire.</p>
+                  </div>
+                  <Link href="/top-up" className="store-shelf-view-more" data-testid="link-view-more-topups">
+                    <span>View More Top-Ups</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+                <div className="product-grid" data-testid="grid-top-ups">
+                  {topUpProducts.slice(0, 4).map((p) => (
+                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. HARDWARE & ACCESSORIES */}
+              <div className="store-shelf-section">
+                <div className="store-shelf-header">
+                  <div className="store-shelf-title-wrap">
+                    <span className="store-shelf-badge">
+                      <Headphones size={13} /> 03 // Pro Esports Gear
+                    </span>
+                    <h3 className="store-shelf-title">Accessories &amp; <span>Hardware</span></h3>
+                    <p className="store-shelf-desc">DualSense Edge controllers, spatial audio headsets &amp; click-in charging docks.</p>
+                  </div>
+                  <Link href="/accessories" className="store-shelf-view-more" data-testid="link-view-more-accessories">
+                    <span>View More Accessories</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+                <div className="product-grid" data-testid="grid-accessories">
+                  {gearProducts.slice(0, 4).map((p) => (
+                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
+                  ))}
+                </div>
+              </div>
+
+              {/* 4. GAMING SUBSCRIPTIONS */}
+              <div className="store-shelf-section">
+                <div className="store-shelf-header">
+                  <div className="store-shelf-title-wrap">
+                    <span className="store-shelf-badge">
+                      <Crown size={13} /> 04 // Passes &amp; Memberships
+                    </span>
+                    <h3 className="store-shelf-title">Gaming <span>Subscriptions</span></h3>
+                    <p className="store-shelf-desc">PlayStation Plus Deluxe, Xbox Game Pass Ultimate &amp; EA Play instant passes.</p>
+                  </div>
+                  <Link href="/subscriptions" className="store-shelf-view-more" data-testid="link-view-more-subscriptions">
+                    <span>View More Subscriptions</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+                <div className="product-grid" data-testid="grid-subscriptions">
+                  {subscriptionProducts.slice(0, 4).map((p) => (
+                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
+                  ))}
+                </div>
+              </div>
+
+              {/* 5. DIGITAL GIFT CARDS */}
+              <div className="store-shelf-section">
+                <div className="store-shelf-header">
+                  <div className="store-shelf-title-wrap">
+                    <span className="store-shelf-badge">
+                      <Gift size={13} /> 05 // Store Balances &amp; Wallets
+                    </span>
+                    <h3 className="store-shelf-title">Digital <span>Gift Cards</span></h3>
+                    <p className="store-shelf-desc">PlayStation Network, Steam Wallet, Apple &amp; Google Play prepaid cards.</p>
+                  </div>
+                  <Link href="/gift-cards" className="store-shelf-view-more" data-testid="link-view-more-giftcards">
+                    <span>View More Gift Cards</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+                <div className="product-grid" data-testid="grid-gift-cards">
+                  {giftCardProducts.slice(0, 4).map((p) => (
+                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="product-grid" data-testid="grid-products">
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} onAdd={addToCart} />
+                ))
+              ) : (
+                <div className="catalog-empty-wrap">
+                  <Search size={32} className="text-[#a855f7] opacity-60 mb-2" />
+                  <h3 className="text-lg font-bold">No products match &ldquo;{catalogSearch}&rdquo;</h3>
+                  <p className="text-sm text-white/50 mt-1 max-w-sm">
+                    Try searching another keyword or reset the filter to view all available drops.
+                  </p>
+                  <button
+                    type="button"
+                    className="button-primary mt-4 text-xs py-2 px-5 inline-flex items-center gap-2"
+                    onClick={() => {
+                      setCatalogSearch('');
+                      setFilter('all');
+                    }}
+                  >
+                    Reset Search &amp; Filters
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
@@ -1508,13 +2076,17 @@ export default function StorefrontPage() {
             <div className="footer-brand-col">
               <button
                 type="button"
-                className="wordmark border-0 bg-transparent p-0 cursor-pointer flex items-center gap-2.5"
+                className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-3"
                 onClick={() => scrollToId('top')}
                 data-testid="button-footer-home"
               >
-                <Gamepad2 size={24} className="text-[#a855f7]" />
-                <span className="wordmark-text">
-                  REIKAI <span className="wordmark-highlight">ARCADE</span>
+                <img
+                  src="/logo.jpeg"
+                  alt="Reikai Arcade"
+                  className="header-logo-img"
+                />
+                <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
+                  REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
                 </span>
               </button>
               <p className="footer-blurb">

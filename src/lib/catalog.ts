@@ -32,7 +32,7 @@ const variantFields = {
   stockQuantity: productVariants.stockQuantity,
 }
 
-export async function getActiveCatalog(type?: 'game' | 'accessory') {
+export async function getActiveCatalog(type?: 'game' | 'accessory' | 'topup' | 'giftcard' | 'subscription') {
   if (!process.env.DATABASE_URL) return []
   try {
     const conditions = [eq(products.status, 'active')]

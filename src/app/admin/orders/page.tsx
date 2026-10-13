@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { auth } from '@lib/auth'
+import { getAdminSession } from '@lib/admin-auth'
 import { getAdminOrders } from '../actions'
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-amber-500/15 text-amber-400',
-  confirmed: 'bg-blue-500/15 text-blue-400',
-  processing: 'bg-violet-500/15 text-violet-400',
+  confirmed: 'bg-violet-500/15 text-violet-400',
+  processing: 'bg-fuchsia-500/15 text-fuchsia-400',
   shipped: 'bg-cyan-500/15 text-cyan-400',
   delivered: 'bg-emerald-500/15 text-emerald-400',
   cancelled: 'bg-red-500/15 text-red-400',
@@ -16,7 +15,7 @@ const STATUS_COLORS: Record<string, string> = {
 const PAYMENT_COLORS: Record<string, string> = {
   unpaid: 'bg-red-500/15 text-red-400',
   paid: 'bg-emerald-500/15 text-emerald-400',
-  refunded: 'bg-orange-500/15 text-orange-400',
+  refunded: 'bg-pink-500/15 text-pink-400',
 }
 
 export default async function OrdersPage({
@@ -24,7 +23,7 @@ export default async function OrdersPage({
 }: {
   searchParams: Promise<{ status?: string }>
 }) {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   const { status } = await searchParams

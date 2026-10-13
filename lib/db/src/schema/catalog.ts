@@ -10,7 +10,7 @@ export const products = pgTable('products', {
   id: uuid('id').defaultRandom().primaryKey(),
   slug: text('slug').notNull().unique(),
   name: text('name').notNull(),
-  type: text('type').notNull(), // 'game' | 'accessory'
+  type: text('type').notNull(), // 'game' | 'accessory' | 'topup' | 'giftcard' | 'subscription'
   shortDescription: text('short_description'),
   description: text('description'),
   brand: text('brand'),
@@ -90,7 +90,23 @@ export const orderItems = pgTable('order_items', {
   unitPrice: integer('unit_price').notNull(),
 }, (table) => ({ orderIdx: index('order_items_order_idx').on(table.orderId) }))
 
+export const digitalCodes = pgTable('digital_codes', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  variantId: uuid('variant_id').notNull().references(() => productVariants.id, { onDelete: 'cascade' }),
+  code: text('code').notNull(),
+  pin: text('pin'),
+  status: text('status').notNull().default('available'), // 'available' | 'delivered' | 'void'
+  orderId: uuid('order_id').references(() => orders.id, { onDelete: 'set null' }),
+  deliveredAt: timestamp('delivered_at'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+  variantStatusIdx: index('digital_codes_variant_status_idx').on(table.variantId, table.status),
+  orderIdx: index('digital_codes_order_idx').on(table.orderId),
+}))
+
 export type ProductInput = Omit<ProductInsert, 'id' | 'createdAt' | 'updatedAt'>
 export type InventoryAdjustment = typeof inventoryAdjustments.$inferSelect
 export type Order = typeof orders.$inferSelect
 export type OrderItem = typeof orderItems.$inferSelect
+export type DigitalCode = typeof digitalCodes.$inferSelect
+export type DigitalCodeInsert = typeof digitalCodes.$inferInsert

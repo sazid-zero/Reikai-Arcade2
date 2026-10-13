@@ -25,7 +25,7 @@ export function ProductEditForm({ product, variants: initialVariants }: Props) {
   const [form, setForm] = useState({
     name: product.name,
     slug: product.slug,
-    type: product.type as 'game' | 'accessory',
+    type: product.type as 'game' | 'accessory' | 'topup' | 'giftcard' | 'subscription',
     status: product.status as 'draft' | 'active' | 'archived',
     brand: product.brand ?? '',
     platform: product.platform ?? '',
@@ -150,9 +150,12 @@ export function ProductEditForm({ product, variants: initialVariants }: Props) {
           <label><span className={labelCls}>Slug *</span><input className={inputCls} value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))} /></label>
           <label>
             <span className={labelCls}>Type</span>
-            <select className={inputCls} value={form.type} onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as 'game' | 'accessory' }))}>
+            <select className={inputCls} value={form.type} onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as 'game' | 'accessory' | 'topup' | 'giftcard' | 'subscription' }))}>
               <option value="game">Game</option>
               <option value="accessory">Accessory</option>
+              <option value="topup">Game Top-Up</option>
+              <option value="giftcard">Gift Card</option>
+              <option value="subscription">Subscription</option>
             </select>
           </label>
           <label>

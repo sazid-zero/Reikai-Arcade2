@@ -17,6 +17,8 @@ import {
   Mail,
   MapPin,
   FileText,
+  Key,
+  Zap,
 } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -42,6 +44,13 @@ export type OrderData = {
     sku: string | null
     quantity: number
     unitPrice: number
+  }>
+  digitalCodes?: Array<{
+    id: string
+    code: string
+    pin: string | null
+    status: string
+    variantTitle: string | null
   }>
 }
 
@@ -71,6 +80,7 @@ function formatTaka(paisa: number) {
 
 export function OrderTrackingClient({ order }: { order: OrderData }) {
   const [copied, setCopied] = useState(false)
+  const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null)
   const currentStep = getStepIndex(order.status)
   const isCancelled = order.status.toLowerCase() === 'cancelled'
 
@@ -79,6 +89,17 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
+
+  const copyCode = (codeId: string, text: string) => {
+    navigator.clipboard.writeText(text)
+    setCopiedCodeId(codeId)
+    setTimeout(() => setCopiedCodeId(null), 2000)
+  }
+
+  const deliveredCodes = order.digitalCodes || []
+  const hasDigitalItems = order.items.some(
+    (item) => item.sku?.startsWith('TOPUP-') || item.sku?.startsWith('GIFT-')
+  )
 
   const orderDate = new Date(order.createdAt).toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -182,6 +203,85 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
             )}
           </div>
         </div>
+
+        {/* Digital Voucher Codes Section */}
+        {deliveredCodes.length > 0 && (
+          <div className="mb-8 rounded-3xl border border-primary/40 bg-gradient-to-br from-[#24103c] via-[#120b22] to-black/80 p-6 md:p-8 shadow-[0_10px_40px_rgba(168,85,247,0.25)]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-5">
+              <div>
+                <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold flex items-center gap-1.5">
+                  <Key className="h-4 w-4" /> Digital Voucher Keys
+                </span>
+                <h2 className="mt-1 text-2xl font-black text-white">Your Digital Codes Are Ready!</h2>
+              </div>
+              <span className="self-start sm:self-auto rounded-full bg-emerald-500/20 border border-emerald-500/30 px-3 py-1 font-mono text-xs font-bold text-emerald-400">
+                100% Genuine · Verified
+              </span>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              {deliveredCodes.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-white/15 bg-white/[0.04] p-5 backdrop-blur"
+                >
+                  <div>
+                    <span className="text-xs text-white/50 block font-mono uppercase tracking-wider">
+                      {item.variantTitle || 'Digital Code'}
+                    </span>
+                    <div className="mt-1 flex items-center gap-3">
+                      <span className="font-mono text-xl sm:text-2xl font-black text-white tracking-widest selection:bg-primary">
+                        {item.code}
+                      </span>
+                      {item.pin && (
+                        <span className="rounded-lg bg-white/10 px-2 py-1 font-mono text-xs text-white/70">
+                          PIN: {item.pin}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => copyCode(item.id, item.code)}
+                    className="flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-mono text-xs font-bold text-primary-foreground hover:bg-primary/90 transition active:scale-95 shrink-0"
+                  >
+                    {copiedCodeId === item.id ? (
+                      <>
+                        <Check className="h-4 w-4" /> COPIED!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-4 w-4" /> COPY CODE
+                      </>
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Quick Redemption Instructions */}
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/40 p-4 text-xs text-white/60">
+              <span className="font-bold text-white block mb-1">🎮 How to Redeem on PlayStation:</span>
+              <span>
+                On your PS5 or PS4 console, open the <strong>PlayStation Store</strong>, select your profile avatar in the upper right, choose <strong>Redeem Code</strong>, and enter your 12-digit code above. Funds apply to your wallet immediately!
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Digital codes pending notice */}
+        {hasDigitalItems && deliveredCodes.length === 0 && !isCancelled && (
+          <div className="mb-8 rounded-3xl border border-amber-500/30 bg-amber-500/10 p-6 flex items-start gap-4">
+            <Zap className="h-6 w-6 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+            <div>
+              <h3 className="font-bold text-amber-300 text-sm">Digital Delivery In Progress</h3>
+              <p className="mt-1 text-xs text-amber-200/70 leading-relaxed">
+                Your order includes digital top-up or gift card items. Our automated vault verifies your payment and issues your unique 12-digit codes directly here. Please refresh this page in a moment or wait for confirmation.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Tracking info if available */}
         {order.trackingNumber && (

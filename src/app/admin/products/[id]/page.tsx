@@ -1,14 +1,13 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { auth } from '@lib/auth'
+import { getAdminSession } from '@lib/admin-auth'
 import { getAdminProduct, getProductVariants } from '../../actions'
 import { ProductEditForm } from './product-edit-form'
 
 type Props = { params: Promise<{ id: string }> }
 
 export default async function EditProductPage({ params }: Props) {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   const { id } = await params

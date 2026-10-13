@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { db } from '@lib/db'
-import { orders, orderItems } from '@lib/db/src/schema'
+import { orders, orderItems, digitalCodes, productVariants } from '@lib/db/src/schema'
 import { eq } from 'drizzle-orm'
 import { OrderTrackingClient } from './order-tracking-client'
 
@@ -26,10 +26,21 @@ export default async function OrderPage({ params }: Props) {
       notFound()
     }
 
-    const items = await db
-      .select()
-      .from(orderItems)
-      .where(eq(orderItems.orderId, order.id))
+    const [items, codes] = await Promise.all([
+      db.select().from(orderItems).where(eq(orderItems.orderId, order.id)),
+      db
+        .select({
+          id: digitalCodes.id,
+          code: digitalCodes.code,
+          pin: digitalCodes.pin,
+          status: digitalCodes.status,
+          deliveredAt: digitalCodes.deliveredAt,
+          variantTitle: productVariants.title,
+        })
+        .from(digitalCodes)
+        .leftJoin(productVariants, eq(digitalCodes.variantId, productVariants.id))
+        .where(eq(digitalCodes.orderId, order.id)),
+    ])
 
     return (
       <OrderTrackingClient
@@ -54,6 +65,13 @@ export default async function OrderPage({ params }: Props) {
             sku: i.sku,
             quantity: i.quantity,
             unitPrice: i.unitPrice,
+          })),
+          digitalCodes: codes.map((c) => ({
+            id: c.id,
+            code: c.code,
+            pin: c.pin,
+            status: c.status,
+            variantTitle: c.variantTitle,
           })),
         }}
       />

@@ -1,12 +1,11 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { auth } from '@lib/auth'
+import { getAdminSession } from '@lib/admin-auth'
 import { getInventory } from '../actions'
 import { InventoryAdjustRow } from './inventory-adjust-row'
 
 export default async function InventoryPage() {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   const items = await getInventory()

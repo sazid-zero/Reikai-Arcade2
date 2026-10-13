@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
-import { auth } from '@lib/auth'
+import { getAdminSession } from '@lib/admin-auth'
 import { getAdminCatalog } from '../actions'
 
 export default async function ProductsAdminPage({
@@ -9,7 +8,7 @@ export default async function ProductsAdminPage({
 }: {
   searchParams: Promise<{ type?: string; status?: string }>
 }) {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) redirect('/sign-in')
 
   const { type, status } = await searchParams
@@ -36,11 +35,13 @@ export default async function ProductsAdminPage({
           </Link>
         </div>
 
-        {/* Filters */}
         <div className="mt-5 flex flex-wrap gap-2">
           <Link href="/admin/products" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${!type && !status ? 'bg-primary text-primary-foreground' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>All</Link>
           <Link href="/admin/products?type=game" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${type === 'game' ? 'bg-primary text-primary-foreground' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Games</Link>
           <Link href="/admin/products?type=accessory" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${type === 'accessory' ? 'bg-primary text-primary-foreground' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Accessories</Link>
+          <Link href="/admin/products?type=topup" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${type === 'topup' ? 'bg-primary text-primary-foreground' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Top-Up</Link>
+          <Link href="/admin/products?type=giftcard" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${type === 'giftcard' ? 'bg-primary text-primary-foreground' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Gift Cards</Link>
+          <Link href="/admin/products?type=subscription" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${type === 'subscription' ? 'bg-violet-600 text-white' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Subscriptions</Link>
           <span className="mx-1 h-7 w-px self-center bg-white/10" />
           <Link href="/admin/products?status=active" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${status === 'active' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Active</Link>
           <Link href="/admin/products?status=draft" className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${status === 'draft' ? 'bg-white/10 text-foreground border border-white/20' : 'border border-white/10 text-muted-foreground hover:text-foreground'}`}>Drafts</Link>

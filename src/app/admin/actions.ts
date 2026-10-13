@@ -5,15 +5,16 @@ import { headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { auth } from '@lib/auth'
+import { getAdminSession, loginAdmin, logoutAdmin } from '@lib/admin-auth'
 import { db } from '@lib/db'
-import { adminUsers, inventoryAdjustments, orderItems, orders, productVariants, products } from '@lib/db/src/schema'
+import { adminUsers, digitalCodes, inventoryAdjustments, orderItems, orders, productVariants, products } from '@lib/db/src/schema'
 
 // ─── Schemas ──────────────────────────────────────────────────────────────────
 
 const productSchema = z.object({
   name: z.string().trim().min(2).max(120),
   slug: z.string().trim().regex(/^[a-z0-9-]+$/).max(120),
-  type: z.enum(['game', 'accessory']),
+  type: z.enum(['game', 'accessory', 'topup', 'giftcard', 'subscription']),
   status: z.enum(['draft', 'active', 'archived']),
   brand: z.string().trim().max(80).optional(),
   platform: z.string().trim().max(80).optional(),
@@ -47,24 +48,20 @@ const orderUpdateSchema = z.object({
   trackingNumber: z.string().max(200).optional(),
 })
 
-// ─── Auth Guard ────────────────────────────────────────────────────────────────
+// ─── Auth Guard & Actions ──────────────────────────────────────────────────────
 
 async function requireAdmin() {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAdminSession()
   if (!session?.user) throw new Error('Unauthorized')
-  const admins = await db.select({ userId: adminUsers.userId }).from(adminUsers).limit(1)
-  if (admins.length === 0) {
-    // First ever user becomes admin
-    await db.insert(adminUsers).values({ userId: session.user.id }).onConflictDoNothing()
-    return session.user
-  }
-  const allowed = await db
-    .select({ userId: adminUsers.userId })
-    .from(adminUsers)
-    .where(eq(adminUsers.userId, session.user.id))
-    .limit(1)
-  if (!allowed.length) throw new Error('Forbidden')
   return session.user
+}
+
+export async function loginAdminAction(formData: { email: string; pass: string }) {
+  return loginAdmin(formData.email, formData.pass)
+}
+
+export async function logoutAdminAction() {
+  await logoutAdmin()
 }
 
 // ─── Products ─────────────────────────────────────────────────────────────────
@@ -131,6 +128,9 @@ export async function createProduct(input: z.input<typeof productSchema>) {
   revalidatePath('/admin')
   revalidatePath('/games')
   revalidatePath('/accessories')
+  revalidatePath('/top-up')
+  revalidatePath('/gift-cards')
+  revalidatePath('/subscriptions')
   return product
 }
 
@@ -157,6 +157,9 @@ export async function updateProduct(id: string, input: z.input<typeof productSch
   revalidatePath(`/admin/products/${id}`)
   revalidatePath('/games')
   revalidatePath('/accessories')
+  revalidatePath('/top-up')
+  revalidatePath('/gift-cards')
+  revalidatePath('/subscriptions')
 }
 
 export async function archiveProduct(id: string) {
@@ -165,6 +168,9 @@ export async function archiveProduct(id: string) {
   revalidatePath('/admin')
   revalidatePath('/games')
   revalidatePath('/accessories')
+  revalidatePath('/top-up')
+  revalidatePath('/gift-cards')
+  revalidatePath('/subscriptions')
 }
 
 export async function deleteProduct(id: string) {
@@ -173,6 +179,9 @@ export async function deleteProduct(id: string) {
   revalidatePath('/admin')
   revalidatePath('/games')
   revalidatePath('/accessories')
+  revalidatePath('/top-up')
+  revalidatePath('/gift-cards')
+  revalidatePath('/subscriptions')
 }
 
 // ─── Variants ─────────────────────────────────────────────────────────────────
@@ -242,8 +251,7 @@ export async function getInventory() {
 }
 
 export async function adjustStock(variantId: string, delta: number, reason: string) {
-  await requireAdmin()
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await requireAdmin()
   // Update stock
   await db
     .update(productVariants)
@@ -257,7 +265,7 @@ export async function adjustStock(variantId: string, delta: number, reason: stri
     variantId,
     delta,
     reason,
-    createdBy: session?.user?.id ?? null,
+    createdBy: session?.id ?? null,
   })
   revalidatePath('/admin/inventory')
 }
@@ -287,7 +295,20 @@ export async function getAdminOrder(id: string) {
     .select()
     .from(orderItems)
     .where(eq(orderItems.orderId, id))
-  return { ...order, items }
+  const codes = await db
+    .select({
+      id: digitalCodes.id,
+      code: digitalCodes.code,
+      pin: digitalCodes.pin,
+      status: digitalCodes.status,
+      deliveredAt: digitalCodes.deliveredAt,
+      variantId: digitalCodes.variantId,
+      variantTitle: productVariants.title,
+    })
+    .from(digitalCodes)
+    .leftJoin(productVariants, eq(digitalCodes.variantId, productVariants.id))
+    .where(eq(digitalCodes.orderId, id))
+  return { ...order, items, codes }
 }
 
 export async function updateOrder(id: string, input: z.input<typeof orderUpdateSchema>) {
@@ -314,9 +335,172 @@ export async function promoteToAdmin(userId: string) {
 }
 
 export async function revokeAdmin(userId: string) {
-  const session = await auth.api.getSession({ headers: await headers() })
-  if (!session?.user) throw new Error('Unauthorized')
-  if (userId === session.user.id) throw new Error('Cannot revoke your own admin access')
+  const user = await requireAdmin()
+  if (userId === user.id) throw new Error('Cannot revoke your own admin access')
   await db.delete(adminUsers).where(eq(adminUsers.userId, userId))
   revalidatePath('/admin/users')
+}
+
+// ─── Digital Codes Management ────────────────────────────────────────────────
+
+export async function getAdminDigitalCodes(variantId?: string) {
+  await requireAdmin()
+  const conditions = variantId ? [eq(digitalCodes.variantId, variantId)] : []
+  return db
+    .select({
+      id: digitalCodes.id,
+      variantId: digitalCodes.variantId,
+      code: digitalCodes.code,
+      pin: digitalCodes.pin,
+      status: digitalCodes.status,
+      orderId: digitalCodes.orderId,
+      deliveredAt: digitalCodes.deliveredAt,
+      createdAt: digitalCodes.createdAt,
+      variantTitle: productVariants.title,
+      productName: products.name,
+      productSlug: products.slug,
+      productType: products.type,
+    })
+    .from(digitalCodes)
+    .innerJoin(productVariants, eq(digitalCodes.variantId, productVariants.id))
+    .innerJoin(products, eq(productVariants.productId, products.id))
+    .where(and(...conditions))
+    .orderBy(desc(digitalCodes.createdAt))
+}
+
+export async function getDigitalProductVariants() {
+  await requireAdmin()
+  return db
+    .select({
+      variantId: productVariants.id,
+      variantTitle: productVariants.title,
+      sku: productVariants.sku,
+      price: productVariants.price,
+      stockQuantity: productVariants.stockQuantity,
+      productId: products.id,
+      productName: products.name,
+      productType: products.type,
+      productSlug: products.slug,
+    })
+    .from(productVariants)
+    .innerJoin(products, eq(productVariants.productId, products.id))
+    .where(sql`${products.type} IN ('topup', 'giftcard', 'subscription')`)
+    .orderBy(asc(products.name), asc(productVariants.price))
+}
+
+export async function addBatchDigitalCodes(variantId: string, codesText: string) {
+  await requireAdmin()
+  const rawCodes = codesText
+    .split(/[\r\n,]+/)
+    .map((c) => c.trim())
+    .filter((c) => c.length > 0)
+
+  if (rawCodes.length === 0) {
+    throw new Error('No valid codes provided')
+  }
+
+  for (const code of rawCodes) {
+    await db.insert(digitalCodes).values({
+      variantId,
+      code,
+      status: 'available',
+    })
+  }
+
+  const [stockResult] = await db
+    .select({ count: count() })
+    .from(digitalCodes)
+    .where(and(eq(digitalCodes.variantId, variantId), eq(digitalCodes.status, 'available')))
+
+  await db
+    .update(productVariants)
+    .set({ stockQuantity: stockResult.count, updatedAt: new Date() })
+    .where(eq(productVariants.id, variantId))
+
+  revalidatePath('/admin/digital-codes')
+  revalidatePath('/admin/inventory')
+  revalidatePath('/admin/products')
+  return { addedCount: rawCodes.length, newStock: stockResult.count }
+}
+
+export async function deleteDigitalCode(codeId: string) {
+  await requireAdmin()
+  const [code] = await db.select().from(digitalCodes).where(eq(digitalCodes.id, codeId)).limit(1)
+  if (!code) throw new Error('Code not found')
+
+  await db.delete(digitalCodes).where(eq(digitalCodes.id, codeId))
+
+  if (code.status === 'available') {
+    const [stockResult] = await db
+      .select({ count: count() })
+      .from(digitalCodes)
+      .where(and(eq(digitalCodes.variantId, code.variantId), eq(digitalCodes.status, 'available')))
+
+    await db
+      .update(productVariants)
+      .set({ stockQuantity: stockResult.count, updatedAt: new Date() })
+      .where(eq(productVariants.id, code.variantId))
+  }
+
+  revalidatePath('/admin/digital-codes')
+  revalidatePath('/admin/inventory')
+}
+
+export async function assignAndDeliverDigitalCodesForOrder(orderId: string) {
+  await requireAdmin()
+  const [order] = await db.select().from(orders).where(eq(orders.id, orderId)).limit(1)
+  if (!order) throw new Error('Order not found')
+
+  const items = await db.select().from(orderItems).where(eq(orderItems.orderId, orderId))
+
+  for (const item of items) {
+    if (!item.variantId) continue
+    const alreadyDelivered = await db
+      .select()
+      .from(digitalCodes)
+      .where(and(eq(digitalCodes.orderId, orderId), eq(digitalCodes.variantId, item.variantId)))
+
+    const needed = item.quantity - alreadyDelivered.length
+    if (needed <= 0) continue
+
+    const available = await db
+      .select()
+      .from(digitalCodes)
+      .where(and(eq(digitalCodes.variantId, item.variantId), eq(digitalCodes.status, 'available')))
+      .limit(needed)
+
+    for (const code of available) {
+      await db
+        .update(digitalCodes)
+        .set({
+          status: 'delivered',
+          orderId,
+          deliveredAt: new Date(),
+        })
+        .where(eq(digitalCodes.id, code.id))
+    }
+
+    const [stockResult] = await db
+      .select({ count: count() })
+      .from(digitalCodes)
+      .where(and(eq(digitalCodes.variantId, item.variantId), eq(digitalCodes.status, 'available')))
+
+    await db
+      .update(productVariants)
+      .set({ stockQuantity: stockResult.count, updatedAt: new Date() })
+      .where(eq(productVariants.id, item.variantId))
+  }
+
+  await db
+    .update(orders)
+    .set({
+      fulfillmentStatus: 'fulfilled',
+      status: order.status === 'pending' ? 'confirmed' : order.status,
+      updatedAt: new Date(),
+    })
+    .where(eq(orders.id, orderId))
+
+  revalidatePath(`/admin/orders/${orderId}`)
+  revalidatePath('/admin/orders')
+  revalidatePath(`/orders/${orderId}`)
 }

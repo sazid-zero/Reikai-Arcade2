@@ -11,6 +11,8 @@ export type CartProduct = {
   price: number; // in display currency (Taka), NOT paisa
   image?: string | null;
   type?: string;
+  variantId?: string;
+  sku?: string;
   // Legacy fields (optional)
   glyph?: string;
   [key: string]: unknown;
@@ -156,15 +158,24 @@ function GlobalCartPanel() {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          items: cart.map((item) => ({
-            variantId: item.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.id) ? item.id : undefined,
-            productName: item.name,
-            variantTitle: item.selectedEdition,
-            quantity: item.quantity,
-            // price is in Taka, API expects paisa
-            unitPrice: Math.round(item.price * 100),
-            sku: item.id,
-          })),
+          items: cart.map((item) => {
+            const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+            const targetVariantId = item.variantId && uuidPattern.test(item.variantId)
+              ? item.variantId
+              : item.id && uuidPattern.test(item.id)
+                ? item.id
+                : undefined;
+
+            return {
+              variantId: targetVariantId,
+              productName: item.name,
+              variantTitle: item.selectedEdition,
+              quantity: item.quantity,
+              // price is in Taka, API expects paisa
+              unitPrice: Math.round(item.price * 100),
+              sku: (item.sku as string) || item.id,
+            };
+          }),
         }),
       });
       const data = await response.json();
