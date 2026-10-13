@@ -814,16 +814,19 @@
   display: grid;
   grid-template-columns: minmax(320px, 0.95fr) minmax(400px, 1.05fr);
   gap: 44px;
-  align-items: start;
+  align-items: center;
 }
 
 /* ── Left Panel ── */
 .cat-panel-left {
   position: relative;
   overflow: hidden;
-  align-self: start;
+  align-self: center;
   width: 100%;
   max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .cat-panel-img {
   width: 100%;
