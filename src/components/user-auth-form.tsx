@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -22,7 +22,7 @@ interface UserAuthFormProps {
   initialMode?: 'signin' | 'signup'
 }
 
-export function UserAuthForm({ initialMode = 'signin' }: UserAuthFormProps) {
+function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectUrl = searchParams.get('redirect') || '/'
@@ -590,5 +590,19 @@ export function UserAuthForm({ initialMode = 'signin' }: UserAuthFormProps) {
         </div>
       </div>
     </main>
+  )
+}
+
+export function UserAuthForm(props: UserAuthFormProps) {
+  return (
+    <Suspense
+      fallback={
+        <main className="site-shell min-h-screen px-4 py-16 flex items-center justify-center">
+          <div className="h-96 w-full max-w-md animate-pulse rounded-3xl bg-white/5 border border-white/10" />
+        </main>
+      }
+    >
+      <UserAuthFormContent {...props} />
+    </Suspense>
   )
 }

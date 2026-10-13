@@ -7921,11 +7921,11 @@
   --reikai-glass-border: rgba(168, 85, 247, 0.28);
 }
 
-/* Hero section: 100vh full-screen interactive showcase */
+/* Hero section: 380vh scroll track on PC for scroll-triggered tab & 3D transitions, 100vh on phone */
 .hero-scroll-track {
   position: relative;
   height: 100vh;
-  min-height: 700px;
+  min-height: 640px;
   width: 100%;
 }
 
@@ -7938,6 +7938,20 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--reikai-abyss);
+}
+
+@media (min-width: 769px) {
+  .hero-scroll-track {
+    height: 380vh;
+    min-height: 2400px;
+  }
+
+  .hero-sticky-viewport {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+  }
 }
 
 /* Ambient Layered Aurora ribbons & chromatic space glow */
@@ -8228,85 +8242,53 @@
   pointer-events: none;
 }
 
-/* ── SLOW & SMOOTH STAGGERED SCROLL-UP TAB TRANSITIONS ── */
+/* ── HERO MULTI-PHASE STAGES (Continuous scroll parallax on PC, instant tabs on phone) ── */
 .hero-stage-item {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  will-change: opacity, transform, filter;
+}
+
+/* PC / Big Screen: Children are positioned with smooth multi-depth scroll parallax */
+.hero-stage-desktop .hero-protocol-badge,
+.hero-stage-desktop .hero-editorial-headline,
+.hero-stage-desktop .hero-two-col-grid,
+.hero-stage-desktop .hero-action-buttons {
+  opacity: 1;
+  filter: none;
+  will-change: transform;
+}
+
+/* Mobile manual tab switching states */
+.hero-stage-mobile {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  will-change: opacity, transform, filter;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  will-change: opacity;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
-.hero-stage-item.hero-stage-active {
+.hero-stage-mobile.hero-stage-active {
   pointer-events: auto;
   opacity: 1;
   visibility: visible;
   z-index: 5;
 }
 
-/* Individual child elements for slow, staggered upward emergence */
-.hero-stage-item .hero-protocol-badge,
-.hero-stage-item .hero-editorial-headline,
-.hero-stage-item .hero-two-col-grid,
-.hero-stage-item .hero-action-buttons {
-  transform: translate3d(0, 36px, 0);
+.hero-stage-mobile.hero-stage-inactive {
+  pointer-events: none;
   opacity: 0;
-  filter: blur(8px);
-  will-change: transform, opacity, filter;
-  transition:
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
 }
 
-/* ACTIVE TAB: Elements rise smoothly up into place with rich staggered cadence */
-.hero-stage-item.hero-stage-active .hero-protocol-badge {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  filter: blur(0px);
-  transition-delay: 0.05s;
-}
-
-.hero-stage-item.hero-stage-active .hero-editorial-headline {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  filter: blur(0px);
-  transition-delay: 0.14s;
-}
-
-.hero-stage-item.hero-stage-active .hero-two-col-grid {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  filter: blur(0px);
-  transition-delay: 0.22s;
-}
-
-.hero-stage-item.hero-stage-active .hero-action-buttons {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  filter: blur(0px);
-  transition-delay: 0.30s;
-}
-
-/* INACTIVE TAB: Elements float smoothly UPWARDS and dissolve away */
-.hero-stage-item.hero-stage-inactive .hero-protocol-badge,
-.hero-stage-item.hero-stage-inactive .hero-editorial-headline,
-.hero-stage-item.hero-stage-inactive .hero-two-col-grid,
-.hero-stage-item.hero-stage-inactive .hero-action-buttons {
-  transform: translate3d(0, -32px, 0);
-  opacity: 0;
-  filter: blur(6px);
-  transition:
-    transform 0.6s cubic-bezier(0.32, 0, 0.67, 0),
-    opacity 0.5s ease,
-    filter 0.5s ease;
-  transition-delay: 0s;
-}
 
 .hero-editorial-headline {
   margin: 0 0 24px 0;

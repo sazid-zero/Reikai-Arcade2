@@ -960,22 +960,22 @@ function getStageMotion(progress: number, stageIdx: number): StageMotion {
     };
   }
 
-  // 4. Exiting: scrolls DOWN and parallax, completely gone (0px -> +110px)
+  // 4. Exiting: scrolls UP and floats away into the void (0px -> -110px)
   if (progress >= exitStart && progress < exitEnd) {
     const t = (progress - exitStart) / (exitEnd - exitStart);
     const ease = t * t * (3 - 2 * t);
     return {
       opacity: 1 - ease,
-      translateY: ease * 110,
+      translateY: -ease * 110,
       blur: ease * 8,
       active: ease < 0.5,
     };
   }
 
-  // 5. Completely gone
+  // 5. Completely gone above
   return {
     opacity: 0,
-    translateY: 110,
+    translateY: -110,
     blur: 8,
     active: false,
   };
@@ -994,15 +994,28 @@ export default function StorefrontPage() {
   const [signalSubscribed, setSignalSubscribed] = useState(false);
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const [activeStage, setActiveStage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const heroTrackRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   useScrollAnimations(reducedMotion);
 
   const jumpToStage = (idx: number) => {
     setActiveStage(idx);
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-    const poses = isMobile ? MOBILE_HERO_POSES : HERO_POSES;
-    setStagePose(poses[idx]);
+    const mobileNow = typeof window !== 'undefined' && window.innerWidth <= 768;
+    if (mobileNow) {
+      setStagePose(MOBILE_HERO_POSES[idx]);
+    } else {
+      const track = heroTrackRef.current;
+      if (!track) return;
+      const trackTop = window.scrollY + track.getBoundingClientRect().top;
+      const trackScrollable = track.offsetHeight - window.innerHeight;
+      const targetScroll = trackTop + (STAGE_CENTERS[idx] ?? 0) * trackScrollable;
+      if (lenis) {
+        lenis.scrollTo(targetScroll, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    }
   };
 
   useEffect(() => {
@@ -1025,15 +1038,66 @@ export default function StorefrontPage() {
     const onPreference = () => setReducedMotion(media.matches);
     media.addEventListener('change', onPreference);
 
+    const checkMobile = () => {
+      const mobileNow = window.innerWidth <= 768;
+      setIsMobile(mobileNow);
+      return mobileNow;
+    };
+
     const onScroll = () => {
       const scrollTop = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(max > 0 ? Math.min(1, scrollTop / max) : 0);
 
-      // Smoothly fade out model when scrolling past hero track:
       const track = heroTrackRef.current;
       if (track) {
         const rect = track.getBoundingClientRect();
+        const trackScrollable = track.offsetHeight - window.innerHeight;
+        const mobileNow = window.innerWidth <= 768;
+
+        // On PC/desktop with sticky 380vh scroll track: continuously animate stages & 3D pose
+        if (!mobileNow && trackScrollable > 0) {
+          const rawProgress = -rect.top / trackScrollable;
+          const clamped = Math.max(0, Math.min(1, rawProgress));
+          setHeroScrollProgress(clamped);
+
+          // Find active / nearest stage center
+          let nearestStage = 0;
+          let minDiff = 999;
+          STAGE_CENTERS.forEach((c, i) => {
+            const d = Math.abs(clamped - c);
+            if (d < minDiff) {
+              minDiff = d;
+              nearestStage = i;
+            }
+          });
+          setActiveStage(nearestStage);
+
+          // Continuous 3D controller interpolation across the 4 hero stages
+          let segIndex = 0;
+          if (clamped >= STAGE_CENTERS[2]) segIndex = 2;
+          else if (clamped >= STAGE_CENTERS[1]) segIndex = 1;
+          else segIndex = 0;
+
+          const span = (STAGE_CENTERS[segIndex + 1] ?? 1) - STAGE_CENTERS[segIndex];
+          const segT = span > 0 ? Math.max(0, Math.min(1, (clamped - STAGE_CENTERS[segIndex]) / span)) : 0;
+          const eased = segT * segT * (3 - 2 * segT);
+          const p0 = HERO_POSES[segIndex];
+          const p1 = HERO_POSES[segIndex + 1] ?? HERO_POSES[segIndex];
+          const mix = (a: number, b: number) => a + (b - a) * eased;
+
+          setStagePose({
+            theta: mix(p0.theta, p1.theta),
+            phi: mix(p0.phi, p1.phi),
+            radius: mix(p0.radius, p1.radius),
+            roll: mix(p0.roll ?? 0, p1.roll ?? 0),
+            x: mix(p0.x, p1.x),
+            y: mix(p0.y ?? 0, p1.y ?? 0),
+            scale: mix(p0.scale, p1.scale),
+          });
+        }
+
+        // Smoothly fade out model when scrolling past hero track:
         if (rect.bottom < window.innerHeight) {
           const exitDist = window.innerHeight - rect.bottom;
           const exitFade = Math.max(0, 1 - exitDist / 350);
@@ -1045,26 +1109,36 @@ export default function StorefrontPage() {
     };
 
     const onResize = () => {
-      const isMobile = window.innerWidth <= 768;
-      const poses = isMobile ? MOBILE_HERO_POSES : HERO_POSES;
-      setStagePose(poses[activeStage]);
+      const mobileNow = checkMobile();
+      if (mobileNow) {
+        setStagePose(MOBILE_HERO_POSES[activeStage]);
+      }
       onScroll();
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
+    if (lenis) {
+      lenis.on('scroll', onScroll);
+    }
 
-    // Initial pose setup
-    const isMobileInit = window.innerWidth <= 768;
-    setStagePose((isMobileInit ? MOBILE_HERO_POSES : HERO_POSES)[0]);
+    const isInitMobile = checkMobile();
+    if (isInitMobile) {
+      setStagePose(MOBILE_HERO_POSES[0]);
+    } else {
+      setStagePose(HERO_POSES[0]);
+    }
     onScroll();
 
     return () => {
       media.removeEventListener('change', onPreference);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      if (lenis) {
+        lenis.off('scroll', onScroll);
+      }
     };
-  }, [activeStage]);
+  }, [activeStage, lenis]);
 
   const filteredProducts = useMemo(() => {
     const q = catalogSearch.trim().toLowerCase();
@@ -1229,36 +1303,140 @@ export default function StorefrontPage() {
             })}
           </aside>
 
-          {/* Left/Center Multi-Phase Story Hero Content (Sequential slow & smooth scroll up / scroll down parallax) */}
+          {/* Left/Center Multi-Phase Story Hero Content (Scroll parallax on PC, active tab on phone) */}
           <div className="hero-story-container">
             {heroStages.map((stage, idx) => {
-              const isActive = activeStage === idx;
+              if (isMobile) {
+                const isActive = activeStage === idx;
+                return (
+                  <div
+                    key={stage.num}
+                    className={`hero-stage-item hero-stage-mobile ${isActive ? 'hero-stage-active' : 'hero-stage-inactive'}`}
+                    aria-hidden={!isActive}
+                  >
+                    {/* Eyebrow badge */}
+                    <div className="eyebrow hero-protocol-badge mb-3">
+                      <Sparkles size={11} className="text-[#00f0ff]" />
+                      <span>{stage.badge}</span>
+                    </div>
+
+                    {/* Editorial Headline */}
+                    <h1 className="hero-editorial-headline hero-editorial-gradient">
+                      {stage.title}
+                    </h1>
+
+                    {/* Story Paragraphs */}
+                    <div className="hero-two-col-grid">
+                      <p className="hero-story-para">{stage.p1}</p>
+                      <p className="hero-story-para hero-story-para-sub">{stage.p2}</p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="hero-action-buttons">
+                      {stage.ctaPrimaryHref ? (
+                        <Link
+                          href={stage.ctaPrimaryHref}
+                          className="hero-primary-btn"
+                          data-testid={`button-hero-primary-${idx}`}
+                        >
+                          <ShoppingCart size={15} />
+                          <span>{stage.ctaPrimary}</span>
+                          <ArrowRight size={15} />
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          className="hero-primary-btn"
+                          onClick={() => stage.ctaPrimaryTarget && scrollToId(stage.ctaPrimaryTarget, lenis)}
+                          data-testid={`button-hero-primary-${idx}`}
+                        >
+                          <ShoppingCart size={15} />
+                          <span>{stage.ctaPrimary}</span>
+                          <ArrowRight size={15} />
+                        </button>
+                      )}
+
+                      {stage.ctaSecondaryHref ? (
+                        <Link
+                          href={stage.ctaSecondaryHref}
+                          className="hero-secondary-btn"
+                          data-testid={`button-hero-secondary-${idx}`}
+                        >
+                          <Globe size={15} />
+                          <span>{stage.ctaSecondary}</span>
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          className="hero-secondary-btn"
+                          onClick={() => stage.ctaSecondaryTarget && scrollToId(stage.ctaSecondaryTarget, lenis)}
+                          data-testid={`button-hero-secondary-${idx}`}
+                        >
+                          <Globe size={15} />
+                          <span>{stage.ctaSecondary}</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
+
+              // PC / Big Screen version: continuous scroll-triggered tab switching with multi-depth parallax
+              const motion = getStageMotion(heroScrollProgress, idx);
+              const isVisible = motion.opacity > 0.005;
+              const y = motion.translateY;
 
               return (
                 <div
                   key={stage.num}
-                  className={`hero-stage-item ${isActive ? 'hero-stage-active' : 'hero-stage-inactive'}`}
-                  aria-hidden={!isActive}
+                  className="hero-stage-item hero-stage-desktop"
+                  style={{
+                    opacity: motion.opacity,
+                    filter: motion.blur > 0.15 ? `blur(${motion.blur.toFixed(1)}px)` : 'none',
+                    pointerEvents: motion.active ? 'auto' : 'none',
+                    visibility: isVisible ? 'visible' : 'hidden',
+                  }}
+                  aria-hidden={!motion.active}
                 >
-                  {/* Eyebrow badge */}
-                  <div className="eyebrow hero-protocol-badge mb-3">
+                  {/* Eyebrow badge (Parallax factor 1.3 - moves faster) */}
+                  <div
+                    className="eyebrow hero-protocol-badge mb-3"
+                    style={{
+                      transform: `translate3d(0, ${(y * 1.3).toFixed(1)}px, 0)`,
+                    }}
+                  >
                     <Sparkles size={11} className="text-[#00f0ff]" />
                     <span>{stage.badge}</span>
                   </div>
 
-                  {/* Editorial Headline */}
-                  <h1 className="hero-editorial-headline hero-editorial-gradient">
+                  {/* Editorial Headline (Parallax factor 1.0) */}
+                  <h1
+                    className="hero-editorial-headline hero-editorial-gradient"
+                    style={{
+                      transform: `translate3d(0, ${y.toFixed(1)}px, 0)`,
+                    }}
+                  >
                     {stage.title}
                   </h1>
 
-                  {/* Story Paragraphs */}
-                  <div className="hero-two-col-grid">
+                  {/* Story Paragraphs (Parallax factor 0.75 - subtle drag) */}
+                  <div
+                    className="hero-two-col-grid"
+                    style={{
+                      transform: `translate3d(0, ${(y * 0.75).toFixed(1)}px, 0)`,
+                    }}
+                  >
                     <p className="hero-story-para">{stage.p1}</p>
                     <p className="hero-story-para hero-story-para-sub">{stage.p2}</p>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="hero-action-buttons">
+                  {/* Action Buttons (Parallax factor 0.55 - anchors composition) */}
+                  <div
+                    className="hero-action-buttons"
+                    style={{
+                      transform: `translate3d(0, ${(y * 0.55).toFixed(1)}px, 0)`,
+                    }}
+                  >
                     {stage.ctaPrimaryHref ? (
                       <Link
                         href={stage.ctaPrimaryHref}
@@ -1326,7 +1504,11 @@ export default function StorefrontPage() {
             <div className="hero-stage-indicator-bar" aria-hidden="true">
               <div
                 className="hero-stage-indicator-fill"
-                style={{ width: `${((activeStage + 1) / heroStages.length) * 100}%` }}
+                style={{
+                  width: isMobile
+                    ? `${((activeStage + 1) / heroStages.length) * 100}%`
+                    : `${Math.max(4, Math.min(100, heroScrollProgress * 100))}%`,
+                }}
               />
             </div>
           </div>

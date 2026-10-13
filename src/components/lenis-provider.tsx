@@ -2,7 +2,7 @@
 
 import Lenis from 'lenis';
 import gsap from 'gsap';
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
 
 const LenisCtx = createContext<Lenis | null>(null);
 
@@ -11,7 +11,7 @@ export function useLenis() {
 }
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -20,20 +20,22 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       smoothWheel: true,
       touchMultiplier: 1.8,
     });
-    lenisRef.current = lenis;
+    setLenisInstance(lenis);
 
     // Sync Lenis with GSAP ticker for perfect ScrollTrigger compat
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    const onTick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(onTick);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      gsap.ticker.remove(onTick);
       lenis.destroy();
-      lenisRef.current = null;
+      setLenisInstance(null);
     };
   }, []);
 
   return (
-    <LenisCtx.Provider value={lenisRef.current}>
+    <LenisCtx.Provider value={lenisInstance}>
       {children}
     </LenisCtx.Provider>
   );
