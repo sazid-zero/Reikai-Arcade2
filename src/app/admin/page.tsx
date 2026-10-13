@@ -6,7 +6,7 @@ import { getAdminCatalog, getAdminMetrics, getAdminOrders, logoutAdminAction } f
 
 export default async function AdminPage() {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const [catalog, metrics, recentOrders] = await Promise.all([
     getAdminCatalog(),
@@ -53,7 +53,7 @@ export default async function AdminPage() {
             <form action={async () => {
               'use server'
               await logoutAdminAction()
-              redirect('/sign-in')
+              redirect('/admin/sign-in')
             }}>
               <button
                 type="submit"

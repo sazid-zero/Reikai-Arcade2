@@ -18,7 +18,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default async function OrderDetailPage({ params }: Props) {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const { id } = await params
   const order = await getAdminOrder(id)

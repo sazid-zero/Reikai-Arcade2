@@ -82,13 +82,63 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     const reqHeaders = await headers()
     const session = await auth.api.getSession({ headers: reqHeaders })
     if (session?.user) {
+      const creds = getAdminCredentials()
+      const userRole = (session.user as any).role
+      const isEmailAdmin = session.user.email?.toLowerCase() === creds.email
+
+      if (isEmailAdmin || userRole === 'admin') {
+        return {
+          user: {
+            id: session.user.id,
+            email: session.user.email,
+            name: session.user.name || 'Admin',
+            role: 'admin',
+          },
+        }
+      }
+    }
+  } catch {
+    // ignore
+  }
+
+  return null
+}
+
+export type CurrentSessionUser = {
+  id: string
+  email: string
+  phone?: string | null
+  name: string
+  role: 'admin' | 'user'
+}
+
+export async function getCurrentUserSession(): Promise<CurrentSessionUser | null> {
+  // 1. Check if admin session cookie exists
+  const adminSession = await getAdminSession()
+  if (adminSession?.user) {
+    return {
+      id: adminSession.user.id,
+      email: adminSession.user.email,
+      phone: null,
+      name: adminSession.user.name,
+      role: 'admin',
+    }
+  }
+
+  // 2. Check better-auth session
+  try {
+    const reqHeaders = await headers()
+    const session = await auth.api.getSession({ headers: reqHeaders })
+    if (session?.user) {
+      const u = session.user as any
+      const creds = getAdminCredentials()
+      const isAdmin = u.email?.toLowerCase() === creds.email || u.role === 'admin'
       return {
-        user: {
-          id: session.user.id,
-          email: session.user.email,
-          name: session.user.name || 'Admin',
-          role: 'admin',
-        },
+        id: u.id,
+        email: u.email,
+        phone: u.phone || null,
+        name: u.name || 'User',
+        role: isAdmin ? 'admin' : 'user',
       }
     }
   } catch {

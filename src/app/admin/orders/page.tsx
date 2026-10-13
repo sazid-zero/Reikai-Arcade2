@@ -24,7 +24,7 @@ export default async function OrdersPage({
   searchParams: Promise<{ status?: string }>
 }) {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const { status } = await searchParams
   const allOrders = await getAdminOrders()

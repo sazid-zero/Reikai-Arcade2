@@ -6,7 +6,7 @@ import { InventoryAdjustRow } from './inventory-adjust-row'
 
 export default async function InventoryPage() {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const items = await getInventory()
   const outOfStock = items.filter((i) => i.stockQuantity === 0).length

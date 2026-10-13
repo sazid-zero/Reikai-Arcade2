@@ -8,7 +8,7 @@ type Props = { params: Promise<{ id: string }> }
 
 export default async function EditProductPage({ params }: Props) {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const { id } = await params
   const [product, variants] = await Promise.all([

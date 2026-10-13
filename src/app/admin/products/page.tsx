@@ -9,7 +9,7 @@ export default async function ProductsAdminPage({
   searchParams: Promise<{ type?: string; status?: string }>
 }) {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const { type, status } = await searchParams
   const allProducts = await getAdminCatalog()

@@ -10,7 +10,7 @@ export const metadata = {
 
 export default async function AdminDigitalCodesPage() {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const [variants, codes] = await Promise.all([
     getDigitalProductVariants(),

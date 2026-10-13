@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function AdminTutorialVideoPage() {
   const session = await getAdminSession();
-  if (!session?.user) redirect('/sign-in');
+  if (!session?.user) redirect('/admin/sign-in');
 
   return <TutorialVideoClient />;
 }

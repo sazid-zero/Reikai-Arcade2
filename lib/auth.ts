@@ -17,6 +17,19 @@ const developmentOrigins = [
 export const auth = betterAuth({
   database: new Pool({ connectionString: process.env.DATABASE_URL }),
   emailAndPassword: { enabled: true },
+  user: {
+    additionalFields: {
+      phone: {
+        type: 'string',
+        required: false,
+      },
+      role: {
+        type: 'string',
+        required: false,
+        defaultValue: 'user',
+      },
+    },
+  },
   secret: process.env.BETTER_AUTH_SECRET || 'reikai-arcade-default-secret-key-production-32chars',
   baseURL:
     process.env.BETTER_AUTH_URL ||

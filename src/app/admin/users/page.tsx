@@ -5,7 +5,7 @@ import { getAdminSession, getAdminCredentials } from '@lib/admin-auth'
 
 export default async function AdminUsersPage() {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   const creds = getAdminCredentials()
 

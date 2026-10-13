@@ -5,7 +5,7 @@ import { NewProductForm } from './new-product-form'
 
 export default async function NewProductPage() {
   const session = await getAdminSession()
-  if (!session?.user) redirect('/sign-in')
+  if (!session?.user) redirect('/admin/sign-in')
 
   return (
     <main className="site-shell min-h-screen px-5 py-8 md:px-10">
