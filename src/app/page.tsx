@@ -19,6 +19,7 @@ import {
   Headphones,
   Heart,
   Layers,
+  Lock,
   Menu,
   Minus,
   Plus,
@@ -54,7 +55,7 @@ type StagePose = {
 // Theta accumulates +360° per transition = guaranteed full-spin between every section.
 // Effective view angle = theta % 360:
 //   180° = front face (top-down look),  90° = left side,  270° = right side,  0° = back
-const heroPose: StagePose = { x: 0, y: 0, scale: 1.10, theta: 184, phi: 43, radius: 1.95, roll: -7 }; // Centered initial pose
+const heroPose: StagePose = { x: 0, y: 0, scale: 1.14, theta: 180, phi: 46, radius: 1.84, roll: 0 }; // Centered initial pose
 
 const products: Product[] = [
   // ── GAMES ──────────────────────────────────
@@ -488,11 +489,16 @@ function ModelStage({
         model.setAttribute('camera-controls', '');
         model.setAttribute('disable-zoom', '');
         model.setAttribute('interaction-prompt', 'none');
+        model.setAttribute('touch-action', 'none');
+        model.style.touchAction = 'none';
+        model.style.width = '100%';
+        model.style.height = '100%';
+        model.style.cursor = 'grab';
         model.setAttribute('shadow-intensity', '1.4');
         model.setAttribute('shadow-softness', '0.7');
         model.setAttribute('exposure', '1.15');
         model.setAttribute('camera-orbit', orbit);
-        model.setAttribute('interpolation-decay', '0');
+        model.setAttribute('interpolation-decay', '320');
         model.setAttribute('loading', 'eager');
         model.setAttribute('reveal', 'auto');
         model.addEventListener('load', () => active && setReady(true));
@@ -524,7 +530,14 @@ function ModelStage({
   }, [webglSupported]);
 
   useEffect(() => {
-    if (modelRef.current) modelRef.current.setAttribute('camera-orbit', orbit);
+    if (modelRef.current) {
+      try {
+        (modelRef.current as any).cameraOrbit = orbit;
+      } catch {
+        // fallback
+      }
+      modelRef.current.setAttribute('camera-orbit', orbit);
+    }
   }, [orbit]);
 
   const dockStyle = {
@@ -544,7 +557,7 @@ function ModelStage({
         <div
           ref={hostRef}
           className="model-host"
-          style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}
+          style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1, touchAction: 'none' }}
         />
       )}
     </div>
@@ -761,58 +774,76 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
       existing.inStock = existing.totalStock > 0
       // Use lowest price variant
       if (r.price && (r.price / 100) < existing.price) {
-        existing.price = r.price / 100
+        existing.price = r.price / 100;
       }
     }
   }
-  return Array.from(map.values())
+  return Array.from(map.values());
 }
 
+type HeroStage = {
+  num: string;
+  tabLabel: string;
+  badge: string;
+  title: string;
+  p1: string;
+  p2: string;
+  ctaPrimary: string;
+  ctaPrimaryHref?: string;
+  ctaPrimaryTarget?: string;
+  ctaSecondary: string;
+  ctaSecondaryHref?: string;
+  ctaSecondaryTarget?: string;
+};
 
-const heroStages = [
+const heroStages: HeroStage[] = [
   {
     num: '01',
-    badge: 'REIKAI VOID PROTOCOL // DISCOVER',
-    title: 'Reikai Arcade',
-    p1: 'Power your games. Own your digital world. A premium marketplace for digital gaming products, subscriptions, and accessories.',
-    p2: 'Experience the future of digital gaming with instant delivery, secure wallet system, and exclusive offers on game top-ups, gift cards, and more.',
-    ctaPrimary: 'Shop The Drop',
-    ctaPrimaryTarget: 'browse',
+    tabLabel: 'GAMES',
+    badge: 'CORE GAMING CATALOG // PHYSICAL & DIGITAL',
+    title: 'Console & PC Games',
+    p1: 'Original PS5, PS4, Nintendo Switch and PC game discs and digital editions.',
+    p2: 'Grab the latest AAA releases, legendary RPGs, and indie blockbusters with instant dispatch and guaranteed authenticity.',
+    ctaPrimary: 'Shop Games',
+    ctaPrimaryHref: '/games',
+    ctaSecondary: 'Browse Drop',
+    ctaSecondaryTarget: 'browse',
+  },
+  {
+    num: '02',
+    tabLabel: 'ACCESSORIES',
+    badge: 'PRO HARDWARE // CONTROLLERS & GEAR',
+    title: 'Gaming Accessories',
+    p1: 'High-performance DualSense Wireless controllers, custom faceplates, pro headsets, and charging docks.',
+    p2: 'Equip tournament-grade precision, tactile haptic feedback, and celestial aesthetic mods for your setup.',
+    ctaPrimary: 'Shop Accessories',
+    ctaPrimaryHref: '/accessories',
     ctaSecondary: 'Explore Categories',
     ctaSecondaryTarget: 'categories',
   },
   {
-    num: '02',
-    badge: 'INSTANT PLATFORM RELOAD // SPEED',
-    title: 'Power Your Game',
-    p1: 'Game top-ups for all major platforms. From mobile hits to PC masterpieces. Fuel your gaming journey with seamless digital delivery.',
+    num: '03',
+    tabLabel: 'TOP-UPS',
+    badge: 'INSTANT DIGITAL RELOAD // ZERO FRICTION',
+    title: 'Game Top-Ups',
+    p1: 'Instant in-game credits, wallet codes, and digital reloads for all major mobile, PC, and console games.',
     p2: 'Instant code dispatch, 100% verified publisher vouchers, zero waiting time directly to your player account.',
     ctaPrimary: 'Instant Top-Up',
-    ctaPrimaryTarget: 'top-up',
-    ctaSecondary: 'Browse Games',
-    ctaSecondaryTarget: 'browse',
-  },
-  {
-    num: '03',
-    badge: 'ENCRYPTED ESCROW // ZERO FRICTION',
-    title: 'Digital Wallet',
-    p1: 'Next-generation digital gaming wallet with encrypted instant checkout, reward cashback tokens, and multi-currency support.',
-    p2: 'Zero transaction friction. Deposit, top-up, and unlock members-only vault drops in a single tap.',
-    ctaPrimary: 'Explore Drops',
-    ctaPrimaryTarget: 'browse',
-    ctaSecondary: 'Protocol Specs',
-    ctaSecondaryTarget: 'signal',
+    ctaPrimaryHref: '/top-up',
+    ctaSecondary: 'View Rates',
+    ctaSecondaryTarget: 'categories',
   },
   {
     num: '04',
-    badge: 'OBSIDIAN SANCTUM // DROPS & PASSES',
-    title: 'Play Beyond',
-    p1: 'Console games, gift cards, subscriptions, and premium gaming accessories. Everything you need to elevate your gaming experience, all in one cinematic destination.',
-    p2: 'Enter the Reikai realm and curate your ultimate digital arsenal with genuine hardware and instant access.',
-    ctaPrimary: 'Browse Vault',
-    ctaPrimaryTarget: 'browse',
-    ctaSecondary: 'Join Frequency',
-    ctaSecondaryTarget: 'signal',
+    tabLabel: 'SUBSCRIPTIONS',
+    badge: 'MEMBERSHIP VAULT // PASSES & CODES',
+    title: 'Subscriptions & Passes',
+    p1: 'PlayStation Plus, Xbox Game Pass, EA Play, and global gift cards with instant automated digital activation.',
+    p2: 'Unlock monthly games, online multiplayer access, exclusive cloud saves, and member perks with zero hassle.',
+    ctaPrimary: 'Get Subscriptions',
+    ctaPrimaryHref: '/subscriptions',
+    ctaSecondary: 'Gift Cards',
+    ctaSecondaryHref: '/gift-cards',
   },
 ];
 
@@ -850,21 +881,25 @@ const categoryRail = [
 ];
 
 const HERO_POSES: StagePose[] = [
-  // Stage 0: REIKAI ARCADE (Centered frontal hero view with sleek tilt)
-  { theta: 184, phi: 43, radius: 1.95, roll: -7, x: 0, y: 0, scale: 1.10 },
-  // Stage 1: POWER YOUR GAME (360° spin to back triggers, centered elevated floating)
-  { theta: 544, phi: 55, radius: 2.15, roll: 8, x: 0, y: -20, scale: 1.15 },
-  // Stage 2: DIGITAL WALLET (180° turn showcasing glowing touchpad & buttons close-up)
-  { theta: 724, phi: 30, radius: 1.82, roll: -10, x: 0, y: 16, scale: 1.20 },
-  // Stage 3: PLAY BEYOND (Heroic elevated finish)
-  { theta: 904, phi: 45, radius: 2.00, roll: 4, x: 0, y: 0, scale: 1.12 },
+  // Stage 0: REIKAI ARCADE (Centered frontal hero view)
+  { theta: 180, phi: 46, radius: 1.88, roll: 0, x: 0, y: 0, scale: 1.15 },
+  // Stage 1: POWER YOUR GAME (Tilted to the right side, raised + right shifted)
+  { theta: 234, phi: 56, radius: 1.80, roll: 11, x: 7, y: -14, scale: 1.18 },
+  // Stage 2: DIGITAL WALLET (Tilted to the left side looking at touchpad, lowered + left shifted)
+  { theta: 126, phi: 38, radius: 1.78, roll: -11, x: -7, y: 14, scale: 1.20 },
+  // Stage 3: PLAY BEYOND (Elevated high-angle dynamic tilt floating upward)
+  { theta: 186, phi: 68, radius: 1.82, roll: 5, x: 0, y: -18, scale: 1.16 },
 ];
 
 const MOBILE_HERO_POSES: StagePose[] = [
-  { theta: 184, phi: 44, radius: 2.25, roll: -5, x: 0, y: 0, scale: 0.82 },
-  { theta: 544, phi: 56, radius: 2.40, roll: 6, x: 0, y: 0, scale: 0.80 },
-  { theta: 724, phi: 34, radius: 2.15, roll: -6, x: 0, y: 0, scale: 0.84 },
-  { theta: 904, phi: 46, radius: 2.30, roll: 4, x: 0, y: 0, scale: 0.82 },
+  // Stage 0: REIKAI ARCADE (Frontal hero view - perfectly sized, not cut off)
+  { theta: 180, phi: 46, radius: 1.84, roll: 0, x: 0, y: 0, scale: 1.14 },
+  // Stage 1: POWER YOUR GAME (Turned right, shifted right & raised)
+  { theta: 232, phi: 56, radius: 1.76, roll: 10, x: 6, y: -12, scale: 1.18 },
+  // Stage 2: DIGITAL WALLET (Turned left, shifted left & lowered)
+  { theta: 128, phi: 38, radius: 1.74, roll: -10, x: -6, y: 12, scale: 1.20 },
+  // Stage 3: PLAY BEYOND (High-angle elevated tilt floating upward)
+  { theta: 185, phi: 68, radius: 1.78, roll: 4, x: 0, y: -16, scale: 1.16 },
 ];
 
 const STAGE_WINDOWS = [
@@ -964,16 +999,10 @@ export default function StorefrontPage() {
   useScrollAnimations(reducedMotion);
 
   const jumpToStage = (idx: number) => {
-    const track = heroTrackRef.current;
-    if (!track) return;
-    const trackTop = window.scrollY + track.getBoundingClientRect().top;
-    const trackScrollable = track.offsetHeight - window.innerHeight;
-    const targetScroll = trackTop + (STAGE_CENTERS[idx] ?? 0) * trackScrollable;
-    if (lenis) {
-      lenis.scrollTo(targetScroll, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-    }
+    setActiveStage(idx);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const poses = isMobile ? MOBILE_HERO_POSES : HERO_POSES;
+    setStagePose(poses[idx]);
   };
 
   useEffect(() => {
@@ -1001,76 +1030,41 @@ export default function StorefrontPage() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(max > 0 ? Math.min(1, scrollTop / max) : 0);
 
-      const isMobile = window.innerWidth <= 768;
-
-      // Measure multi-stage hero track
+      // Smoothly fade out model when scrolling past hero track:
       const track = heroTrackRef.current;
       if (track) {
         const rect = track.getBoundingClientRect();
-        const trackScrollable = track.offsetHeight - window.innerHeight;
-        if (trackScrollable > 0) {
-          const rawProgress = -rect.top / trackScrollable;
-          const clamped = Math.max(0, Math.min(1, rawProgress));
-          setHeroScrollProgress(clamped);
-
-          // Find active / nearest stage center
-          let nearestStage = 0;
-          let minDiff = 999;
-          STAGE_CENTERS.forEach((c, i) => {
-            const d = Math.abs(clamped - c);
-            if (d < minDiff) {
-              minDiff = d;
-              nearestStage = i;
-            }
-          });
-          setActiveStage(nearestStage);
-
-          // Continuous 3D controller interpolation across the 4 hero stages:
-          const poses = isMobile ? MOBILE_HERO_POSES : HERO_POSES;
-          let segIndex = 0;
-          if (clamped >= STAGE_CENTERS[2]) segIndex = 2;
-          else if (clamped >= STAGE_CENTERS[1]) segIndex = 1;
-          else segIndex = 0;
-
-          const span = (STAGE_CENTERS[segIndex + 1] ?? 1) - STAGE_CENTERS[segIndex];
-          const segT = span > 0 ? Math.max(0, Math.min(1, (clamped - STAGE_CENTERS[segIndex]) / span)) : 0;
-          const eased = segT * segT * (3 - 2 * segT);
-          const p0 = poses[segIndex];
-          const p1 = poses[segIndex + 1] ?? poses[segIndex];
-          const mix = (a: number, b: number) => a + (b - a) * eased;
-
-          setStagePose({
-            theta: mix(p0.theta, p1.theta),
-            phi: mix(p0.phi, p1.phi),
-            radius: mix(p0.radius, p1.radius),
-            roll: mix(p0.roll ?? 0, p1.roll ?? 0),
-            x: mix(p0.x, p1.x),
-            y: mix(p0.y ?? 0, p1.y ?? 0),
-            scale: mix(p0.scale, p1.scale),
-          });
-
-          // Smoothly fade out model when scrolling past hero track:
-          if (rect.bottom < window.innerHeight) {
-            const exitDist = window.innerHeight - rect.bottom;
-            const exitFade = Math.max(0, 1 - exitDist / 350);
-            setModelOpacity(exitFade);
-          } else {
-            setModelOpacity(1);
-          }
+        if (rect.bottom < window.innerHeight) {
+          const exitDist = window.innerHeight - rect.bottom;
+          const exitFade = Math.max(0, 1 - exitDist / 350);
+          setModelOpacity(exitFade);
+        } else {
+          setModelOpacity(1);
         }
       }
     };
 
+    const onResize = () => {
+      const isMobile = window.innerWidth <= 768;
+      const poses = isMobile ? MOBILE_HERO_POSES : HERO_POSES;
+      setStagePose(poses[activeStage]);
+      onScroll();
+    };
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', onResize);
+
+    // Initial pose setup
+    const isMobileInit = window.innerWidth <= 768;
+    setStagePose((isMobileInit ? MOBILE_HERO_POSES : HERO_POSES)[0]);
     onScroll();
 
     return () => {
       media.removeEventListener('change', onPreference);
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [activeStage]);
 
   const filteredProducts = useMemo(() => {
     const q = catalogSearch.trim().toLowerCase();
@@ -1238,79 +1232,76 @@ export default function StorefrontPage() {
           {/* Left/Center Multi-Phase Story Hero Content (Sequential slow & smooth scroll up / scroll down parallax) */}
           <div className="hero-story-container">
             {heroStages.map((stage, idx) => {
-              const motion = getStageMotion(heroScrollProgress, idx);
-              const isVisible = motion.opacity > 0.005;
-              const y = motion.translateY;
+              const isActive = activeStage === idx;
 
               return (
                 <div
                   key={stage.num}
-                  className="hero-stage-item"
-                  style={{
-                    opacity: motion.opacity,
-                    filter: motion.blur > 0.15 ? `blur(${motion.blur.toFixed(1)}px)` : 'none',
-                    pointerEvents: motion.active ? 'auto' : 'none',
-                    visibility: isVisible ? 'visible' : 'hidden',
-                  }}
+                  className={`hero-stage-item ${isActive ? 'hero-stage-active' : 'hero-stage-inactive'}`}
+                  aria-hidden={!isActive}
                 >
-                  {/* Eyebrow badge (Parallax factor 1.3 - moves faster) */}
-                  <div
-                    className="eyebrow hero-protocol-badge mb-3"
-                    style={{
-                      transform: `translate3d(0, ${(y * 1.3).toFixed(1)}px, 0)`,
-                    }}
-                  >
+                  {/* Eyebrow badge */}
+                  <div className="eyebrow hero-protocol-badge mb-3">
                     <Sparkles size={11} className="text-[#00f0ff]" />
                     <span>{stage.badge}</span>
                   </div>
 
-                  {/* Editorial Headline (Parallax factor 1.0) */}
-                  <h1
-                    className="hero-editorial-headline hero-editorial-gradient"
-                    style={{
-                      transform: `translate3d(0, ${y.toFixed(1)}px, 0)`,
-                    }}
-                  >
+                  {/* Editorial Headline */}
+                  <h1 className="hero-editorial-headline hero-editorial-gradient">
                     {stage.title}
                   </h1>
 
-                  {/* Two-Column Paragraphs (Parallax factor 0.75 - subtle drag) */}
-                  <div
-                    className="hero-two-col-grid"
-                    style={{
-                      transform: `translate3d(0, ${(y * 0.75).toFixed(1)}px, 0)`,
-                    }}
-                  >
+                  {/* Story Paragraphs */}
+                  <div className="hero-two-col-grid">
                     <p className="hero-story-para">{stage.p1}</p>
-                    <p className="hero-story-para">{stage.p2}</p>
+                    <p className="hero-story-para hero-story-para-sub">{stage.p2}</p>
                   </div>
 
-                  {/* Action Buttons (Parallax factor 0.55 - anchors composition) */}
-                  <div
-                    className="hero-action-buttons"
-                    style={{
-                      transform: `translate3d(0, ${(y * 0.55).toFixed(1)}px, 0)`,
-                    }}
-                  >
-                    <button
-                      type="button"
-                      className="hero-primary-btn"
-                      onClick={() => scrollToId(stage.ctaPrimaryTarget, lenis)}
-                      data-testid={`button-hero-primary-${idx}`}
-                    >
-                      <ShoppingCart size={15} />
-                      <span>{stage.ctaPrimary}</span>
-                      <ArrowRight size={15} />
-                    </button>
-                    <button
-                      type="button"
-                      className="hero-secondary-btn"
-                      onClick={() => scrollToId(stage.ctaSecondaryTarget, lenis)}
-                      data-testid={`button-hero-secondary-${idx}`}
-                    >
-                      <Globe size={15} />
-                      <span>{stage.ctaSecondary}</span>
-                    </button>
+                  {/* Action Buttons */}
+                  <div className="hero-action-buttons">
+                    {stage.ctaPrimaryHref ? (
+                      <Link
+                        href={stage.ctaPrimaryHref}
+                        className="hero-primary-btn"
+                        data-testid={`button-hero-primary-${idx}`}
+                      >
+                        <ShoppingCart size={15} />
+                        <span>{stage.ctaPrimary}</span>
+                        <ArrowRight size={15} />
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        className="hero-primary-btn"
+                        onClick={() => stage.ctaPrimaryTarget && scrollToId(stage.ctaPrimaryTarget, lenis)}
+                        data-testid={`button-hero-primary-${idx}`}
+                      >
+                        <ShoppingCart size={15} />
+                        <span>{stage.ctaPrimary}</span>
+                        <ArrowRight size={15} />
+                      </button>
+                    )}
+
+                    {stage.ctaSecondaryHref ? (
+                      <Link
+                        href={stage.ctaSecondaryHref}
+                        className="hero-secondary-btn"
+                        data-testid={`button-hero-secondary-${idx}`}
+                      >
+                        <Globe size={15} />
+                        <span>{stage.ctaSecondary}</span>
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        className="hero-secondary-btn"
+                        onClick={() => stage.ctaSecondaryTarget && scrollToId(stage.ctaSecondaryTarget, lenis)}
+                        data-testid={`button-hero-secondary-${idx}`}
+                      >
+                        <Globe size={15} />
+                        <span>{stage.ctaSecondary}</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -1322,20 +1313,20 @@ export default function StorefrontPage() {
             <div className="hero-stage-pills">
               {heroStages.map((s, idx) => (
                 <button
-                  key={s.num}
+                  key={s.tabLabel}
                   type="button"
                   className={`hero-stage-pill ${activeStage === idx ? 'active' : ''}`}
                   onClick={() => jumpToStage(idx)}
-                  aria-label={`Jump to stage ${s.title}`}
+                  aria-label={`Jump to stage ${s.tabLabel}`}
                 >
-                  {s.num} {s.title.split(' ')[0].toUpperCase()}
+                  {s.tabLabel}
                 </button>
               ))}
             </div>
             <div className="hero-stage-indicator-bar" aria-hidden="true">
               <div
                 className="hero-stage-indicator-fill"
-                style={{ width: `${heroScrollProgress * 100}%` }}
+                style={{ width: `${((activeStage + 1) / heroStages.length) * 100}%` }}
               />
             </div>
           </div>
@@ -1509,232 +1500,96 @@ export default function StorefrontPage() {
               </div>
             </div>
           </div>
-          {filter === 'all' && !catalogSearch ? (
-            <div className="store-shelves-wrap flex flex-col gap-12 w-full">
-              {/* 1. TOP GAMES */}
-              <div className="store-shelf-section">
-                <div className="store-shelf-header">
-                  <div className="store-shelf-title-wrap">
-                    <span className="store-shelf-badge">
-                      <Gamepad2 size={13} /> 01 // Blockbuster Exclusives
-                    </span>
-                    <h3 className="store-shelf-title">Top <span>PS5 Games</span></h3>
-                    <p className="store-shelf-desc">Next-gen titles, 4K 60FPS ray tracing &amp; official physical discs.</p>
-                  </div>
-                  <Link href="/games" className="store-shelf-view-more" data-testid="link-view-more-games">
-                    <span>View More Games</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-                <div className="product-grid" data-testid="grid-top-games">
-                  {gamesProducts.slice(0, 4).map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
-                  ))}
-                </div>
+          {/* View More CTA row — shown when a specific category tab is active */}
+          {filter !== 'all' && (() => {
+            const viewMoreMap: Record<string, { href: string; label: string }> = {
+              games: { href: '/games', label: 'View All Games' },
+              gear: { href: '/accessories', label: 'View All Accessories' },
+              'top-ups': { href: '/top-up', label: 'View All Top-Ups' },
+              consoles: { href: '/games', label: 'View All Consoles' },
+            };
+            const vm = viewMoreMap[filter];
+            return vm ? (
+              <div className="browse-view-more-row">
+                <Link href={vm.href} className="store-shelf-view-more" data-testid={`link-view-more-${filter}`}>
+                  <span>{vm.label}</span>
+                  <ArrowRight size={14} />
+                </Link>
               </div>
+            ) : null;
+          })()}
 
-              {/* 2. GAME TOP-UPS */}
-              <div className="store-shelf-section">
-                <div className="store-shelf-header">
-                  <div className="store-shelf-title-wrap">
-                    <span className="store-shelf-badge">
-                      <Zap size={13} /> 02 // Instant In-Game Currency
-                    </span>
-                    <h3 className="store-shelf-title">Game <span>Top-Ups</span></h3>
-                    <p className="store-shelf-desc">Fast, secure direct ID top-ups for Valorant, PUBG Mobile, Genshin &amp; Free Fire.</p>
-                  </div>
-                  <Link href="/top-up" className="store-shelf-view-more" data-testid="link-view-more-topups">
-                    <span>View More Top-Ups</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-                <div className="product-grid" data-testid="grid-top-ups">
-                  {topUpProducts.slice(0, 4).map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
-                  ))}
-                </div>
+          {/* Unified product grid — same for ALL VAULT, specific tab, or search */}
+          <div className="product-grid" data-testid="grid-products">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} onAdd={addToCart} />
+              ))
+            ) : (
+              <div className="catalog-empty-wrap">
+                <Search size={32} className="text-[#a855f7] opacity-60 mb-2" />
+                <h3 className="text-lg font-bold">
+                  {catalogSearch
+                    ? `No products match "${catalogSearch}"`
+                    : 'No products in this category yet.'}
+                </h3>
+                <p className="text-sm text-white/50 mt-1 max-w-sm">
+                  {catalogSearch
+                    ? 'Try searching another keyword or reset the filter to view all available drops.'
+                    : 'Check back soon — new drops land regularly.'}
+                </p>
+                <button
+                  type="button"
+                  className="button-primary mt-4 text-xs py-2 px-5 inline-flex items-center gap-2"
+                  onClick={() => {
+                    setCatalogSearch('');
+                    setFilter('all');
+                  }}
+                >
+                  Reset Search &amp; Filters
+                </button>
               </div>
-
-              {/* 3. HARDWARE & ACCESSORIES */}
-              <div className="store-shelf-section">
-                <div className="store-shelf-header">
-                  <div className="store-shelf-title-wrap">
-                    <span className="store-shelf-badge">
-                      <Headphones size={13} /> 03 // Pro Esports Gear
-                    </span>
-                    <h3 className="store-shelf-title">Accessories &amp; <span>Hardware</span></h3>
-                    <p className="store-shelf-desc">DualSense Edge controllers, spatial audio headsets &amp; click-in charging docks.</p>
-                  </div>
-                  <Link href="/accessories" className="store-shelf-view-more" data-testid="link-view-more-accessories">
-                    <span>View More Accessories</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-                <div className="product-grid" data-testid="grid-accessories">
-                  {gearProducts.slice(0, 4).map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
-                  ))}
-                </div>
-              </div>
-
-              {/* 4. GAMING SUBSCRIPTIONS */}
-              <div className="store-shelf-section">
-                <div className="store-shelf-header">
-                  <div className="store-shelf-title-wrap">
-                    <span className="store-shelf-badge">
-                      <Crown size={13} /> 04 // Passes &amp; Memberships
-                    </span>
-                    <h3 className="store-shelf-title">Gaming <span>Subscriptions</span></h3>
-                    <p className="store-shelf-desc">PlayStation Plus Deluxe, Xbox Game Pass Ultimate &amp; EA Play instant passes.</p>
-                  </div>
-                  <Link href="/subscriptions" className="store-shelf-view-more" data-testid="link-view-more-subscriptions">
-                    <span>View More Subscriptions</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-                <div className="product-grid" data-testid="grid-subscriptions">
-                  {subscriptionProducts.slice(0, 4).map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
-                  ))}
-                </div>
-              </div>
-
-              {/* 5. DIGITAL GIFT CARDS */}
-              <div className="store-shelf-section">
-                <div className="store-shelf-header">
-                  <div className="store-shelf-title-wrap">
-                    <span className="store-shelf-badge">
-                      <Gift size={13} /> 05 // Store Balances &amp; Wallets
-                    </span>
-                    <h3 className="store-shelf-title">Digital <span>Gift Cards</span></h3>
-                    <p className="store-shelf-desc">PlayStation Network, Steam Wallet, Apple &amp; Google Play prepaid cards.</p>
-                  </div>
-                  <Link href="/gift-cards" className="store-shelf-view-more" data-testid="link-view-more-giftcards">
-                    <span>View More Gift Cards</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-                <div className="product-grid" data-testid="grid-gift-cards">
-                  {giftCardProducts.slice(0, 4).map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={addToCart} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="product-grid" data-testid="grid-products">
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} onAdd={addToCart} />
-                ))
-              ) : (
-                <div className="catalog-empty-wrap">
-                  <Search size={32} className="text-[#a855f7] opacity-60 mb-2" />
-                  <h3 className="text-lg font-bold">No products match &ldquo;{catalogSearch}&rdquo;</h3>
-                  <p className="text-sm text-white/50 mt-1 max-w-sm">
-                    Try searching another keyword or reset the filter to view all available drops.
-                  </p>
-                  <button
-                    type="button"
-                    className="button-primary mt-4 text-xs py-2 px-5 inline-flex items-center gap-2"
-                    onClick={() => {
-                      setCatalogSearch('');
-                      setFilter('all');
-                    }}
-                  >
-                    Reset Search &amp; Filters
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </section>
 
-      <section className="section feature-section" aria-labelledby="feature-title">
-        <div className="section-inner feature-layout">
-          <div className="feature-copy" data-reveal-group>
-            <div className="section-kicker">03 // The Void Edit</div>
-            <h2 id="feature-title" data-reveal>Build your<br /><span>ideal setup.</span></h2>
-            <p data-reveal>
-              Choose the console, games, and accessories that make your setup feel right. Everything you need for better play, in one place.
-            </p>
-            <div className="feature-perks" data-reveal>
-              <div className="feature-perk">
-                <Zap size={15} className="feature-perk-icon" />
-                <span>Zero-Latency RF Wireless Protocol</span>
-              </div>
-              <div className="feature-perk">
-                <Sparkles size={15} className="feature-perk-icon" />
-                <span>Spatial Acoustic Immersion Architecture</span>
-              </div>
-              <div className="feature-perk">
-                <ShieldCheck size={15} className="feature-perk-icon" />
-                <span>CNC Obsidian Finish with Cosmic Ambient Sync</span>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="button-primary"
-              data-reveal
-              onClick={() => setCategory('gear')}
-              data-testid="button-build-setup"
-            >
-              Build the setup <ArrowRight size={16} />
-            </button>
+      <section className="section trust-section" aria-labelledby="trust-title">
+        <div className="trust-section-inner">
+          <div className="trust-head" data-reveal>
+            <div className="section-kicker">03 // Why ReiKai</div>
+            <h2 id="trust-title" className="trust-title">Built different. <span>Backed by trust.</span></h2>
           </div>
-
-          <div className="feature-stack" aria-label="Featured setup cards">
-            {/* Card 1 */}
-            <div className="feature-card feature-card-aurora" data-label="REIKAI / AURORA">
-              <div className="feature-card-header">
-                <span className="card-index">DROP 01 // FLAGSHIP SPEC</span>
-                <span className="feature-card-status">LIVE VAULT</span>
-              </div>
-              <div className="feature-card-body">
-                <h4 className="feature-card-title">AURORA SYNAPSE RIG</h4>
-                <div className="feature-specs-grid">
-                  <div className="spec-item">
-                    <span className="spec-label">DISPLAY</span>
-                    <span className="spec-val">240Hz OLED</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-label">RESPONSE</span>
-                    <span className="spec-val">0.03ms</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-label">AUDIO</span>
-                    <span className="spec-val">3D Spatial</span>
-                  </div>
-                </div>
-              </div>
-              <div className="feature-card-glow-rings" aria-hidden="true" />
+          <div className="trust-grid" data-reveal>
+            <div className="trust-card">
+              <div className="trust-card-icon"><ShieldCheck size={22} /></div>
+              <strong>100% Genuine</strong>
+              <span>All products are sourced from official publishers and authorized distributors. No fakes, no grey market.</span>
             </div>
-
-            {/* Card 2 */}
-            <div className="feature-card feature-card-haptic" data-label="VOID / HAPTIC">
-              <div className="feature-card-header">
-                <span className="card-index">DROP 02 // TACTILE CORE</span>
-                <span className="feature-card-status">DEPLOYED</span>
-              </div>
-              <div className="feature-card-body">
-                <h4 className="feature-card-title">OBSIDIAN DUAL-CORE</h4>
-                <div className="feature-specs-grid">
-                  <div className="spec-item">
-                    <span className="spec-label">HAPTICS</span>
-                    <span className="spec-val">Dual Actuators</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-label">TRIGGERS</span>
-                    <span className="spec-val">Adaptive Sync</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-label">FINISH</span>
-                    <span className="spec-val">Anti-Slip Matte</span>
-                  </div>
-                </div>
-              </div>
-              <div className="feature-card-glow-rings" aria-hidden="true" />
+            <div className="trust-card">
+              <div className="trust-card-icon"><Zap size={22} /></div>
+              <strong>Instant Delivery</strong>
+              <span>Digital codes and top-ups delivered to your screen and SMS within seconds of payment confirmation.</span>
+            </div>
+            <div className="trust-card">
+              <div className="trust-card-icon"><Lock size={22} /></div>
+              <strong>Secure Checkout</strong>
+              <span>bKash, Nagad, Visa, Mastercard & encrypted ReiKai escrow wallet — your payment is always protected.</span>
+            </div>
+            <div className="trust-card">
+              <div className="trust-card-icon"><Headphones size={22} /></div>
+              <strong>24/7 Support</strong>
+              <span>Live chat and Discord support around the clock. Any issue resolved within 2 hours, guaranteed.</span>
+            </div>
+            <div className="trust-card">
+              <div className="trust-card-icon"><Globe size={22} /></div>
+              <strong>Nationwide Shipping</strong>
+              <span>Same-day dispatch for physical gear across Bangladesh. Real-time tracking from warehouse to door.</span>
+            </div>
+            <div className="trust-card">
+              <div className="trust-card-icon"><Sparkles size={22} /></div>
+              <strong>Exclusive Drops</strong>
+              <span>First access to limited editions, bundles, and restocks before they go public — subscribe to the vault.</span>
             </div>
           </div>
         </div>

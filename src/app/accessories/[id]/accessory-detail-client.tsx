@@ -189,7 +189,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
       : 0
 
   return (
-    <div className="min-h-screen bg-[#08080f] text-slate-100 selection:bg-purple-600 selection:text-white">
+    <div className="min-h-screen bg-[#06020e] text-slate-100 selection:bg-purple-600 selection:text-white">
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">

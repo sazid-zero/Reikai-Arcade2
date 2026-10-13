@@ -80,7 +80,7 @@ export function TopUpDetailClient({ product }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#07050e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">

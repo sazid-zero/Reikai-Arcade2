@@ -218,19 +218,9 @@ export default function useScrollAnimations(reducedMotion: boolean) {
         }
       );
 
-      /* ─── 10. MARQUEE: speed up on scroll velocity ──────────────────── */
-      const track = document.querySelector<HTMLElement>('.marquee-track');
-      if (track) {
-        ScrollTrigger.create({
-          trigger: '.marquee',
-          start: 'top bottom',
-          end: 'bottom top',
-          onUpdate(self) {
-            const speed = 1 + Math.abs(self.getVelocity()) / 2000;
-            track.style.animationDuration = `${Math.max(6, 23 / speed)}s`;
-          },
-        });
-      }
+      /* ─── 10. MARQUEE: pure smooth CSS animation without scroll velocity interference ── */
+      // Scroll velocity boost removed per user request to prevent collision with continuous marquee flow
+
 
     });
 

@@ -27,7 +27,7 @@ export function TutorialVideoPlayer({
   const [kicker, setKicker] = useState(initialKicker);
   const [tagline, setTagline] = useState(initialTagline);
 
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState('0:00');
@@ -135,7 +135,7 @@ export function TutorialVideoPlayer({
         poster={posterUrl}
         className="tutorial-video-media"
         playsInline
-        autoPlay
+        autoPlay={false}
         loop
         muted={isMuted}
         onTimeUpdate={handleTimeUpdate}

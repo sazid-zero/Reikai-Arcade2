@@ -65,7 +65,7 @@ export default async function GiftCardsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-[#07050e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
       <SiteHeader />
 
       {/* Hero */}
