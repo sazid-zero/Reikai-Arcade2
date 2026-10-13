@@ -2215,22 +2215,32 @@
 /* ─────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .topline { font-size: .54rem; padding: 4px 12px; }
-  .header-inner { padding: 0 12px; height: 56px; gap: 8px; }
-  .header-search-bar { display: none !important; }
-  .cart-pill-btn { display: inline-flex !important; padding: 0 10px; height: 34px; }
-  .wordmark { font-size: 0.95rem; gap: 5px; }
-  .wordmark-text { font-size: 0.95rem; gap: 4px; }
-  .header-actions { gap: 6px; }
-  .header-icon-button {
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
+
+  /* ── MOBILE TOP HEADER: Ultra-minimal — Logo left, Profile right ──── */
+  /* Bottom nav handles Search, Cart, Games & More — no duplication     */
+  .header-inner {
+    padding: 0 16px;
+    height: 54px;
+    gap: 0;
+    justify-content: space-between;
   }
+
+  /* Hide everything in header-nav on mobile — bottom nav covers it */
+  .header-nav { display: none !important; }
+
+  /* Header actions: hide search bar, search icon, wishlist, cart on mobile */
+  /* Only UserAuthButton (sign-in / profile) stays visible */
+  .header-search-bar { display: none !important; }
+  .cart-pill-btn { display: none !important; }
+  .header-actions { gap: 0; }
+  .header-icon-button { display: none !important; }
+  /* Keep sign-in button visible — it gets the class header-signin-btn or UserAuthButton */
+  .header-signin-btn { display: inline-flex !important; }
+
+  /* Logo stays clean and legible */
   .header-logo-badge { gap: 8px; }
-  .header-logo-img { width: 30px; height: 30px; }
+  .header-logo-img { width: 32px; height: 32px; border-radius: 8px; }
+  .wordmark-text { font-size: 0.92rem; letter-spacing: 0.12em; }
 
   /* 3D Model Stage - HIDDEN on phone (too heavy, poor UX on small screens) */
   .model-dock { display: none !important; }
@@ -7944,16 +7954,18 @@
   }
 }
 
-/* Phone layout: Texts in UPPER part, 3D model in LOWER part of screen */
+/* Phone layout: Texts in UPPER part, 3D model in CENTER-LOWER part of screen */
 @media (max-width: 768px) {
   .hero-story-container {
-    left: 18px;
-    right: 18px;
+    left: 20px;
+    right: 20px;
     width: auto;
-    max-width: calc(100vw - 36px);
-    top: calc(var(--header-height, 60px) + 8px);
+    max-width: calc(100vw - 40px);
+    /* 54px header + 8px padding */
+    top: 62px;
     bottom: auto;
     transform: none;
+    /* no height cap - let content flow naturally */
     height: auto;
     z-index: 20;
     pointer-events: auto;
@@ -7966,81 +7978,106 @@
     justify-content: flex-start;
   }
   .hero-protocol-badge {
-    font-size: 0.62rem;
-    padding: 4px 10px;
-    margin-bottom: 8px;
-    gap: 5px;
+    font-size: 0.58rem;
+    padding: 3px 8px;
+    margin-bottom: 6px;
+    gap: 4px;
+    letter-spacing: 0.06em;
   }
   .hero-editorial-headline {
-    font-size: clamp(2.0rem, 8.5vw, 2.5rem);
-    margin-bottom: 8px;
-    line-height: 1.05;
+    font-size: clamp(1.75rem, 7.5vw, 2.25rem);
+    margin-bottom: 6px;
+    line-height: 1.06;
   }
   .hero-two-col-grid {
     grid-template-columns: 1fr;
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 0;
+    margin-bottom: 10px;
   }
   .hero-story-para {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     line-height: 1.38;
     padding-left: 10px;
   }
   .hero-story-para:nth-child(2) {
-    display: none; /* Keep single crisp paragraph on phone for spacious feel */
+    display: none; /* Keep single crisp paragraph on phone */
+  }
+
+  /* Mobile hero viewport: split into top-text + bottom-model zones */
+  .hero-sticky-viewport {
+    /* Give header room — text uses absolute positioning so this is mainly visual */
+    display: block;
   }
   .hero-action-buttons {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 8px;
     width: 100%;
+    max-width: 260px;
   }
-  .hero-primary-btn,
+  .hero-primary-btn {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 18px;
+    font-size: 0.72rem;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.05em;
+  }
   .hero-secondary-btn {
-    flex: 1;
-    min-height: 38px;
-    padding: 8px 12px;
-    font-size: 0.70rem;
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 14px;
+    font-size: 0.68rem;
     justify-content: center;
     gap: 6px;
+    letter-spacing: 0.04em;
   }
 
-  /* 3D PS5 Controller anchored in LOWER half of screen */
+  /* 3D PS5 Controller: fills lower portion of screen.
+     On 812px viewport:
+     - text ends ~280px from top  
+     - top:55% = reference point at 446px
+     - translateY(-50%) centers element: spans 316px to 576px
+     - Bottom nav+pills = ~140px from bottom = 672px
+     - Controller fits cleanly in 316-576px zone, leaving room below for pills */
   .hero-model-stage {
     position: absolute;
-    top: auto;
-    bottom: 56px;
+    top: 55%;
     left: 50%;
-    width: clamp(280px, 86vw, 360px);
-    height: clamp(230px, 36vh, 300px);
-    transform: translate3d(calc(-50% + var(--stage-x, 0vw)), var(--stage-y, 0px), 0) scale(var(--model-scale, 0.82));
+    bottom: auto;
+    width: clamp(290px, 85vw, 370px);
+    height: clamp(260px, 34vh, 310px);
+    transform: translate3d(calc(-50% + var(--stage-x, 0vw)), calc(-50% + var(--stage-y, 0px)), 0) scale(var(--model-scale, 0.9));
     z-index: 10;
     pointer-events: auto;
   }
   .hero-model-glow-halo {
-    top: auto;
-    bottom: 70px;
+    top: 58%;
     left: 50%;
-    transform: translate(-50%, 0);
+    bottom: auto;
+    transform: translate(-50%, -50%);
     width: 280px;
     height: 280px;
-    filter: blur(50px);
+    filter: blur(55px);
   }
 
-  /* Stage Nav Pills at the very bottom */
+  /* Stage Nav Pills: above bottom nav bar */
   .hero-stage-nav {
-    left: 14px;
-    right: 14px;
-    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px) + 10px);
     justify-content: center;
-    z-index: 25;
+    gap: 8px;
+    z-index: 50;
   }
   .hero-stage-indicator-bar {
     display: none;
   }
   .hero-stage-pill {
-    padding: 4px 8px;
-    font-size: 0.60rem;
+    padding: 5px 10px;
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
   }
 }
 

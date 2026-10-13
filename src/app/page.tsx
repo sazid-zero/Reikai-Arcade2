@@ -36,6 +36,8 @@ import { useSearch } from '@/components/search-modal';
 import { normalizeProductImageUrl } from '@/lib/utils';
 import { TutorialVideoPlayer } from '@/components/tutorial-video-player';
 import { UserAuthButton } from '@/components/user-auth-button';
+import { MobileBottomNav } from '@/components/mobile-bottom-nav';
+
 
 type StagePose = {
   x: number;
@@ -558,7 +560,6 @@ function Header({
   onCart: () => void;
   onStageJump?: (index: number) => void;
 }) {
-  const [mobileNav, setMobileNav] = useState(false);
   const [categoriesDropdown, setCategoriesDropdown] = useState(false);
   const { openSearch } = useSearch();
 
@@ -567,7 +568,7 @@ function Header({
       <div className="header-inner">
         <button
           type="button"
-          className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-3 shrink-0"
+          className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-2.5 sm:gap-3 shrink-0"
           onClick={() => {
             if (onStageJump) onStageJump(0);
             else scrollToId('top');
@@ -579,13 +580,13 @@ function Header({
             alt="Reikai Arcade Logo"
             className="header-logo-img"
           />
-          <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
+          <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm sm:text-base">
             REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
           </span>
         </button>
 
-        <nav className="header-nav flex items-center" aria-label="Main navigation">
-          {/* Categories Dropdown Menu */}
+        {/* Desktop navigation — hidden on mobile, bottom nav covers it */}
+        <nav className="header-nav hidden md:flex items-center" aria-label="Main navigation">
           <div
             className="nav-dropdown-wrapper relative"
             onMouseEnter={() => setCategoriesDropdown(true)}
@@ -594,20 +595,16 @@ function Header({
             <button
               type="button"
               onClick={() => setCategoriesDropdown((prev) => !prev)}
-              className="nav-dropdown-link flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition"
+              className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition"
               data-testid="button-categories-dropdown"
             >
               <Layers size={13} className="text-[#00f0ff]" />
-              <span className="hidden xs:inline">Categories</span>
+              <span>Categories</span>
               <ChevronDown size={12} className="nav-chevron text-zinc-400" />
             </button>
             {categoriesDropdown && (
               <div className="nav-dropdown-menu absolute top-full left-0 mt-2 w-64 rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl z-50">
-                <Link
-                  href="/games"
-                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
-                  onClick={() => setCategoriesDropdown(false)}
-                >
+                <Link href="/games" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#00f0ff]">
                     <Gamepad2 size={16} />
                   </div>
@@ -616,12 +613,7 @@ function Header({
                     <span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span>
                   </div>
                 </Link>
-
-                <Link
-                  href="/top-up"
-                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
-                  onClick={() => setCategoriesDropdown(false)}
-                >
+                <Link href="/top-up" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#00f0ff]">
                     <Zap size={16} />
                   </div>
@@ -630,12 +622,7 @@ function Header({
                     <span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span>
                   </div>
                 </Link>
-
-                <Link
-                  href="/accessories"
-                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
-                  onClick={() => setCategoriesDropdown(false)}
-                >
+                <Link href="/accessories" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-[#00f0ff]">
                     <Headphones size={16} />
                   </div>
@@ -644,12 +631,7 @@ function Header({
                     <span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span>
                   </div>
                 </Link>
-
-                <Link
-                  href="/subscriptions"
-                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
-                  onClick={() => setCategoriesDropdown(false)}
-                >
+                <Link href="/subscriptions" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-[#00f0ff]">
                     <Crown size={16} />
                   </div>
@@ -658,12 +640,7 @@ function Header({
                     <span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span>
                   </div>
                 </Link>
-
-                <Link
-                  href="/gift-cards"
-                  className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
-                  onClick={() => setCategoriesDropdown(false)}
-                >
+                <Link href="/gift-cards" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-[#00f0ff]">
                     <Gift size={16} />
                   </div>
@@ -678,7 +655,7 @@ function Header({
         </nav>
 
         <div className="header-actions flex items-center gap-1.5 sm:gap-2">
-          {/* Desktop Search Bar */}
+          {/* Desktop Search Bar — hidden on mobile */}
           <button
             type="button"
             className="header-search-bar hidden md:inline-flex"
@@ -691,31 +668,20 @@ function Header({
             <kbd className="header-search-bar-kbd">⌘K</kbd>
           </button>
 
-          {/* Mobile Search icon button */}
-          <button
-            type="button"
-            className="header-icon-button md:hidden"
-            onClick={() => openSearch()}
-            aria-label="Search products"
-            data-testid="button-search"
-          >
-            <Search size={15} />
-          </button>
-
-          {/* Wishlist Button */}
+          {/* Wishlist — hidden on mobile (in bottom nav 'More' sheet) */}
           <Link
             href="/wishlist"
-            className="header-icon-button"
+            className="header-icon-button hidden sm:inline-flex"
             aria-label="View saved wishlist"
             data-testid="header-wishlist"
           >
             <Heart size={15} className="text-pink-400 hover:fill-pink-400/40 transition" />
           </Link>
 
-          {/* Cart Button */}
+          {/* Cart — hidden on mobile (in bottom nav) */}
           <button
             type="button"
-            className="header-icon-button cart-pill-btn"
+            className="header-icon-button cart-pill-btn hidden md:inline-flex"
             onClick={onCart}
             aria-label={`Open cart with ${cartCount} items`}
             data-testid="button-open-cart"
@@ -724,246 +690,16 @@ function Header({
             <span className="cart-count" data-testid="text-cart-count">{cartCount}</span>
           </button>
 
-          {/* User Profile Avatar or Sign In button */}
+          {/* User Profile — always visible on all screen sizes */}
           <UserAuthButton />
         </div>
       </div>
-      {mobileNav && (
-        <div className="absolute left-0 right-0 top-full border-b border-[hsl(var(--border))] bg-[#0b0618]/95 backdrop-blur-xl p-5 md:hidden z-50">
-          <button
-            type="button"
-            className="mobile-nav-search-btn mb-3 w-full"
-            onClick={() => {
-              setMobileNav(false);
-              openSearch();
-            }}
-            data-testid="mobile-menu-search"
-          >
-            <Search size={16} className="text-[#00f0ff]" />
-            <span>Search games, gear &amp; codes...</span>
-            <span className="mobile-search-pill">Search</span>
-          </button>
-          <div className="py-2 border-b border-[hsl(var(--border))]">
-            <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 font-bold block mb-2">Categories</span>
-            <Link
-              href="/games"
-              onClick={() => setMobileNav(false)}
-              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
-            >
-              <Gamepad2 size={14} className="text-purple-400" /> PS5 Games
-            </Link>
-            <Link
-              href="/top-up"
-              onClick={() => setMobileNav(false)}
-              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
-            >
-              <Zap size={14} className="text-[#00f0ff]" /> Game Top-Up
-            </Link>
-            <Link
-              href="/accessories"
-              onClick={() => setMobileNav(false)}
-              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
-            >
-              <Headphones size={14} className="text-pink-400" /> Accessories &amp; Gear
-            </Link>
-            <Link
-              href="/subscriptions"
-              onClick={() => setMobileNav(false)}
-              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
-            >
-              <Crown size={14} className="text-violet-400" /> Gaming Subscriptions
-            </Link>
-            <Link
-              href="/gift-cards"
-              onClick={() => setMobileNav(false)}
-              className="flex items-center gap-2 py-2 font-mono-ui text-xs uppercase tracking-[.12em] text-[#e2e8f0] hover:text-[#00f0ff]"
-            >
-              <Gift size={14} className="text-amber-400" /> Digital Gift Cards
-            </Link>
-          </div>
-          <div className="pt-3 flex justify-between items-center">
-            <span className="text-xs text-zinc-400 font-mono">Account</span>
-            <UserAuthButton />
-          </div>
-        </div>
-      )}
     </header>
   );
 }
 
-function MobileBottomNav({
-  cartCount,
-  onCart,
-  onScrollTo,
-}: {
-  cartCount: number;
-  onCart: () => void;
-  onScrollTo: (id: string) => void;
-}) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState<'home' | 'search' | 'games' | 'cart' | 'menu'>('home');
-  const { openSearch } = useSearch();
 
-  const handleHome = () => { setActive('home'); onScrollTo('top'); setMenuOpen(false); };
-  const handleSearch = () => {
-    setActive('search');
-    setMenuOpen(false);
-    openSearch();
-  };
-  const handleCart = () => { setActive('cart'); onCart(); setMenuOpen(false); };
-  const handleMenuToggle = () => {
-    setActive(menuOpen ? active : 'menu');
-    setMenuOpen((o) => !o);
-  };
 
-  return (
-    <>
-      {/* Slide-up menu sheet */}
-      {menuOpen && (
-        <>
-          <div className="mobile-menu-overlay" onClick={() => { setMenuOpen(false); setActive('home'); }} aria-hidden="true" />
-          <div className="mobile-menu-sheet" role="dialog" aria-label="Navigation menu">
-            <div className="mobile-menu-handle" />
-            <button
-              type="button"
-              className="mobile-nav-search-btn mb-4 w-full"
-              onClick={() => {
-                setMenuOpen(false);
-                openSearch();
-              }}
-              data-testid="sheet-search-btn"
-            >
-              <Search size={16} className="text-[#c084fc]" />
-              <span>Search the entire vault...</span>
-              <span className="mobile-search-pill">Find</span>
-            </button>
-            <Link
-              href="/accessories"
-              className="mobile-menu-sheet__link"
-              onClick={() => setMenuOpen(false)}
-              data-testid="link-sheet-accessories"
-            >
-              <span className="mobile-menu-sheet__link-icon">
-                <Gamepad2 size={18} />
-              </span>
-              Accessories Vault
-            </Link>
-            <Link
-              href="/games"
-              className="mobile-menu-sheet__link"
-              onClick={() => setMenuOpen(false)}
-              data-testid="link-sheet-games"
-            >
-              <span className="mobile-menu-sheet__link-icon">
-                <Sparkles size={18} />
-              </span>
-              PS5 Games Catalog
-            </Link>
-            <div className="mobile-menu-sheet__divider" />
-            <Link
-              href="/top-up"
-              className="mobile-menu-sheet__link"
-              onClick={() => setMenuOpen(false)}
-              data-testid="link-sheet-top-up"
-            >
-              <span className="mobile-menu-sheet__link-icon">
-                <Zap size={18} />
-              </span>
-              Top-up
-            </Link>
-            <Link
-              href="/gift-cards"
-              className="mobile-menu-sheet__link"
-              onClick={() => setMenuOpen(false)}
-              data-testid="link-sheet-gift-cards"
-            >
-              <span className="mobile-menu-sheet__link-icon">
-                <Gem size={18} />
-              </span>
-              Gift Cards
-            </Link>
-          </div>
-        </>
-      )}
-
-      {/* Bottom nav bar */}
-      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-        {/* Home */}
-        <button
-          type="button"
-          className={`mobile-bottom-nav__item${active === 'home' ? ' active' : ''}`}
-          onClick={handleHome}
-          aria-label="Go to top"
-          data-testid="mobile-nav-home"
-        >
-          <span className="mobile-bottom-nav__icon">
-            <Gamepad2 size={20} />
-          </span>
-          <span className="mobile-bottom-nav__label">Home</span>
-        </button>
-
-        {/* Search */}
-        <button
-          type="button"
-          className={`mobile-bottom-nav__item${active === 'search' ? ' active' : ''}`}
-          onClick={handleSearch}
-          aria-label="Search products"
-          data-testid="mobile-nav-browse"
-        >
-          <span className="mobile-bottom-nav__icon">
-            <Search size={20} />
-          </span>
-          <span className="mobile-bottom-nav__label">Search</span>
-        </button>
-
-        {/* Games */}
-        <Link
-          href="/games"
-          className="mobile-bottom-nav__item"
-          aria-label="View games"
-          data-testid="mobile-nav-games"
-        >
-          <span className="mobile-bottom-nav__icon">
-            <Gamepad2 size={20} />
-          </span>
-          <span className="mobile-bottom-nav__label">Games</span>
-        </Link>
-
-        {/* Cart */}
-        <button
-          type="button"
-          className={`mobile-bottom-nav__item${active === 'cart' ? ' active' : ''}`}
-          onClick={handleCart}
-          aria-label={`Open cart, ${cartCount} items`}
-          data-testid="mobile-nav-cart"
-        >
-          <span className="mobile-bottom-nav__icon">
-            <ShoppingBag size={20} />
-            {cartCount > 0 && (
-              <span className="mobile-bottom-nav__badge">{cartCount}</span>
-            )}
-          </span>
-          <span className="mobile-bottom-nav__label">Cart</span>
-        </button>
-
-        {/* More / Hamburger */}
-        <button
-          type="button"
-          className={`mobile-bottom-nav__item${active === 'menu' ? ' active' : ''}`}
-          onClick={handleMenuToggle}
-          aria-label="More navigation options"
-          aria-expanded={menuOpen}
-          data-testid="mobile-nav-menu"
-        >
-          <span className="mobile-bottom-nav__icon">
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </span>
-          <span className="mobile-bottom-nav__label">More</span>
-        </button>
-      </nav>
-    </>
-  );
-}
 
 
 function ProductCard({ product, onAdd }: { product: Product; onAdd: (product: Product) => void }) {
@@ -2129,10 +1865,9 @@ export default function StorefrontPage() {
 
       {/* Mobile bottom nav – only renders at ≤768px via CSS */}
       <MobileBottomNav
-        cartCount={cartCount}
-        onCart={() => setCartOpen(true)}
-        onScrollTo={(id) => scrollToId(id, lenis)}
+        onHomeClick={() => scrollToId('top', lenis)}
       />
+
     </main>
   );
 }
