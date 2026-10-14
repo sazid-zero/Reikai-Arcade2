@@ -598,7 +598,19 @@ function Header({
   onStageJump?: (index: number) => void;
 }) {
   const [categoriesDropdown, setCategoriesDropdown] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { openSearch } = useSearch();
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setCategoriesDropdown(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setCategoriesDropdown(false);
+    }, 220);
+  };
 
   return (
     <header className="site-header">
@@ -625,22 +637,29 @@ function Header({
         {/* Desktop navigation — hidden on mobile, bottom nav covers it */}
         <nav className="header-nav hidden md:flex items-center" aria-label="Main navigation">
           <div
-            className="nav-dropdown-wrapper relative"
-            onMouseEnter={() => setCategoriesDropdown(true)}
-            onMouseLeave={() => setCategoriesDropdown(false)}
+            className="nav-dropdown-wrapper relative py-2"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <button
               type="button"
               onClick={() => setCategoriesDropdown((prev) => !prev)}
-              className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition"
+              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition cursor-pointer ${
+                categoriesDropdown ? 'text-[#00f0ff] bg-[#00f0ff]/10' : ''
+              }`}
               data-testid="button-categories-dropdown"
             >
               <Layers size={13} className="text-[#00f0ff]" />
               <span>Categories</span>
-              <ChevronDown size={12} className="nav-chevron text-zinc-400" />
+              <ChevronDown size={12} className={`nav-chevron text-zinc-400 transition-transform duration-200 ${categoriesDropdown ? 'rotate-180 text-[#00f0ff]' : ''}`} />
             </button>
             {categoriesDropdown && (
-              <div className="nav-dropdown-menu absolute top-full left-0 mt-2 w-64 rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl z-50">
+              <div 
+                className="nav-dropdown-menu absolute top-full left-0 pt-2 w-64 z-50 animate-in fade-in zoom-in-95 duration-150"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl">
                 <Link href="/games" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#00f0ff]">
                     <Gamepad2 size={16} />
@@ -687,9 +706,10 @@ function Header({
                   </div>
                 </Link>
               </div>
-            )}
-          </div>
-        </nav>
+            </div>
+          )}
+        </div>
+      </nav>
 
         <div className="header-actions flex items-center gap-1.5 sm:gap-2">
           {/* Desktop Search Bar — hidden on mobile */}

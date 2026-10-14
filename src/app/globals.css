@@ -7502,10 +7502,10 @@
 }
 
 .search-modal-cat-pill.active {
-  color: #ffffff;
-  border-color: #a855f7;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(139, 92, 246, 0.25));
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
+  color: #00f0ff;
+  border-color: rgba(0, 240, 255, 0.6);
+  background: rgba(0, 240, 255, 0.12);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
 }
 
 /* Modal Body & Suggestions */
@@ -7529,8 +7529,9 @@
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: rgba(192, 132, 252, 0.9);
+  color: #00f0ff;
   margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 
 .search-chips-list {
@@ -7551,11 +7552,11 @@
 }
 
 .search-chip:hover {
-  background: rgba(168, 85, 247, 0.25);
-  border-color: #c084fc;
+  background: rgba(0, 240, 255, 0.15);
+  border-color: #00f0ff;
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
 }
 
 /* Search Result Cards */
@@ -7579,10 +7580,10 @@
 
 .search-result-item:hover,
 .search-result-item.selected {
-  background: rgba(168, 85, 247, 0.12);
-  border-color: rgba(168, 85, 247, 0.4);
+  background: rgba(0, 240, 255, 0.08);
+  border-color: rgba(0, 240, 255, 0.5);
   transform: translateX(2px);
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.15);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
 }
 
 .search-result-thumb {
@@ -7655,7 +7656,8 @@
   font-family: 'DM Mono', monospace;
   font-size: 0.84rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
 }
 
 .search-result-rating {
@@ -7671,17 +7673,19 @@
   border-radius: 8px;
   font-size: 0.74rem;
   font-weight: 600;
-  background: rgba(168, 85, 247, 0.22);
-  border: 1px solid rgba(168, 85, 247, 0.4);
-  color: #ffffff;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #00f0ff;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 
 .search-result-add-btn:hover {
-  background: #a855f7;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+  background: linear-gradient(135deg, #a855f7, #00f0ff);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
   transform: scale(1.04);
 }
 

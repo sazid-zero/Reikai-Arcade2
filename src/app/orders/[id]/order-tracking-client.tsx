@@ -110,47 +110,49 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
   })
 
   return (
-    <div className="site-shell noise min-h-screen">
+    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
       <SiteHeader />
 
       <main className="mx-auto max-w-4xl px-5 py-10 md:px-8">
         {/* Top navigation */}
         <div className="flex items-center justify-between gap-4 mb-8">
           <Link
-            href="/"
-            className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-white transition"
+            href="/orders"
+            className="flex items-center gap-2 text-xs font-bold text-white/50 hover:text-white transition"
           >
-            <ArrowLeft size={14} /> Back to Storefront
+            <ArrowLeft size={14} /> Back to My Orders
           </Link>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-white/10 hover:text-white transition print:hidden"
+            className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/60 hover:bg-white/10 hover:text-white transition print:hidden"
           >
             <Printer size={13} /> Print Invoice
           </button>
         </div>
 
         {/* Success Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/15 via-black/40 to-black/60 p-6 md:p-8 backdrop-blur-xl mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="relative overflow-hidden rounded-3xl border border-[#00f0ff]/30 bg-gradient-to-br from-[#a855f7]/20 via-[#0d0822] to-[#06020e] p-6 md:p-8 backdrop-blur-xl mb-8 shadow-2xl">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_20%,rgba(0,240,255,0.15),transparent_70%),radial-gradient(ellipse_60%_45%_at_20%_80%,rgba(168,85,247,0.2),transparent_65%)]" />
+
+          <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/20 border border-primary/30 px-3 py-1 text-xs font-bold text-primary mb-3">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/40 px-3 py-1 text-xs font-bold text-[#00f0ff] mb-3 shadow-[0_0_14px_rgba(0,240,255,0.25)]">
                 <ShieldCheck size={14} /> ReiKai Vault Verified Order
               </div>
-              <h1 className="text-3xl font-extrabold md:text-4xl">Order Confirmed</h1>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Placed on <span className="text-foreground">{orderDate}</span>
+              <h1 className="text-3xl font-extrabold md:text-4xl text-white">Order Confirmed</h1>
+              <p className="mt-1 text-xs text-white/50">
+                Placed on <span className="text-white font-medium">{orderDate}</span>
               </p>
             </div>
 
-            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/50 px-4 py-3 backdrop-blur-md">
               <div>
-                <p className="text-[10px] uppercase font-mono tracking-widest text-muted-foreground">Order ID</p>
-                <p className="font-mono text-xs font-bold truncate max-w-[200px] md:max-w-[240px]">{order.id}</p>
+                <p className="text-[10px] uppercase font-mono tracking-widest text-white/40">Order ID</p>
+                <p className="font-mono text-xs font-bold text-[#00f0ff] truncate max-w-[200px] md:max-w-[240px]">{order.id}</p>
               </div>
               <button
                 onClick={copyId}
-                className="p-1.5 rounded-lg hover:bg-white/10 text-muted-foreground hover:text-white transition ml-2"
+                className="p-1.5 rounded-lg hover:bg-white/10 text-white/50 hover:text-white transition ml-2 cursor-pointer"
                 title="Copy Order ID"
               >
                 {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
@@ -159,9 +161,9 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
           </div>
 
           {/* Stepper */}
-          <div className="mt-8 pt-6 border-t border-white/10">
+          <div className="relative mt-8 pt-6 border-t border-white/10">
             {isCancelled ? (
-              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-center text-sm text-red-400 font-bold">
+              <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-center text-sm text-rose-400 font-bold">
                 This order has been cancelled.
               </div>
             ) : (
@@ -175,27 +177,27 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                       key={step.key}
                       className={`relative flex flex-col items-center rounded-2xl border p-3.5 text-center transition ${
                         isCurrent
-                          ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
+                          ? 'border-[#00f0ff] bg-[#00f0ff]/10 shadow-[0_0_16px_rgba(0,240,255,0.2)]'
                           : isDone
-                          ? 'border-emerald-500/30 bg-emerald-500/5'
+                          ? 'border-emerald-500/30 bg-emerald-500/10'
                           : 'border-white/5 bg-white/[0.01] opacity-50'
                       }`}
                     >
                       <div
                         className={`mb-2 flex h-8 w-8 items-center justify-center rounded-xl text-xs font-bold ${
                           isCurrent
-                            ? 'bg-primary text-primary-foreground'
+                            ? 'bg-gradient-to-r from-[#a855f7] to-[#00f0ff] text-white shadow-[0_0_10px_rgba(0,240,255,0.4)]'
                             : isDone
                             ? 'bg-emerald-500/20 text-emerald-400'
-                            : 'bg-white/10 text-muted-foreground'
+                            : 'bg-white/10 text-white/40'
                         }`}
                       >
                         <Icon size={16} />
                       </div>
-                      <p className={`text-xs font-bold ${isCurrent ? 'text-primary' : isDone ? 'text-emerald-400' : 'text-muted-foreground'}`}>
+                      <p className={`text-xs font-bold ${isCurrent ? 'text-[#00f0ff]' : isDone ? 'text-emerald-400' : 'text-white/40'}`}>
                         {step.label}
                       </p>
-                      <p className="mt-0.5 text-[10px] text-muted-foreground line-clamp-1">{step.desc}</p>
+                      <p className="mt-0.5 text-[10px] text-white/40 line-clamp-1">{step.desc}</p>
                     </div>
                   )
                 })}
