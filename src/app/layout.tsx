@@ -24,6 +24,9 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800;900&display=swap"
           rel="stylesheet"
         />
+        {/* Preload 3D Model & Viewer Engine for instant rendering */}
+        <link rel="preload" href="/ps5-opt.glb" as="fetch" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://unpkg.com" />
       </head>
       <body>
         <Providers>{children}</Providers>

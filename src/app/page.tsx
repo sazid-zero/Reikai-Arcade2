@@ -473,18 +473,19 @@ function ModelStage({
   useEffect(() => {
     const supported = supportsWebGL();
     setWebglSupported(supported);
-    if (!supported) setReady(true);
   }, []);
 
   useEffect(() => {
     if (!webglSupported) return;
 
     let active = true;
+    const isMobileDevice = typeof window !== 'undefined' && window.innerWidth <= 768;
+
     const mount = () => {
       if (!active || !hostRef.current || modelRef.current) return;
       try {
         const model = document.createElement('model-viewer');
-        model.setAttribute('src', '/ps5.glb');
+        model.setAttribute('src', '/ps5-opt.glb');
         model.setAttribute('alt', 'PlayStation 5 DualSense wireless controller');
         model.setAttribute('camera-controls', '');
         model.setAttribute('disable-zoom', '');
@@ -494,11 +495,18 @@ function ModelStage({
         model.style.width = '100%';
         model.style.height = '100%';
         model.style.cursor = 'grab';
-        model.setAttribute('shadow-intensity', '1.4');
-        model.setAttribute('shadow-softness', '0.7');
+        // Power preference for discrete GPU
+        model.setAttribute('power-preference', 'high-performance');
+        if (isMobileDevice) {
+          model.setAttribute('render-scale', '0.85');
+        }
+        // Lighter shadows on mobile for GPU savings
+        model.setAttribute('shadow-intensity', isMobileDevice ? '0.6' : '1.2');
+        model.setAttribute('shadow-softness', isMobileDevice ? '0.4' : '0.65');
         model.setAttribute('exposure', '1.15');
         model.setAttribute('camera-orbit', orbit);
-        model.setAttribute('interpolation-decay', '320');
+        // 120ms decay = responsive & butter smooth
+        model.setAttribute('interpolation-decay', '120');
         model.setAttribute('loading', 'eager');
         model.setAttribute('reveal', 'auto');
         model.addEventListener('load', () => active && setReady(true));
@@ -510,16 +518,29 @@ function ModelStage({
       }
     };
 
+    // Prefer self-hosted copy; fall back to CDN
     const existing = customElements.get('model-viewer');
     if (existing) {
       mount();
     } else {
-      const script = document.createElement('script');
-      script.type = 'module';
-      script.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
-      script.onload = mount;
-      script.onerror = () => active && setFailed(true);
-      document.head.appendChild(script);
+      // Try to load from CDN only once (guard duplicates)
+      const id = 'model-viewer-script';
+      let script = document.getElementById(id) as HTMLScriptElement | null;
+      if (!script) {
+        script = document.createElement('script');
+        script.id = id;
+        script.type = 'module';
+        script.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
+        document.head.appendChild(script);
+      }
+      // Wait for custom element registration
+      const poll = setInterval(() => {
+        if (customElements.get('model-viewer')) {
+          clearInterval(poll);
+          mount();
+        }
+      }, 80);
+      return () => clearInterval(poll);
     }
     return () => {
       active = false;
@@ -529,6 +550,7 @@ function ModelStage({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webglSupported]);
 
+  // Update camera-orbit when orbit prop changes:
   useEffect(() => {
     if (modelRef.current) {
       try {
@@ -548,8 +570,9 @@ function ModelStage({
     opacity,
     pointerEvents: opacity < 0.05 ? 'none' : undefined,
     visibility: opacity < 0.01 ? 'hidden' : 'visible',
-    transition: 'opacity 0.25s ease-out',
   } as CSSProperties;
+
+  if (failed) return null;
 
   return (
     <div className="hero-model-stage" style={dockStyle} aria-label="Interactive PS5 DualSense Controller 3D Model">
@@ -563,6 +586,7 @@ function ModelStage({
     </div>
   );
 }
+
 
 function Header({
   cartCount,
@@ -1140,6 +1164,8 @@ export default function StorefrontPage() {
     };
   }, [activeStage, lenis]);
 
+  const heroOrbit = `${stagePose.theta}deg ${stagePose.phi}deg ${stagePose.radius}m`;
+
   const filteredProducts = useMemo(() => {
     const q = catalogSearch.trim().toLowerCase();
     return liveProducts.filter((product) => {
@@ -1203,18 +1229,14 @@ export default function StorefrontPage() {
     scrollToId('browse');
   };
 
-  const orbit = reducedMotion
-    ? '180deg 38deg 1.85m'
-    : `${stagePose.theta.toFixed(1)}deg ${stagePose.phi.toFixed(1)}deg ${stagePose.radius.toFixed(2)}m`;
-  const modelScale = reducedMotion ? 0.95 : stagePose.scale;
-  const parallax = Math.sin(scrollProgress * Math.PI * 2) * 24;
-  const stageX = reducedMotion ? 0 : stagePose.x;
-  const stageRoll = reducedMotion ? 0 : (stagePose.roll ?? 0);
-
   return (
-    <main className="site-shell noise" id="top" style={{ '--scroll-pct': `${(scrollProgress * 100).toFixed(1)}%` } as CSSProperties}>
+    <main className="site-shell noise" id="top">
       {/* Scroll progress indicator */}
-      <div className="scroll-progress-bar" aria-hidden="true" />
+      <div
+        className="scroll-progress-bar"
+        style={{ '--scroll-pct': `${scrollProgress * 100}%` } as CSSProperties}
+        aria-hidden="true"
+      />
 
       {/* ── REDESIGNED 3D MULTI-STAGE SCROLL TRACK (LOGO PALETTE & VIDEO) ── */}
       <section className="hero-scroll-track" ref={heroTrackRef} id="discover">
@@ -1261,13 +1283,13 @@ export default function StorefrontPage() {
             }}
           />
 
-          {/* Original PS5 Controller 3D Model with Continuous Dynamic Camera Orbit & Rotation */}
+          {/* PS5 Controller 3D Model with dynamic orbit + position docking */}
           <ModelStage
-            orbit={orbit}
-            modelScale={modelScale}
-            stageX={stageX}
-            stageY={stagePose.y ?? 0}
-            roll={stageRoll}
+            orbit={heroOrbit}
+            modelScale={stagePose.scale}
+            stageX={stagePose.x}
+            stageY={stagePose.y}
+            roll={stagePose.roll ?? 0}
             reducedMotion={reducedMotion}
             opacity={modelOpacity}
           />
@@ -1314,21 +1336,14 @@ export default function StorefrontPage() {
                     className={`hero-stage-item hero-stage-mobile ${isActive ? 'hero-stage-active' : 'hero-stage-inactive'}`}
                     aria-hidden={!isActive}
                   >
-                    {/* Eyebrow badge */}
-                    <div className="eyebrow hero-protocol-badge mb-3">
-                      <Sparkles size={11} className="text-[#00f0ff]" />
-                      <span>{stage.badge}</span>
-                    </div>
-
                     {/* Editorial Headline */}
                     <h1 className="hero-editorial-headline hero-editorial-gradient">
                       {stage.title}
                     </h1>
 
-                    {/* Story Paragraphs */}
+                    {/* Story Paragraph */}
                     <div className="hero-two-col-grid">
                       <p className="hero-story-para">{stage.p1}</p>
-                      <p className="hero-story-para hero-story-para-sub">{stage.p2}</p>
                     </div>
 
                     {/* Action Buttons */}
@@ -1398,17 +1413,6 @@ export default function StorefrontPage() {
                   }}
                   aria-hidden={!motion.active}
                 >
-                  {/* Eyebrow badge (Parallax factor 1.3 - moves faster) */}
-                  <div
-                    className="eyebrow hero-protocol-badge mb-3"
-                    style={{
-                      transform: `translate3d(0, ${(y * 1.3).toFixed(1)}px, 0)`,
-                    }}
-                  >
-                    <Sparkles size={11} className="text-[#00f0ff]" />
-                    <span>{stage.badge}</span>
-                  </div>
-
                   {/* Editorial Headline (Parallax factor 1.0) */}
                   <h1
                     className="hero-editorial-headline hero-editorial-gradient"
@@ -1419,7 +1423,7 @@ export default function StorefrontPage() {
                     {stage.title}
                   </h1>
 
-                  {/* Story Paragraphs (Parallax factor 0.75 - subtle drag) */}
+                  {/* Story Paragraph (Parallax factor 0.75 - subtle drag) */}
                   <div
                     className="hero-two-col-grid"
                     style={{
@@ -1427,7 +1431,6 @@ export default function StorefrontPage() {
                     }}
                   >
                     <p className="hero-story-para">{stage.p1}</p>
-                    <p className="hero-story-para hero-story-para-sub">{stage.p2}</p>
                   </div>
 
                   {/* Action Buttons (Parallax factor 0.55 - anchors composition) */}
@@ -1507,7 +1510,7 @@ export default function StorefrontPage() {
                 style={{
                   width: isMobile
                     ? `${((activeStage + 1) / heroStages.length) * 100}%`
-                    : `${Math.max(4, Math.min(100, heroScrollProgress * 100))}%`,
+                    : `${Math.max(4, Math.min(100, Math.round(heroScrollProgress * 100)))}%`,
                 }}
               />
             </div>

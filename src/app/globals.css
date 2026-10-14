@@ -2351,9 +2351,9 @@
   width: var(--scroll-pct, 0%);
   background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--secondary)));
   z-index: 9999;
-  transform-origin: left;
   box-shadow: 0 0 16px hsl(var(--primary) / .8), 0 0 30px hsl(var(--accent) / .5);
-  transition: width .05s linear;
+  pointer-events: none;
+  transition: width 0.05s linear;
 }
 
 /* Reveal: hidden initial state, GSAP animates to visible */
@@ -8168,7 +8168,9 @@
   pointer-events: auto;
   touch-action: none;
   cursor: grab;
-  transition: opacity 0.3s ease-out, transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Only fade opacity via CSS — transform is driven by JS every rAF, no CSS transition allowed */
+  transition: opacity 0.25s ease-out;
+  will-change: transform, opacity;
 }
 
 .hero-model-stage model-viewer {
@@ -8181,7 +8183,8 @@
   pointer-events: auto;
   touch-action: none;
   cursor: grab;
-  transition: transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  /* model-viewer's interpolation-decay handles its own camera easing — no CSS transition needed */
 }
 
 .hero-model-stage model-viewer:active {
@@ -8309,8 +8312,8 @@
 
 .hero-two-col-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 0;
   margin-bottom: 28px;
 }
 
