@@ -286,12 +286,52 @@
   /* Row 2: Search bar + Menu toggle — full width row */
   .site-header-row2 {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
   }
 
   /* Force-hide desktop-only nav and actions inside mobile capsule */
   .site-header.site-header-capsule .header-nav,
   .site-header.site-header-capsule .header-actions {
     display: none !important;
+  }
+
+  /* Prevent any child from overflowing the capsule's rounded bottom corners */
+  .site-header.site-header-capsule {
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ensure header-inner doesn't overflow and respects box model */
+  .site-header.site-header-capsule .header-inner {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    justify-content: flex-start;
+  }
+
+  /* Mobile search capsule bar must shrink smoothly without pushing menu toggle */
+  .mobile-search-capsule-bar {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+  .mobile-search-capsule-bar span {
+    min-width: 0 !important;
+    flex: 1 1 0% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  .mobile-menu-toggle-btn {
+    flex-shrink: 0 !important;
   }
 }
 
@@ -8595,8 +8635,8 @@
     right: 18px;
     width: auto;
     max-width: none;
-    /* Clean breathing room below topbar: header + safe area + 64px */
-    top: calc(54px + env(safe-area-inset-top, 0px) + 64px);
+    /* Lower texts down to add generous breathing room below the 2-row capsule navbar */
+    top: calc(120px + env(safe-area-inset-top, 0px) + 38px);
     bottom: auto;
     transform: none;
     height: 340px;
@@ -8632,8 +8672,7 @@
     font-weight: 800;
     line-height: 1.02;
     letter-spacing: -0.035em;
-    /* More space before paragraph */
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     color: #ffffff;
     text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9), 0 0 35px rgba(168, 85, 247, 0.35);
     pointer-events: none;
@@ -8647,8 +8686,7 @@
   .hero-two-col-grid {
     grid-template-columns: 1fr;
     gap: 6px;
-    /* More space before buttons */
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     pointer-events: none;
   }
   .hero-story-para {
@@ -8670,8 +8708,7 @@
   .hero-action-buttons {
     display: flex;
     flex-direction: column;
-    /* More space between buttons */
-    gap: 14px;
+    gap: 10px;
     width: 100%;
     max-width: 100%;
     pointer-events: auto;
@@ -8707,7 +8744,7 @@
   /* 3D PS5 Controller: Positioned lower in lower-half zone with slow smooth transition & full touch rotation */
   .hero-model-stage {
     position: absolute;
-    top: 63%;
+    top: 67%;
     left: 50%;
     bottom: auto;
     width: clamp(290px, 85vw, 360px);
@@ -8730,7 +8767,7 @@
     cursor: grabbing;
   }
   .hero-model-glow-halo {
-    top: 63%;
+    top: 67%;
     left: 50%;
     bottom: auto;
     transform: translate(-50%, -50%);

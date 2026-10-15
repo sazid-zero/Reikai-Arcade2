@@ -279,15 +279,15 @@ export function SiteHeader({
           </div>
 
           {/* Mobile Only: Row 2 - Search bar on left/center, Menu toggle on right */}
-          <div className="site-header-row2 flex md:hidden items-center gap-2 w-full mt-2.5">
+          <div className="site-header-row2 flex md:hidden items-center gap-2 w-full min-w-0 mt-2.5">
             <button
               type="button"
               onClick={() => openSearch()}
-              className="mobile-search-capsule-bar flex-1 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#00f0ff]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer"
+              className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#00f0ff]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
               aria-label="Search store"
               data-testid="mobile-search-bar"
             >
-              <span className="text-zinc-400 font-['DM_Mono'] truncate">
+              <span className="text-zinc-400 font-['DM_Mono'] truncate min-w-0 flex-1 text-left">
                 Search games, accessories, top up...
               </span>
               <Search size={16} className="text-[#00f0ff] shrink-0 ml-2" />
