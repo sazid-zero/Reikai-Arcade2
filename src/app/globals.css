@@ -240,6 +240,61 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
 }
+
+/* ── Mobile Capsule Topbar ────────────────────────────────────────────────────
+   On mobile the header becomes a beautiful pill/capsule shape with
+   rounded bottom corners, a 2-row layout, and a glassy dark background.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --header-height: auto;
+    --mobile-header-pb: 14px;
+  }
+
+  .site-header.site-header-capsule {
+    height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: hsl(265 45% 6% / 0.96);
+    backdrop-filter: blur(28px) saturate(1.6);
+    -webkit-backdrop-filter: blur(28px) saturate(1.6);
+    /* Beautifully rounded bottom corners — the capsule shape */
+    border-radius: 0 0 24px 24px;
+    border: 1px solid hsl(265 20% 18% / 0.7);
+    border-top: none;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.7),
+      0 2px 0 hsl(272 80% 60% / 0.15) inset,
+      0 0 40px hsl(272 85% 42% / 0.1);
+    padding: 12px 16px var(--mobile-header-pb);
+  }
+
+  .site-header.site-header-capsule .header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    height: auto;
+    gap: 0;
+  }
+
+  /* Row 1: Logo + User auth — full width row */
+  .site-header-row1 {
+    width: 100%;
+  }
+
+  /* Row 2: Search bar + Menu toggle — full width row */
+  .site-header-row2 {
+    width: 100%;
+  }
+
+  /* Force-hide desktop-only nav and actions inside mobile capsule */
+  .site-header.site-header-capsule .header-nav,
+  .site-header.site-header-capsule .header-actions {
+    display: none !important;
+  }
+}
+
 .header-inner {
   height: 100%;
   max-width: 1380px;
@@ -3144,6 +3199,32 @@
     from { transform: translateY(100%); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
+}
+
+/* Mobile search pill label inside old bottom sheet (kept for legacy) */
+.mobile-search-pill {
+  font: 700 0.58rem 'DM Mono', monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: hsl(272 80% 72%);
+  border: 1px solid hsl(272 60% 50% / 0.5);
+  border-radius: 8px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+/* Mobile search capsule bar inside topbar */
+.mobile-search-capsule-bar {
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-search-capsule-bar:active {
+  transform: scale(0.99);
+  border-color: hsl(272 80% 65% / 0.5);
+}
+
+/* Mobile menu toggle button inside topbar */
+.mobile-menu-toggle-btn {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Extra small phones (<= 480px) */

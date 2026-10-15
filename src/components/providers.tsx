@@ -8,6 +8,8 @@ import LenisProvider from '@/components/lenis-provider';
 import { CartProvider } from '@/components/cart-context';
 import { SearchProvider } from '@/components/search-modal';
 
+import { MobileMenuProvider } from '@/components/mobile-menu-context';
+
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -17,7 +19,9 @@ export function Providers({ children }: { children: ReactNode }) {
         <TooltipProvider>
           <CartProvider>
             <SearchProvider>
-              {children}
+              <MobileMenuProvider>
+                {children}
+              </MobileMenuProvider>
             </SearchProvider>
             <Toaster />
           </CartProvider>
