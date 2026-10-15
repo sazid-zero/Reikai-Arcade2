@@ -720,16 +720,15 @@ function Header({
             <Heart size={15} className="text-pink-400 hover:fill-pink-400/40 transition" />
           </Link>
 
-          <button
-            type="button"
+          <Link
+            href="/cart"
             className="header-icon-button cart-pill-btn inline-flex"
-            onClick={onCart}
             aria-label={`Open cart with ${cartCount} items`}
             data-testid="button-open-cart"
           >
             <ShoppingBag size={15} />
             <span className="cart-count" data-testid="text-cart-count">{cartCount}</span>
-          </button>
+          </Link>
 
           <UserAuthButton />
         </div>

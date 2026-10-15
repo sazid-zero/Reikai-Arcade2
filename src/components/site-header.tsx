@@ -262,17 +262,16 @@ export function SiteHeader({
               <Heart size={15} className="text-pink-400 hover:fill-pink-400/40 transition" />
             </Link>
 
-            {/* Cart Pill Button */}
-            <button
-              type="button"
+            {/* Cart Pill Link */}
+            <Link
+              href="/cart"
               className="header-icon-button cart-pill-btn inline-flex"
-              onClick={() => setCartOpen(true)}
               aria-label={`Open shopping bag with ${cartCount} items`}
               data-testid="button-cart"
             >
               <ShoppingBag size={15} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-            </button>
+            </Link>
 
             {/* User Sign In / Profile Button */}
             <UserAuthButton />

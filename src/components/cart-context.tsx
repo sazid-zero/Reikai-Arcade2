@@ -126,7 +126,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-      {cartOpen && <GlobalCartPanel />}
     </CartContext.Provider>
   );
 }

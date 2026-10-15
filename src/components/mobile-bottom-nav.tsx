@@ -84,11 +84,11 @@ export function MobileBottomNav({
         <span className="mobile-bottom-nav__label">Offers</span>
       </Link>
 
-      {/* 3. Cart */}
-      <button
-        type="button"
-        onClick={handleCartClick}
-        className={`mobile-bottom-nav__item${cartOpen ? ' active' : ''}`}
+      {/* 3. Cart Page */}
+      <Link
+        href="/cart"
+        onClick={() => closeMenu()}
+        className={`mobile-bottom-nav__item${pathname === '/cart' ? ' active' : ''}`}
         aria-label={`Cart with ${cartCount} items`}
         data-testid="bottom-nav-cart"
       >
@@ -99,7 +99,7 @@ export function MobileBottomNav({
           )}
         </span>
         <span className="mobile-bottom-nav__label">Cart</span>
-      </button>
+      </Link>
 
       {/* 4. Orders */}
       <Link

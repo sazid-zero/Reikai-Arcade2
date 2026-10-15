@@ -132,56 +132,58 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
             alt={game.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width: 768px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-5xl">🎮</div>
+          <div className="flex h-full items-center justify-center text-3xl sm:text-5xl">🎮</div>
         )}
         {!inStock && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-xs">
-            <span className="rounded-full bg-rose-500/20 border border-rose-500/40 px-3 py-1 text-xs font-bold text-rose-300">
+            <span className="rounded-full bg-rose-500/20 border border-rose-500/40 px-2 py-0.5 text-[10px] sm:text-xs font-bold text-rose-300">
               OUT OF STOCK
             </span>
           </div>
         )}
         {game.featured && (
-          <div className="absolute top-2.5 left-2.5 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 px-2.5 py-0.5 text-[11px] font-bold text-[#00f0ff] backdrop-blur-md shadow-[0_0_12px_rgba(0,240,255,0.3)]">
+          <div className="absolute top-2 left-2 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-[#00f0ff] backdrop-blur-md shadow-[0_0_12px_rgba(0,240,255,0.3)]">
             FEATURED
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-2 p-4">
-        <div className="flex flex-wrap gap-1">
-          {game.tags.slice(0, 2).map((t) => (
-            <span key={t} className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50 uppercase tracking-wider font-mono">
-              {t}
-            </span>
-          ))}
+      <div className="flex flex-col gap-1 sm:gap-2 p-2.5 sm:p-4 flex-1 justify-between">
+        <div>
+          <div className="hidden sm:flex flex-wrap gap-1">
+            {game.tags.slice(0, 2).map((t) => (
+              <span key={t} className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50 uppercase tracking-wider font-mono">
+                {t}
+              </span>
+            ))}
+          </div>
+          <h3 className="font-bold text-white text-xs sm:text-sm line-clamp-1 sm:line-clamp-2 group-hover:text-[#00f0ff] transition mt-0.5">{game.name}</h3>
+          {game.platform && <p className="text-[10px] sm:text-xs text-white/40 truncate">{game.platform}</p>}
         </div>
-        <h3 className="font-bold text-white line-clamp-1 group-hover:text-[#00f0ff] transition">{game.name}</h3>
-        {game.platform && <p className="text-xs text-white/40">{game.platform}</p>}
-        <div className="mt-auto flex items-center justify-between pt-2 border-t border-white/5">
+        <div className="mt-2 flex items-center justify-between pt-1.5 border-t border-white/5">
           {lowestVariant ? (
-            <div>
-              <span className="font-mono font-black text-sm text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+            <div className="min-w-0">
+              <span className="font-mono font-black text-xs sm:text-sm text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">
                 {formatTaka(lowestVariant.price)}
               </span>
               {lowestVariant.compareAtPrice && (
-                <span className="ml-2 text-xs text-white/40 line-through">
+                <span className="ml-1.5 text-[10px] sm:text-xs text-white/40 line-through">
                   {formatTaka(lowestVariant.compareAtPrice)}
                 </span>
               )}
             </div>
           ) : (
-            <span className="text-white/40 text-sm">No price</span>
+            <span className="text-white/40 text-xs">No price</span>
           )}
           {inStock && (
             <button
               onClick={handleAdd}
-              className="rounded-xl border border-[#00f0ff]/40 bg-[#00f0ff]/10 p-2 text-[#00f0ff] hover:bg-gradient-to-r hover:from-[#a855f7] hover:to-[#00f0ff] hover:text-white hover:border-transparent transition shadow-[0_0_12px_rgba(0,240,255,0.2)]"
+              className="rounded-xl border border-[#00f0ff]/40 bg-[#00f0ff]/10 p-1.5 sm:p-2 text-[#00f0ff] hover:bg-gradient-to-r hover:from-[#a855f7] hover:to-[#00f0ff] hover:text-white hover:border-transparent transition shadow-[0_0_12px_rgba(0,240,255,0.2)] shrink-0 ml-1 cursor-pointer"
               aria-label="Add game to bag"
             >
-              <ShoppingCart size={15} />
+              <ShoppingCart size={14} />
             </button>
           )}
         </div>
@@ -237,121 +239,88 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
     <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
       <SiteHeader />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-white/5 bg-[#06020e] px-4 pb-14 pt-16 sm:px-8">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_75%_25%,rgba(168,85,247,0.24),transparent_70%),radial-gradient(ellipse_60%_45%_at_20%_70%,rgba(0,240,255,0.18),transparent_65%),radial-gradient(circle_at_50%_40%,rgba(236,72,153,0.1),transparent_55%)]" />
-
-        <div className="relative mx-auto max-w-7xl">
-          <nav className="mb-6 flex items-center gap-1.5 text-xs text-white/40">
+      {/* Main Catalog - Starts directly with filters & items */}
+      <main className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-24 md:pb-16">
+        {/* Compact Breadcrumb & count */}
+        <div className="mb-3 flex items-center justify-between text-xs text-white/50">
+          <nav className="flex items-center gap-1.5">
             <Link href="/" className="hover:text-white transition">Home</Link>
             <ChevronRight className="h-3 w-3" />
-            <span className="text-white/70">Games</span>
+            <span className="text-white/80 font-semibold">Games</span>
           </nav>
-
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#00f0ff]/40 bg-[#00f0ff]/10 px-3.5 py-1 font-mono text-xs font-bold uppercase tracking-widest text-[#00f0ff] shadow-[0_0_16px_rgba(0,240,255,0.25)]">
-            <Gamepad2 className="h-3.5 w-3.5 text-[#00f0ff]" /> PlayStation 5 Software Catalog
-          </span>
-          <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Legendary Titles.{' '}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] via-[#ec4899] to-[#00f0ff] drop-shadow-[0_0_25px_rgba(0,240,255,0.3)]">
-              Pure Next-Gen Power.
-            </span>
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm text-white/60 leading-relaxed sm:text-base">
-            Original factory sealed PS5 physical discs, digital vouchers, and collector editions. Sourced directly from official publishers with instant Dhaka dispatch.
-          </p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            {[
-              { icon: Disc, text: '100% Genuine Discs' },
-              { icon: Zap, text: 'Same Day Dispatch' },
-              { icon: ShieldCheck, text: '7-Day Replacement' },
-              { icon: Sparkles, text: 'Exclusive Steelbooks' },
-            ].map(({ icon: Icon, text }) => (
-              <span
-                key={text}
-                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/70 backdrop-blur-md"
-              >
-                <Icon className="h-3.5 w-3.5 text-[#00f0ff]" />
-                {text}
-              </span>
-            ))}
-          </div>
+          <span className="font-mono text-[11px] text-[#00f0ff]">{filteredGames.length} games</span>
         </div>
-      </section>
 
-      {/* Main Catalog */}
-      <main className="mx-auto max-w-7xl px-5 py-8 md:px-10">
-        {/* Controls */}
-        <div className="mb-6 flex flex-wrap items-center gap-3">
+        {/* Responsive Compact Filter Bar */}
+        <div className="mb-4 sm:mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           {/* Search */}
-          <div className="relative flex-1 min-w-[200px] max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/40" />
             <input
               type="text"
               placeholder="Search games..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2.5 text-sm placeholder:text-white/40 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50 transition"
+              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50 transition"
             />
           </div>
 
-          {/* Platform filter */}
-          <select
-            value={selectedPlatform}
-            onChange={(e) => setSelectedPlatform(e.target.value)}
-            className="rounded-xl border border-white/10 bg-[#0d0822] px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50"
-          >
-            <option value="all">All Platforms</option>
-            {platforms.map((p) => <option key={p} value={p}>{p}</option>)}
-          </select>
-
-          {/* Category filter */}
-          {categories.length > 0 && (
+          {/* Filters & Sort */}
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
             <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-xl border border-white/10 bg-[#0d0822] px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50"
+              value={selectedPlatform}
+              onChange={(e) => setSelectedPlatform(e.target.value)}
+              className="h-9 rounded-xl border border-white/10 bg-[#0d0822] px-2.5 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
             >
-              <option value="all">All Categories</option>
-              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+              <option value="all">All Platforms</option>
+              {platforms.map((p) => <option key={p} value={p}>{p}</option>)}
             </select>
-          )}
 
-          {/* Sort */}
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="rounded-xl border border-white/10 bg-[#0d0822] px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50"
-          >
-            <option value="featured">Featured First</option>
-            <option value="name">Name A-Z</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="rating">Highest Rated</option>
-          </select>
+            {categories.length > 0 && (
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="h-9 rounded-xl border border-white/10 bg-[#0d0822] px-2.5 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
+              >
+                <option value="all">All Categories</option>
+                {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            )}
 
-          <div className="flex gap-1 rounded-xl border border-white/10 p-1 bg-white/[0.03]">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`rounded-lg p-1.5 transition ${viewMode === 'grid' ? 'bg-[#00f0ff]/20 text-[#00f0ff]' : 'text-white/40 hover:text-white'}`}
-              aria-label="Grid view"
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="col-span-2 sm:col-span-1 h-9 rounded-xl border border-white/10 bg-[#0d0822] px-2.5 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
             >
-              <LayoutGrid size={16} />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`rounded-lg p-1.5 transition ${viewMode === 'list' ? 'bg-[#00f0ff]/20 text-[#00f0ff]' : 'text-white/40 hover:text-white'}`}
-              aria-label="List view"
-            >
-              <List size={16} />
-            </button>
+              <option value="featured">Featured First</option>
+              <option value="name">Name A-Z</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+
+            <div className="hidden sm:flex gap-1 rounded-xl border border-white/10 p-0.5 bg-white/[0.03] h-9 items-center">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`rounded-lg p-1.5 transition ${viewMode === 'grid' ? 'bg-[#00f0ff]/20 text-[#00f0ff]' : 'text-white/40 hover:text-white'}`}
+                aria-label="Grid view"
+              >
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`rounded-lg p-1.5 transition ${viewMode === 'list' ? 'bg-[#00f0ff]/20 text-[#00f0ff]' : 'text-white/40 hover:text-white'}`}
+                aria-label="List view"
+              >
+                <List size={15} />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Results */}
+        {/* Results: 2 columns on phone, multi-column wrap on PC */}
         {filteredGames.length === 0 ? (
-          <div className="py-24 text-center rounded-3xl border border-white/5 bg-[#0d0822]/40 backdrop-blur-xl p-8">
+          <div className="py-20 text-center rounded-3xl border border-white/5 bg-[#0d0822]/40 backdrop-blur-xl p-8">
             <p className="text-4xl mb-3">🎮</p>
             <p className="text-white/60">
               {games.length === 0 ? 'No games in the catalog yet. Check back soon!' : 'No games match your filters.'}
@@ -359,14 +328,14 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             {searchQuery || selectedPlatform !== 'all' || selectedCategory !== 'all' ? (
               <button
                 onClick={() => { setSearchQuery(''); setSelectedPlatform('all'); setSelectedCategory('all') }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00f0ff] hover:underline"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00f0ff] hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>
             ) : null}
           </div>
         ) : (
-          <div className={viewMode === 'grid' ? 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'flex flex-col gap-3'}>
+          <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' : 'flex flex-col gap-3'}>
             {filteredGames.map((game) => <GameCard key={game.id} game={game} viewMode={viewMode} />)}
           </div>
         )}
