@@ -247,7 +247,7 @@ function GlobalCartPanel() {
           </div>
         ) : cart.length === 0 ? (
           <div className="cart-empty">
-            <ShoppingBag size={48} className="text-[#a855f7] opacity-60 mb-3" />
+            <ShoppingBag size={48} className="text-[#c673e2] opacity-60 mb-3" />
             <strong>BAG IS EMPTY</strong>
             <p>No items added yet.</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>

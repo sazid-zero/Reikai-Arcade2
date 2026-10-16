@@ -49,7 +49,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
   }, [products, searchQuery, selectedBrand])
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
 
       {/* Main Catalog - Starts directly with filters & items */}
@@ -61,7 +61,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
             <ChevronRight className="h-3 w-3" />
             <span className="text-white/80 font-semibold">Subscriptions</span>
           </nav>
-          <span className="font-mono text-[11px] text-[#00f0ff]">{filtered.length} plans</span>
+          <span className="font-mono text-[11px] text-[#a0e4f1]">{filtered.length} plans</span>
         </div>
 
         {/* Responsive Compact Filter Bar */}
@@ -74,7 +74,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
               placeholder="Search PS Plus, Game Pass, EA..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50 transition"
+              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
             />
           </div>
 
@@ -84,7 +84,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                className="h-9 rounded-xl border border-white/10 bg-[#0d0822] px-3 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
+                className="h-9 rounded-xl border border-white/10 bg-black/90 px-3 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
               >
                 <option value="all">All Brands</option>
                 {brands.map((b) => <option key={b} value={b}>{b}</option>)}
@@ -95,7 +95,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
 
         {/* Results: 2 columns on phone, multi-column wrap on PC */}
         {filtered.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl border border-white/5 bg-[#0d0822]/40 backdrop-blur-xl p-8">
+          <div className="py-20 text-center rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl p-8">
             <p className="text-4xl mb-3">👑</p>
             <p className="text-white/60">
               {products.length === 0 ? 'No subscription products in the catalog yet.' : 'No subscriptions match your search.'}
@@ -103,7 +103,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
             {(searchQuery || selectedBrand !== 'all') && (
               <button
                 onClick={() => { setSearchQuery(''); setSelectedBrand('all'); }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00f0ff] hover:underline cursor-pointer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#a0e4f1] hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>
@@ -115,10 +115,10 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
               <Link
                 key={product.id}
                 href={`/subscriptions/${product.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-[#00f0ff]/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.6),0_0_24px_rgba(0,240,255,0.2)] hover:-translate-y-1"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-[#a0e4f1]/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] hover:-translate-y-1"
               >
                 {/* Image */}
-                <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-[#1c0f32] to-[#06020e]">
+                <div className="relative aspect-square w-full overflow-hidden bg-black/60">
                   {product.imageUrl ? (
                     <Image
                       src={product.imageUrl}
@@ -129,12 +129,12 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center">
-                      <Crown className="h-8 w-8 text-[#00f0ff]/40 transition-colors group-hover:text-[#00f0ff]" />
+                      <Crown className="h-8 w-8 text-[#a0e4f1]/40 transition-colors group-hover:text-[#a0e4f1]" />
                     </div>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06020e] via-[#06020e]/60 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/60 to-transparent" />
                   {product.featured && (
-                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-[0_0_12px_rgba(0,240,255,0.5)]">
+                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-[0_0_12px_rgba(160,228,241,0.4)]">
                       Featured
                     </span>
                   )}
@@ -142,14 +142,14 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
 
                 {/* Info */}
                 <div className="p-2.5 sm:p-3.5">
-                  <p className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1 sm:line-clamp-2 group-hover:text-[#00f0ff] transition-colors">
+                  <p className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1 sm:line-clamp-2 group-hover:text-[#a0e4f1] transition-colors">
                     {product.name}
                   </p>
                   {product.brand && (
                     <p className="mt-0.5 text-[10px] sm:text-[11px] font-semibold text-white/50">{product.brand}</p>
                   )}
                   {(product.minPrice !== null || product.maxPrice !== null) && (
-                    <p className="mt-1 font-mono text-[11px] sm:text-xs font-semibold text-[#00f0ff]">
+                    <p className="mt-1 font-mono text-[11px] sm:text-xs font-semibold text-[#a0e4f1]">
                       {product.minPrice !== null ? formatBDT(product.minPrice) : ''}
                       {product.minPrice !== product.maxPrice && product.maxPrice !== null
                         ? ` – ${formatBDT(product.maxPrice)}`

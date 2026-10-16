@@ -80,7 +80,7 @@ export function TopUpDetailClient({ product }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -156,7 +156,7 @@ export function TopUpDetailClient({ product }: Props) {
                       onClick={() => setSelectedVariantIdx(idx)}
                       className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all ${
                         selectedVariantIdx === idx
-                          ? 'border-[#00f0ff] bg-gradient-to-r from-[#a855f7]/30 to-[#00f0ff]/20 text-[#00f0ff] shadow-[0_0_20px_rgba(0,240,255,0.35)]'
+                          ? 'border-[#a0e4f1] bg-gradient-to-r from-[#c673e2]/30 to-[#a0e4f1]/20 text-[#a0e4f1] shadow-[0_0_20px_rgba(160,228,241,0.35)]'
                           : 'border-white/10 bg-white/[0.04] text-white/70 hover:border-white/25 hover:text-white'
                       }`}
                     >
@@ -175,7 +175,7 @@ export function TopUpDetailClient({ product }: Props) {
             {selectedVariant && (
               <div className="flex flex-wrap items-center gap-6">
                 <div>
-                  <span className="font-mono text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#00f0ff]">
+                  <span className="font-mono text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#a0e4f1]">
                     {formatBDT(selectedVariant.price)}
                   </span>
                   {selectedVariant.compareAtPrice && (
@@ -212,7 +212,7 @@ export function TopUpDetailClient({ product }: Props) {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] py-4 text-sm font-black text-white shadow-[0_0_30px_rgba(0,240,255,0.35)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] active:scale-[0.98]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#c673e2] to-[#4b22d2] py-4 text-sm font-black text-white shadow-[0_0_30px_rgba(198,115,226,0.35)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(198,115,226,0.6)] active:scale-[0.98]"
                 >
                   <Zap className="h-4 w-4" />
                   Place Order Now
@@ -220,11 +220,11 @@ export function TopUpDetailClient({ product }: Props) {
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-[#00f0ff]/40 active:scale-[0.98]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-[#a0e4f1]/40 active:scale-[0.98]"
                 >
                   {added ? (
                     <>
-                      <Check className="h-4 w-4 text-[#00f0ff]" />
+                      <Check className="h-4 w-4 text-[#a0e4f1]" />
                       Added to Bag!
                     </>
                   ) : (

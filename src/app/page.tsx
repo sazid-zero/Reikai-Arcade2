@@ -42,23 +42,6 @@ import { MobileRightSidebar } from '@/components/mobile-right-sidebar';
 import { useMobileMenu } from '@/components/mobile-menu-context';
 
 
-type StagePose = {
-  x: number;
-  y?: number;
-  scale: number;
-  theta: number;
-  phi: number;
-  radius: number;
-  roll?: number;
-};
-
-// ── Section poses ────────────────────────────────────────────────────────────
-// Scale/radius control apparent size: higher scale + lower radius = bigger model.
-// Theta accumulates +360° per transition = guaranteed full-spin between every section.
-// Effective view angle = theta % 360:
-//   180° = front face (top-down look),  90° = left side,  270° = right side,  0° = back
-const heroPose: StagePose = { x: 0, y: 0, scale: 1.14, theta: 180, phi: 46, radius: 1.84, roll: 0 }; // Centered initial pose
-
 const products: Product[] = [
   // ── GAMES ──────────────────────────────────
   {
@@ -428,19 +411,6 @@ const filterLabels: { id: 'all' | Product['type']; label: string }[] = [
   { id: 'consoles', label: 'Consoles' },
 ];
 
-function supportsWebGL() {
-  try {
-    const canvas = document.createElement('canvas');
-    return Boolean(
-      canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: true }) ||
-      canvas.getContext('webgl', { failIfMajorPerformanceCaveat: true }) ||
-      canvas.getContext('experimental-webgl', { failIfMajorPerformanceCaveat: true }),
-    );
-  } catch {
-    return false;
-  }
-}
-
 function scrollToId(id: string, lenis?: ReturnType<typeof useLenis>) {
   if (lenis) {
     lenis.scrollTo(`#${id}`, { duration: 1.4, offset: -80 });
@@ -449,145 +419,6 @@ function scrollToId(id: string, lenis?: ReturnType<typeof useLenis>) {
   }
 }
 
-function ModelStage({
-  orbit,
-  modelScale,
-  stageX,
-  stageY = 0,
-  roll,
-  reducedMotion,
-  opacity = 1,
-}: {
-  orbit: string;
-  modelScale: number;
-  stageX: number;
-  stageY?: number;
-  roll: number;
-  reducedMotion: boolean;
-  opacity?: number;
-}) {
-  const hostRef = useRef<HTMLDivElement>(null);
-  const [webglSupported, setWebglSupported] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const modelRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const supported = supportsWebGL();
-    setWebglSupported(supported);
-  }, []);
-
-  useEffect(() => {
-    if (!webglSupported) return;
-
-    let active = true;
-    const isMobileDevice = typeof window !== 'undefined' && window.innerWidth <= 768;
-
-    const mount = () => {
-      if (!active || !hostRef.current || modelRef.current) return;
-      try {
-        const model = document.createElement('model-viewer');
-        model.setAttribute('src', '/ps5-opt.glb');
-        model.setAttribute('alt', 'PlayStation 5 DualSense wireless controller');
-        model.setAttribute('camera-controls', '');
-        model.setAttribute('disable-zoom', '');
-        model.setAttribute('interaction-prompt', 'none');
-        model.setAttribute('touch-action', 'none');
-        model.style.touchAction = 'none';
-        model.style.width = '100%';
-        model.style.height = '100%';
-        model.style.cursor = 'grab';
-        // Power preference for discrete GPU
-        model.setAttribute('power-preference', 'high-performance');
-        if (isMobileDevice) {
-          model.setAttribute('render-scale', '0.85');
-        }
-        // Lighter shadows on mobile for GPU savings
-        model.setAttribute('shadow-intensity', isMobileDevice ? '0.6' : '1.2');
-        model.setAttribute('shadow-softness', isMobileDevice ? '0.4' : '0.65');
-        model.setAttribute('exposure', '1.15');
-        model.setAttribute('camera-orbit', orbit);
-        // 120ms decay = responsive & butter smooth
-        model.setAttribute('interpolation-decay', '120');
-        model.setAttribute('loading', 'eager');
-        model.setAttribute('reveal', 'auto');
-        model.addEventListener('load', () => active && setReady(true));
-        model.addEventListener('error', () => active && setFailed(true));
-        hostRef.current.appendChild(model);
-        modelRef.current = model;
-      } catch {
-        if (active) setFailed(true);
-      }
-    };
-
-    // Prefer self-hosted copy; fall back to CDN
-    const existing = customElements.get('model-viewer');
-    if (existing) {
-      mount();
-    } else {
-      // Try to load from CDN only once (guard duplicates)
-      const id = 'model-viewer-script';
-      let script = document.getElementById(id) as HTMLScriptElement | null;
-      if (!script) {
-        script = document.createElement('script');
-        script.id = id;
-        script.type = 'module';
-        script.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
-        document.head.appendChild(script);
-      }
-      // Wait for custom element registration
-      const poll = setInterval(() => {
-        if (customElements.get('model-viewer')) {
-          clearInterval(poll);
-          mount();
-        }
-      }, 80);
-      return () => clearInterval(poll);
-    }
-    return () => {
-      active = false;
-      modelRef.current?.remove();
-      modelRef.current = null;
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webglSupported]);
-
-  // Update camera-orbit when orbit prop changes:
-  useEffect(() => {
-    if (modelRef.current) {
-      try {
-        (modelRef.current as any).cameraOrbit = orbit;
-      } catch {
-        // fallback
-      }
-      modelRef.current.setAttribute('camera-orbit', orbit);
-    }
-  }, [orbit]);
-
-  const dockStyle = {
-    '--model-scale': `${modelScale}`,
-    '--stage-x': `${stageX}vw`,
-    '--stage-y': `${stageY}px`,
-    '--model-roll': `${reducedMotion ? 0 : roll}deg`,
-    opacity,
-    pointerEvents: opacity < 0.05 ? 'none' : undefined,
-    visibility: opacity < 0.01 ? 'hidden' : 'visible',
-  } as CSSProperties;
-
-  if (failed) return null;
-
-  return (
-    <div className="hero-model-stage" style={dockStyle} aria-label="Interactive PS5 DualSense Controller 3D Model">
-      {webglSupported && (
-        <div
-          ref={hostRef}
-          className="model-host"
-          style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1, touchAction: 'none' }}
-        />
-      )}
-    </div>
-  );
-}
 
 
 function Header({
@@ -635,7 +466,7 @@ function Header({
               className="header-logo-img"
             />
             <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm sm:text-base">
-              REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
+              REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.7)]">ARCADE</span>
             </span>
           </button>
 
@@ -655,14 +486,14 @@ function Header({
             <button
               type="button"
               onClick={() => setCategoriesDropdown((prev) => !prev)}
-              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition cursor-pointer ${
-                categoriesDropdown ? 'text-[#00f0ff] bg-[#00f0ff]/10' : ''
+              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition cursor-pointer ${
+                categoriesDropdown ? 'text-[#a0e4f1] bg-[#a0e4f1]/10' : ''
               }`}
               data-testid="button-categories-dropdown"
             >
-              <Layers size={13} className="text-[#00f0ff]" />
+              <Layers size={13} className="text-[#a0e4f1]" />
               <span>Categories</span>
-              <ChevronDown size={12} className={`nav-chevron text-zinc-400 transition-transform duration-200 ${categoriesDropdown ? 'rotate-180 text-[#00f0ff]' : ''}`} />
+              <ChevronDown size={12} className={`nav-chevron text-zinc-400 transition-transform duration-200 ${categoriesDropdown ? 'rotate-180 text-[#a0e4f1]' : ''}`} />
             </button>
             {categoriesDropdown && (
               <div
@@ -670,26 +501,26 @@ function Header({
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl">
+                <div className="rounded-2xl border border-[#c673e2]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl">
                   <Link href="/games" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#00f0ff]"><Gamepad2 size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">PS5 Games</strong><span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#a0e4f1]"><Gamepad2 size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">PS5 Games</strong><span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span></div>
                   </Link>
                   <Link href="/top-up" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#00f0ff]"><Zap size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Game Top-Up</strong><span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#a0e4f1]"><Zap size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Game Top-Up</strong><span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span></div>
                   </Link>
                   <Link href="/accessories" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-[#00f0ff]"><Headphones size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Accessories</strong><span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-[#a0e4f1]"><Headphones size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Accessories</strong><span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span></div>
                   </Link>
                   <Link href="/subscriptions" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-[#00f0ff]"><Crown size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Subscriptions</strong><span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-[#a0e4f1]"><Crown size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Subscriptions</strong><span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span></div>
                   </Link>
                   <Link href="/gift-cards" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-[#00f0ff]"><Gift size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">Gift Cards</strong><span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-[#a0e4f1]"><Gift size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Gift Cards</strong><span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span></div>
                   </Link>
                 </div>
               </div>
@@ -738,14 +569,14 @@ function Header({
           <button
             type="button"
             onClick={() => openSearch()}
-            className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#00f0ff]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
+            className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#a0e4f1]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
             aria-label="Search store"
             data-testid="mobile-search-bar"
           >
             <span className="text-zinc-400 font-['DM_Mono'] truncate min-w-0 flex-1 text-left">
               Search games, accessories, top up...
             </span>
-            <Search size={16} className="text-[#00f0ff] shrink-0 ml-2" />
+            <Search size={16} className="text-[#a0e4f1] shrink-0 ml-2" />
           </button>
 
           <button
@@ -753,8 +584,8 @@ function Header({
             onClick={toggleMobileMenu}
             className={`mobile-menu-toggle-btn h-10 w-10 shrink-0 rounded-xl border flex items-center justify-center transition active:scale-95 cursor-pointer ${
               isMobileMenuOpen
-                ? 'border-[#00f0ff] text-[#00f0ff] bg-[#00f0ff]/15 shadow-[0_0_12px_rgba(0,240,255,0.35)]'
-                : 'bg-white/[0.06] border-white/10 text-white hover:text-[#00f0ff] hover:border-white/20'
+                ? 'border-[#a0e4f1] text-[#a0e4f1] bg-[#a0e4f1]/15 shadow-[0_0_12px_rgba(160,228,241,0.35)]'
+                : 'bg-white/[0.06] border-white/10 text-white hover:text-[#a0e4f1] hover:border-white/20'
             }`}
             aria-label="Toggle navigation menu"
             data-testid="mobile-menu-toggle"
@@ -936,28 +767,6 @@ const categoryRail = [
   },
 ];
 
-const HERO_POSES: StagePose[] = [
-  // Stage 0: REIKAI ARCADE (Centered frontal hero view)
-  { theta: 180, phi: 46, radius: 1.88, roll: 0, x: 0, y: 0, scale: 1.15 },
-  // Stage 1: POWER YOUR GAME (Tilted to the right side, raised + right shifted)
-  { theta: 234, phi: 56, radius: 1.80, roll: 11, x: 7, y: -14, scale: 1.18 },
-  // Stage 2: DIGITAL WALLET (Tilted to the left side looking at touchpad, lowered + left shifted)
-  { theta: 126, phi: 38, radius: 1.78, roll: -11, x: -7, y: 14, scale: 1.20 },
-  // Stage 3: PLAY BEYOND (Elevated high-angle dynamic tilt floating upward)
-  { theta: 186, phi: 68, radius: 1.82, roll: 5, x: 0, y: -18, scale: 1.16 },
-];
-
-const MOBILE_HERO_POSES: StagePose[] = [
-  // Stage 0: REIKAI ARCADE (Frontal hero view - perfectly sized, not cut off)
-  { theta: 180, phi: 46, radius: 1.84, roll: 0, x: 0, y: 0, scale: 1.14 },
-  // Stage 1: POWER YOUR GAME (Turned right, shifted right & raised)
-  { theta: 232, phi: 56, radius: 1.76, roll: 10, x: 6, y: -12, scale: 1.18 },
-  // Stage 2: DIGITAL WALLET (Turned left, shifted left & lowered)
-  { theta: 128, phi: 38, radius: 1.74, roll: -10, x: -6, y: 12, scale: 1.20 },
-  // Stage 3: PLAY BEYOND (High-angle elevated tilt floating upward)
-  { theta: 185, phi: 68, radius: 1.78, roll: 4, x: 0, y: -16, scale: 1.16 },
-];
-
 const STAGE_WINDOWS = [
   // Stage 0: starts visible, then scrolls down & fades completely gone between 0.15 and 0.23
   { enterStart: -0.05, enterEnd: 0.00, exitStart: 0.15, exitEnd: 0.23, center: 0.07 },
@@ -1044,8 +853,6 @@ export default function StorefrontPage() {
   const [catalogSearch, setCatalogSearch] = useState('');
   const [reducedMotion, setReducedMotion] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [stagePose, setStagePose] = useState<StagePose>(heroPose);
-  const [modelOpacity, setModelOpacity] = useState(1);
   const [signalEmail, setSignalEmail] = useState('');
   const [signalSubscribed, setSignalSubscribed] = useState(false);
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
@@ -1058,9 +865,7 @@ export default function StorefrontPage() {
   const jumpToStage = (idx: number) => {
     setActiveStage(idx);
     const mobileNow = typeof window !== 'undefined' && window.innerWidth <= 768;
-    if (mobileNow) {
-      setStagePose(MOBILE_HERO_POSES[idx]);
-    } else {
+    if (!mobileNow) {
       const track = heroTrackRef.current;
       if (!track) return;
       const trackTop = window.scrollY + track.getBoundingClientRect().top;
@@ -1111,13 +916,11 @@ export default function StorefrontPage() {
         const trackScrollable = track.offsetHeight - window.innerHeight;
         const mobileNow = window.innerWidth <= 768;
 
-        // On PC/desktop with sticky 380vh scroll track: continuously animate stages & 3D pose
         if (!mobileNow && trackScrollable > 0) {
           const rawProgress = -rect.top / trackScrollable;
           const clamped = Math.max(0, Math.min(1, rawProgress));
           setHeroScrollProgress(clamped);
 
-          // Find active / nearest stage center
           let nearestStage = 0;
           let minDiff = 999;
           STAGE_CENTERS.forEach((c, i) => {
@@ -1128,47 +931,12 @@ export default function StorefrontPage() {
             }
           });
           setActiveStage(nearestStage);
-
-          // Continuous 3D controller interpolation across the 4 hero stages
-          let segIndex = 0;
-          if (clamped >= STAGE_CENTERS[2]) segIndex = 2;
-          else if (clamped >= STAGE_CENTERS[1]) segIndex = 1;
-          else segIndex = 0;
-
-          const span = (STAGE_CENTERS[segIndex + 1] ?? 1) - STAGE_CENTERS[segIndex];
-          const segT = span > 0 ? Math.max(0, Math.min(1, (clamped - STAGE_CENTERS[segIndex]) / span)) : 0;
-          const eased = segT * segT * (3 - 2 * segT);
-          const p0 = HERO_POSES[segIndex];
-          const p1 = HERO_POSES[segIndex + 1] ?? HERO_POSES[segIndex];
-          const mix = (a: number, b: number) => a + (b - a) * eased;
-
-          setStagePose({
-            theta: mix(p0.theta, p1.theta),
-            phi: mix(p0.phi, p1.phi),
-            radius: mix(p0.radius, p1.radius),
-            roll: mix(p0.roll ?? 0, p1.roll ?? 0),
-            x: mix(p0.x, p1.x),
-            y: mix(p0.y ?? 0, p1.y ?? 0),
-            scale: mix(p0.scale, p1.scale),
-          });
-        }
-
-        // Smoothly fade out model when scrolling past hero track:
-        if (rect.bottom < window.innerHeight) {
-          const exitDist = window.innerHeight - rect.bottom;
-          const exitFade = Math.max(0, 1 - exitDist / 350);
-          setModelOpacity(exitFade);
-        } else {
-          setModelOpacity(1);
         }
       }
     };
 
     const onResize = () => {
-      const mobileNow = checkMobile();
-      if (mobileNow) {
-        setStagePose(MOBILE_HERO_POSES[activeStage]);
-      }
+      checkMobile();
       onScroll();
     };
 
@@ -1178,12 +946,7 @@ export default function StorefrontPage() {
       lenis.on('scroll', onScroll);
     }
 
-    const isInitMobile = checkMobile();
-    if (isInitMobile) {
-      setStagePose(MOBILE_HERO_POSES[0]);
-    } else {
-      setStagePose(HERO_POSES[0]);
-    }
+    checkMobile();
     onScroll();
 
     return () => {
@@ -1195,8 +958,6 @@ export default function StorefrontPage() {
       }
     };
   }, [activeStage, lenis]);
-
-  const heroOrbit = `${stagePose.theta}deg ${stagePose.phi}deg ${stagePose.radius}m`;
 
   const filteredProducts = useMemo(() => {
     const q = catalogSearch.trim().toLowerCase();
@@ -1305,25 +1066,6 @@ export default function StorefrontPage() {
               transform: `rotate(${24 - heroScrollProgress * 38}deg) scaleX(${0.8 + Math.cos(heroScrollProgress * Math.PI) * 0.3})`,
               opacity: 0.7 + Math.sin(heroScrollProgress * Math.PI) * 0.3,
             }}
-          />
-
-          {/* Glowing Halo behind 3D Controller */}
-          <div
-            className="hero-model-glow-halo"
-            style={{
-              transform: `translate(calc(-50% + ${stagePose.x * 0.3}vw), calc(-50% + ${(stagePose.y ?? 0) * 0.5}px)) scale(${stagePose.scale})`,
-            }}
-          />
-
-          {/* PS5 Controller 3D Model with dynamic orbit + position docking */}
-          <ModelStage
-            orbit={heroOrbit}
-            modelScale={stagePose.scale}
-            stageX={stagePose.x}
-            stageY={stagePose.y}
-            roll={stagePose.roll ?? 0}
-            reducedMotion={reducedMotion}
-            opacity={modelOpacity}
           />
 
           {/* Top Header */}
@@ -1744,7 +1486,7 @@ export default function StorefrontPage() {
               ))
             ) : (
               <div className="catalog-empty-wrap">
-                <Search size={32} className="text-[#a855f7] opacity-60 mb-2" />
+                <Search size={32} className="text-[#c673e2] opacity-60 mb-2" />
                 <h3 className="text-lg font-bold">
                   {catalogSearch
                     ? `No products match "${catalogSearch}"`
@@ -1894,7 +1636,7 @@ export default function StorefrontPage() {
                   className="header-logo-img"
                 />
                 <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
-                  REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
+                  REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.7)]">ARCADE</span>
                 </span>
               </button>
               <p className="footer-blurb">

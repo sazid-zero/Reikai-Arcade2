@@ -102,7 +102,7 @@ export function SiteHeader({
                 className="header-logo-img"
               />
               <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm sm:text-base">
-                REIKAI <span className="wordmark-highlight text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.7)]">ARCADE</span>
+                REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.7)]">ARCADE</span>
               </span>
             </Link>
 
@@ -123,25 +123,25 @@ export function SiteHeader({
               <button
                 type="button"
                 onClick={() => setCategoriesDropdown((prev) => !prev)}
-                className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#00f0ff] hover:bg-white/5 transition cursor-pointer ${
+                className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition cursor-pointer ${
                   categoriesDropdown ||
                   pathname.startsWith('/accessories') ||
                   pathname.startsWith('/games') ||
                   pathname.startsWith('/top-up') ||
                   pathname.startsWith('/gift-cards') ||
                   pathname.startsWith('/subscriptions')
-                    ? 'text-[#00f0ff] bg-[#00f0ff]/10'
+                    ? 'text-[#a0e4f1] bg-[#a0e4f1]/10'
                     : ''
                 }`}
                 aria-expanded={categoriesDropdown}
                 aria-haspopup="true"
               >
-                <Layers size={13} className="text-[#00f0ff]" />
+                <Layers size={13} className="text-[#a0e4f1]" />
                 <span>Categories</span>
                 <ChevronDown
                   size={12}
                   className={`nav-chevron text-zinc-400 transition-transform duration-200 ${
-                    categoriesDropdown ? 'rotate-180 text-[#00f0ff]' : ''
+                    categoriesDropdown ? 'rotate-180 text-[#a0e4f1]' : ''
                   }`}
                 />
               </button>
@@ -151,17 +151,17 @@ export function SiteHeader({
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl">
+                  <div className="rounded-2xl border border-[#c673e2]/30 bg-black/95 p-2 shadow-2xl backdrop-blur-2xl">
                     <Link
                       href="/games"
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#00f0ff]">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4b22d2]/20 text-[#c673e2] group-hover:text-[#a0e4f1]">
                         <Gamepad2 size={16} />
                       </div>
                       <div>
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">
                           PS5 Games
                         </strong>
                         <span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span>
@@ -173,11 +173,11 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#00f0ff]">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#a0e4f1]/10 text-[#a0e4f1]">
                         <Zap size={16} />
                       </div>
                       <div>
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">
                           Game Top-Up
                         </strong>
                         <span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span>
@@ -189,11 +189,11 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-[#00f0ff]">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#5ba2c0]/15 text-[#5ba2c0] group-hover:text-[#a0e4f1]">
                         <Headphones size={16} />
                       </div>
                       <div>
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">
                           Accessories
                         </strong>
                         <span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span>
@@ -205,11 +205,11 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-[#00f0ff]">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#c673e2]/15 text-[#c673e2] group-hover:text-[#a0e4f1]">
                         <Crown size={16} />
                       </div>
                       <div>
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">
                           Subscriptions
                         </strong>
                         <span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span>
@@ -221,11 +221,11 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-[#00f0ff]">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4b22d2]/20 text-[#a0e4f1] group-hover:text-[#a0e4f1]">
                         <Gift size={16} />
                       </div>
                       <div>
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#00f0ff]">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">
                           Gift Cards
                         </strong>
                         <span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span>
@@ -282,14 +282,14 @@ export function SiteHeader({
             <button
               type="button"
               onClick={() => openSearch()}
-              className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#00f0ff]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
+              className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#a0e4f1]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
               aria-label="Search store"
               data-testid="mobile-search-bar"
             >
               <span className="text-zinc-400 font-['DM_Mono'] truncate min-w-0 flex-1 text-left">
                 Search games, accessories, top up...
               </span>
-              <Search size={16} className="text-[#00f0ff] shrink-0 ml-2" />
+              <Search size={16} className="text-[#a0e4f1] shrink-0 ml-2" />
             </button>
 
             <button
@@ -297,8 +297,8 @@ export function SiteHeader({
               onClick={toggleMobileMenu}
               className={`mobile-menu-toggle-btn h-10 w-10 shrink-0 rounded-xl border flex items-center justify-center transition active:scale-95 cursor-pointer ${
                 isMobileMenuOpen
-                  ? 'border-[#00f0ff] text-[#00f0ff] bg-[#00f0ff]/15 shadow-[0_0_12px_rgba(0,240,255,0.35)]'
-                  : 'bg-white/[0.06] border-white/10 text-white hover:text-[#00f0ff] hover:border-white/20'
+                  ? 'border-[#a0e4f1] text-[#a0e4f1] bg-[#a0e4f1]/15 shadow-[0_0_12px_rgba(160,228,241,0.35)]'
+                  : 'bg-white/[0.06] border-white/10 text-white hover:text-[#a0e4f1] hover:border-white/20'
               }`}
               aria-label="Toggle navigation menu"
               data-testid="mobile-menu-toggle"

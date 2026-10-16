@@ -77,7 +77,7 @@ export default async function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
       <OrdersClient initialOrders={userOrders} user={sessionUser} />
       <SiteFooter />

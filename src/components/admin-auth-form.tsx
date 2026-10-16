@@ -46,40 +46,40 @@ export function AdminSignInForm() {
   }
 
   return (
-    <main className="site-shell min-h-screen px-5 py-20 flex items-center justify-center">
+    <main className="site-shell min-h-screen px-5 py-20 flex items-center justify-center bg-black">
       <div className="w-full max-w-md">
-        <form onSubmit={submit} className="relative rounded-3xl border border-white/10 bg-[#06020e]/80 p-8 shadow-2xl backdrop-blur-2xl">
+        <form onSubmit={submit} className="relative rounded-3xl border border-white/10 bg-black/95 p-8 shadow-2xl backdrop-blur-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
                 src="/logo.jpeg"
                 alt="ReiKai Arcade"
-                className="w-10 h-10 rounded-xl object-cover border border-[#00f0ff]/40 shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-[0_0_15px_rgba(160,228,241,0.4)]"
               />
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#00f0ff]/30 bg-[#00f0ff]/10 px-3 py-1 font-mono text-[11px] font-semibold tracking-wider uppercase text-[#00f0ff]">
-                <KeyRound className="h-3 w-3 text-[#00f0ff]" /> ReiKai Staff
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#a0e4f1]/30 bg-[#a0e4f1]/10 px-3 py-1 font-mono text-[11px] font-semibold tracking-wider uppercase text-[#a0e4f1]">
+                <KeyRound className="h-3 w-3 text-[#a0e4f1]" /> ReiKai Staff
               </span>
             </div>
             <span className="text-[11px] font-mono text-zinc-500">v2.0</span>
           </div>
 
           <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-            Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-[#00f0ff]">Control Room</span>
+            Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c673e2] to-[#a0e4f1]">Control Room</span>
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
             Authorized personnel only. Sign in with administrative credentials.
           </p>
 
           {/* Quick Credential Helper Banner */}
-          <div className="mt-5 rounded-2xl border border-primary/20 bg-primary/[0.06] p-4 text-xs text-zinc-300">
+          <div className="mt-5 rounded-2xl border border-[#c673e2]/20 bg-[#4b22d2]/10 p-4 text-xs text-zinc-300">
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-primary flex items-center gap-1.5">
+              <span className="font-semibold text-[#c673e2] flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5" /> Default Admin Login
               </span>
               <button
                 type="button"
                 onClick={fillDefaults}
-                className="text-[11px] font-bold text-primary underline hover:text-primary/80 transition"
+                className="text-[11px] font-bold text-[#a0e4f1] underline hover:text-[#a0e4f1]/80 transition cursor-pointer"
               >
                 Auto-fill
               </button>
@@ -104,7 +104,7 @@ export function AdminSignInForm() {
               <div className="relative mt-2">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
                 <input
-                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/40 transition"
                   type="email"
                   placeholder="admin@reikai.arcade"
                   value={email}
@@ -121,7 +121,7 @@ export function AdminSignInForm() {
               <div className="relative mt-2">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
                 <input
-                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/40 transition"
                   type="password"
                   placeholder="••••••••••••"
                   value={password}
@@ -142,7 +142,7 @@ export function AdminSignInForm() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-4 py-3.5 text-sm font-extrabold text-white shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(0,240,255,0.6)] disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-extrabold text-white shadow-[0_0_25px_rgba(75,34,210,0.4)] hover:shadow-[0_0_35px_rgba(160,228,241,0.5)] disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
           >
             {pending ? (
               <>
@@ -164,7 +164,7 @@ export function AdminSignInForm() {
             </Link>
             <Link
               href="/sign-in"
-              className="text-[#00f0ff] hover:underline"
+              className="text-[#a0e4f1] hover:underline"
             >
               Customer Sign In →
             </Link>

@@ -50,7 +50,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
   }, [products, searchQuery, selectedCategory])
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
 
       {/* Main Catalog - Starts directly with filters & items */}
@@ -62,7 +62,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
             <ChevronRight className="h-3 w-3" />
             <span className="text-white/80 font-semibold">Game Top-Up</span>
           </nav>
-          <span className="font-mono text-[11px] text-[#00f0ff]">{filtered.length} games</span>
+          <span className="font-mono text-[11px] text-[#a0e4f1]">{filtered.length} games</span>
         </div>
 
         {/* Responsive Compact Filter Bar */}
@@ -75,7 +75,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
               placeholder="Search games, PUBG, Valorant..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50 transition"
+              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="h-9 rounded-xl border border-white/10 bg-[#0d0822] px-3 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
+                className="h-9 rounded-xl border border-white/10 bg-black/90 px-3 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
               >
                 <option value="all">All Categories</option>
                 {categories.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -96,7 +96,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
 
         {/* Results: 2 columns on phone, multi-column wrap on PC */}
         {filtered.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl border border-white/5 bg-[#0d0822]/40 backdrop-blur-xl p-8">
+          <div className="py-20 text-center rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl p-8">
             <p className="text-4xl mb-3">⚡</p>
             <p className="text-white/60">
               {products.length === 0 ? 'No top-up products in the catalog yet.' : 'No top-up products match your search.'}
@@ -104,7 +104,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
             {(searchQuery || selectedCategory !== 'all') && (
               <button
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00f0ff] hover:underline cursor-pointer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#a0e4f1] hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>
@@ -116,7 +116,7 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
               <Link
                 key={product.id}
                 href={`/top-up/${product.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-[#00f0ff]/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.6),0_0_24px_rgba(0,240,255,0.2)] hover:-translate-y-1"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-[#a0e4f1]/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] hover:-translate-y-1"
               >
                 {/* Banner Image */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
@@ -133,9 +133,9 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
                       <span className="text-4xl sm:text-5xl opacity-30">🎮</span>
                     </div>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06020e] via-[#06020e]/60 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/60 to-transparent" />
                   {product.featured && (
-                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-[0_0_12px_rgba(0,240,255,0.5)]">
+                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-[0_0_12px_rgba(160,228,241,0.4)]">
                       Featured
                     </span>
                   )}
@@ -143,11 +143,11 @@ export default function TopUpClient({ products }: { products: TopUpProduct[] }) 
 
                 {/* Price strip */}
                 <div className="p-2.5 sm:p-3.5">
-                  <p className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1 sm:line-clamp-2 group-hover:text-[#00f0ff] transition-colors">
+                  <p className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1 sm:line-clamp-2 group-hover:text-[#a0e4f1] transition-colors">
                     {product.name}
                   </p>
                   {(product.minPrice !== null || product.maxPrice !== null) && (
-                    <p className="mt-1 font-mono text-[11px] sm:text-xs font-semibold text-[#00f0ff]">
+                    <p className="mt-1 font-mono text-[11px] sm:text-xs font-semibold text-[#a0e4f1]">
                       {product.minPrice !== null ? formatBDT(product.minPrice) : ''}
                       {product.minPrice !== product.maxPrice && product.maxPrice !== null
                         ? ` - ${formatBDT(product.maxPrice)}`

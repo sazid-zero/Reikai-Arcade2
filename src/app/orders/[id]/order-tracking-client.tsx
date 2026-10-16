@@ -110,7 +110,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
   })
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
 
       <main className="mx-auto max-w-4xl px-5 py-10 md:px-8">
@@ -131,12 +131,12 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
         </div>
 
         {/* Success Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-[#00f0ff]/30 bg-gradient-to-br from-[#a855f7]/20 via-[#0d0822] to-[#06020e] p-6 md:p-8 backdrop-blur-xl mb-8 shadow-2xl">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_20%,rgba(0,240,255,0.15),transparent_70%),radial-gradient(ellipse_60%_45%_at_20%_80%,rgba(168,85,247,0.2),transparent_65%)]" />
+        <div className="relative overflow-hidden rounded-3xl border border-[#a0e4f1]/30 bg-gradient-to-br from-[#4b22d2]/25 via-black to-[#000000] p-6 md:p-8 backdrop-blur-xl mb-8 shadow-2xl">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_20%,rgba(160,228,241,0.12),transparent_70%),radial-gradient(ellipse_60%_45%_at_20%_80%,rgba(75,34,210,0.2),transparent_65%)]" />
 
           <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/40 px-3 py-1 text-xs font-bold text-[#00f0ff] mb-3 shadow-[0_0_14px_rgba(0,240,255,0.25)]">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#a0e4f1]/10 border border-[#a0e4f1]/40 px-3 py-1 text-xs font-bold text-[#a0e4f1] mb-3 shadow-[0_0_14px_rgba(160,228,241,0.25)]">
                 <ShieldCheck size={14} /> ReiKai Vault Verified Order
               </div>
               <h1 className="text-3xl font-extrabold md:text-4xl text-white">Order Confirmed</h1>
@@ -148,7 +148,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
             <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/50 px-4 py-3 backdrop-blur-md">
               <div>
                 <p className="text-[10px] uppercase font-mono tracking-widest text-white/40">Order ID</p>
-                <p className="font-mono text-xs font-bold text-[#00f0ff] truncate max-w-[200px] md:max-w-[240px]">{order.id}</p>
+                <p className="font-mono text-xs font-bold text-[#a0e4f1] truncate max-w-[200px] md:max-w-[240px]">{order.id}</p>
               </div>
               <button
                 onClick={copyId}
@@ -177,7 +177,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                       key={step.key}
                       className={`relative flex flex-col items-center rounded-2xl border p-3.5 text-center transition ${
                         isCurrent
-                          ? 'border-[#00f0ff] bg-[#00f0ff]/10 shadow-[0_0_16px_rgba(0,240,255,0.2)]'
+                          ? 'border-[#a0e4f1] bg-[#a0e4f1]/10 shadow-[0_0_16px_rgba(160,228,241,0.2)]'
                           : isDone
                           ? 'border-emerald-500/30 bg-emerald-500/10'
                           : 'border-white/5 bg-white/[0.01] opacity-50'
@@ -186,7 +186,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                       <div
                         className={`mb-2 flex h-8 w-8 items-center justify-center rounded-xl text-xs font-bold ${
                           isCurrent
-                            ? 'bg-gradient-to-r from-[#a855f7] to-[#00f0ff] text-white shadow-[0_0_10px_rgba(0,240,255,0.4)]'
+                            ? 'bg-gradient-to-r from-[#4b22d2] to-[#a0e4f1] text-white shadow-[0_0_10px_rgba(160,228,241,0.4)]'
                             : isDone
                             ? 'bg-emerald-500/20 text-emerald-400'
                             : 'bg-white/10 text-white/40'
@@ -194,7 +194,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                       >
                         <Icon size={16} />
                       </div>
-                      <p className={`text-xs font-bold ${isCurrent ? 'text-[#00f0ff]' : isDone ? 'text-emerald-400' : 'text-white/40'}`}>
+                      <p className={`text-xs font-bold ${isCurrent ? 'text-[#a0e4f1]' : isDone ? 'text-emerald-400' : 'text-white/40'}`}>
                         {step.label}
                       </p>
                       <p className="mt-0.5 text-[10px] text-white/40 line-clamp-1">{step.desc}</p>
@@ -208,10 +208,10 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
 
         {/* Digital Voucher Codes Section */}
         {deliveredCodes.length > 0 && (
-          <div className="mb-8 rounded-3xl border border-primary/40 bg-gradient-to-br from-[#24103c] via-[#120b22] to-black/80 p-6 md:p-8 shadow-[0_10px_40px_rgba(168,85,247,0.25)]">
+          <div className="mb-8 rounded-3xl border border-[#c673e2]/40 bg-gradient-to-br from-[#4b22d2]/30 via-black to-black p-6 md:p-8 shadow-[0_10px_40px_rgba(75,34,210,0.3)]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-5">
               <div>
-                <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold flex items-center gap-1.5">
+                <span className="font-mono text-xs uppercase tracking-widest text-[#c673e2] font-bold flex items-center gap-1.5">
                   <Key className="h-4 w-4" /> Digital Voucher Keys
                 </span>
                 <h2 className="mt-1 text-2xl font-black text-white">Your Digital Codes Are Ready!</h2>
@@ -232,7 +232,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                       {item.variantTitle || 'Digital Code'}
                     </span>
                     <div className="mt-1 flex items-center gap-3">
-                      <span className="font-mono text-xl sm:text-2xl font-black text-white tracking-widest selection:bg-primary">
+                      <span className="font-mono text-xl sm:text-2xl font-black text-white tracking-widest selection:bg-[#4b22d2]">
                         {item.code}
                       </span>
                       {item.pin && (
@@ -246,7 +246,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                   <button
                     type="button"
                     onClick={() => copyCode(item.id, item.code)}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-mono text-xs font-bold text-primary-foreground hover:bg-primary/90 transition active:scale-95 shrink-0"
+                    className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#4b22d2] to-[#c673e2] px-5 py-3 font-mono text-xs font-bold text-white shadow-[0_0_16px_rgba(198,115,226,0.3)] hover:opacity-90 transition active:scale-95 shrink-0 cursor-pointer"
                   >
                     {copiedCodeId === item.id ? (
                       <>
@@ -306,7 +306,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
           <div className="md:col-span-2 space-y-4">
             <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur">
               <h2 className="text-base font-bold mb-4 flex items-center gap-2">
-                <Package size={16} className="text-primary" /> Purchased Artifacts ({order.items.length})
+                <Package size={16} className="text-[#a0e4f1]" /> Purchased Artifacts ({order.items.length})
               </h2>
 
               <div className="divide-y divide-white/5">
@@ -322,7 +322,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                       )}
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="font-bold text-sm text-primary">{formatTaka(item.unitPrice * item.quantity)}</p>
+                      <p className="font-bold text-sm text-[#a0e4f1]">{formatTaka(item.unitPrice * item.quantity)}</p>
                       <p className="text-[11px] text-muted-foreground">
                         {item.quantity} × {formatTaka(item.unitPrice)}
                       </p>
@@ -343,7 +343,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                 </div>
                 <div className="flex justify-between text-base font-bold text-foreground pt-3 border-t border-white/5">
                   <span>Total Amount</span>
-                  <span className="text-primary text-xl">{formatTaka(order.total)}</span>
+                  <span className="text-[#a0e4f1] text-xl">{formatTaka(order.total)}</span>
                 </div>
               </div>
             </div>
@@ -353,7 +353,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
           <div className="space-y-4">
             <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur">
               <h2 className="text-base font-bold mb-4 flex items-center gap-2">
-                <MapPin size={16} className="text-primary" /> Delivery Info
+                <MapPin size={16} className="text-[#c673e2]" /> Delivery Info
               </h2>
 
               <div className="space-y-3 text-xs">
@@ -365,13 +365,13 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
                 )}
                 {order.customerPhone && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Phone size={12} className="text-primary" />
+                    <Phone size={12} className="text-[#a0e4f1]" />
                     <span>{order.customerPhone}</span>
                   </div>
                 )}
                 {order.customerEmail && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Mail size={12} className="text-primary" />
+                    <Mail size={12} className="text-[#a0e4f1]" />
                     <span className="truncate">{order.customerEmail}</span>
                   </div>
                 )}
@@ -402,7 +402,7 @@ export function OrderTrackingClient({ order }: { order: OrderData }) {
               </p>
               <Link
                 href="/"
-                className="block w-full rounded-xl bg-primary/20 border border-primary/40 py-2.5 text-xs font-bold text-primary hover:bg-primary/30 transition text-center"
+                className="block w-full rounded-xl bg-[#4b22d2]/20 border border-[#c673e2]/40 py-2.5 text-xs font-bold text-[#c673e2] hover:bg-[#4b22d2]/30 transition text-center"
               >
                 Continue Browsing Vault
               </Link>

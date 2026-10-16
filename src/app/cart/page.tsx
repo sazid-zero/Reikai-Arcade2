@@ -86,7 +86,7 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff] flex flex-col">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff] flex flex-col">
       <SiteHeader />
 
       <main className="flex-1 mx-auto max-w-6xl w-full px-4 py-8 sm:px-6 lg:px-8 pb-24 md:pb-16">
@@ -99,7 +99,7 @@ export default function CartPage() {
 
         {placedOrderId ? (
           /* Order Confirmed Screen */
-          <div className="mx-auto max-w-lg rounded-3xl border border-[#00f0ff]/30 bg-[#0d0720]/80 p-8 text-center backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(0,240,255,0.15)] my-12">
+          <div className="mx-auto max-w-lg rounded-3xl border border-[#a0e4f1]/30 bg-black/90 p-8 text-center backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_30px_rgba(160,228,241,0.15)] my-12">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
               <CheckCircle2 size={36} />
             </div>
@@ -109,12 +109,12 @@ export default function CartPage() {
             </p>
             <div className="my-6 rounded-2xl bg-white/[0.04] border border-white/10 p-4 text-xs font-mono">
               <span className="text-zinc-400 block mb-1">Order Reference ID:</span>
-              <span className="text-[#00f0ff] font-bold text-sm tracking-wider">{placedOrderId}</span>
+              <span className="text-[#a0e4f1] font-bold text-sm tracking-wider">{placedOrderId}</span>
             </div>
             <div className="flex flex-col gap-3">
               <Link
                 href={`/orders/${placedOrderId}`}
-                className="w-full rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] py-3 text-sm font-bold text-white shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_28px_rgba(0,240,255,0.6)] transition text-center"
+                className="w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-3 text-sm font-bold text-white shadow-[0_0_20px_rgba(160,228,241,0.35)] hover:shadow-[0_0_28px_rgba(160,228,241,0.55)] transition text-center"
               >
                 Track Order Details →
               </Link>
@@ -129,8 +129,8 @@ export default function CartPage() {
         ) : cart.length === 0 ? (
           /* Empty Bag Screen */
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/[0.03] text-purple-400 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
-              <ShoppingBag size={40} className="text-[#00f0ff]" />
+            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/[0.03] text-purple-400 shadow-[0_0_30px_rgba(198,115,226,0.2)]">
+              <ShoppingBag size={40} className="text-[#a0e4f1]" />
             </div>
             <h1 className="text-2xl font-black text-white sm:text-3xl">Your Cart is Empty</h1>
             <p className="mt-2 max-w-sm text-sm text-zinc-400">
@@ -139,7 +139,7 @@ export default function CartPage() {
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
                 href="/games"
-                className="rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_16px_rgba(0,240,255,0.35)] hover:shadow-[0_0_24px_rgba(0,240,255,0.5)] transition"
+                className="rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_16px_rgba(160,228,241,0.3)] hover:shadow-[0_0_24px_rgba(160,228,241,0.5)] transition"
               >
                 Browse Games →
               </Link>
@@ -165,7 +165,7 @@ export default function CartPage() {
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <h1 className="text-xl sm:text-2xl font-black text-white">Your Shopping Cart</h1>
-                  <span className="rounded-full bg-[#00f0ff]/15 border border-[#00f0ff]/30 px-2.5 py-0.5 text-xs font-mono font-bold text-[#00f0ff]">
+                  <span className="rounded-full bg-[#a0e4f1]/15 border border-[#a0e4f1]/30 px-2.5 py-0.5 text-xs font-mono font-bold text-[#a0e4f1]">
                     {cartCount} {cartCount === 1 ? 'item' : 'items'}
                   </span>
                 </div>
@@ -207,7 +207,7 @@ export default function CartPage() {
                         <div className="min-w-0 flex-1">
                           <h3 className="text-sm sm:text-base font-bold text-white truncate">{item.name}</h3>
                           {item.selectedEdition && (
-                            <p className="text-xs text-purple-300/80 font-mono mt-0.5">
+                            <p className="text-xs text-[#c673e2]/90 font-mono mt-0.5">
                               Edition: {item.selectedEdition}
                             </p>
                           )}
@@ -251,7 +251,7 @@ export default function CartPage() {
                           </button>
                         </div>
 
-                        <span className="font-mono font-black text-sm sm:text-base text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.3)]">
+                        <span className="font-mono font-black text-sm sm:text-base text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.3)]">
                           {formatTaka(item.price * item.quantity)}
                         </span>
                       </div>
@@ -263,15 +263,15 @@ export default function CartPage() {
               {/* Guarantees Bar */}
               <div className="mt-4 grid grid-cols-3 gap-2 rounded-2xl border border-white/5 bg-white/[0.02] p-3 text-center text-[11px] text-zinc-400">
                 <div className="flex items-center justify-center gap-1.5">
-                  <ShieldCheck size={14} className="text-[#00f0ff]" />
+                  <ShieldCheck size={14} className="text-[#a0e4f1]" />
                   <span>100% Genuine</span>
                 </div>
                 <div className="flex items-center justify-center gap-1.5">
-                  <Zap size={14} className="text-purple-400" />
+                  <Zap size={14} className="text-[#c673e2]" />
                   <span>Fast Dispatch</span>
                 </div>
                 <div className="flex items-center justify-center gap-1.5">
-                  <RotateCcw size={14} className="text-pink-400" />
+                  <RotateCcw size={14} className="text-[#5ba2c0]" />
                   <span>Warranty Covered</span>
                 </div>
               </div>
@@ -281,7 +281,7 @@ export default function CartPage() {
             <div className="lg:col-span-5 xl:col-span-4 sticky top-24">
               <form
                 onSubmit={handleCheckout}
-                className="rounded-3xl border border-white/10 bg-[#0d0720]/80 p-5 sm:p-6 backdrop-blur-xl shadow-2xl"
+                className="rounded-3xl border border-white/10 bg-black/90 p-5 sm:p-6 backdrop-blur-xl shadow-2xl"
               >
                 <h2 className="text-lg font-black text-white mb-4 pb-3 border-b border-white/10">
                   Order Summary
@@ -299,7 +299,7 @@ export default function CartPage() {
                   <div className="my-2 border-t border-white/10" />
                   <div className="flex justify-between text-base font-black text-white">
                     <span>Total Amount</span>
-                    <span className="font-mono text-lg text-[#00f0ff] drop-shadow-[0_0_12px_rgba(0,240,255,0.4)]">
+                    <span className="font-mono text-lg text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.4)]">
                       {formatTaka(cartTotal)}
                     </span>
                   </div>
@@ -307,7 +307,7 @@ export default function CartPage() {
 
                 {/* Customer Details Form */}
                 <div className="mt-6 flex flex-col gap-3">
-                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-purple-300">
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#c673e2]">
                     Shipping &amp; Contact
                   </h3>
 
@@ -317,7 +317,7 @@ export default function CartPage() {
                     placeholder="Your Full Name *"
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#00f0ff] transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#a0e4f1] transition"
                   />
 
                   <input
@@ -326,7 +326,7 @@ export default function CartPage() {
                     placeholder="Phone Number (e.g. 017...) *"
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#00f0ff] transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#a0e4f1] transition"
                   />
 
                   <input
@@ -334,7 +334,7 @@ export default function CartPage() {
                     placeholder="Email Address (optional)"
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#00f0ff] transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#a0e4f1] transition"
                   />
 
                   <textarea
@@ -343,7 +343,7 @@ export default function CartPage() {
                     required
                     value={customerAddress}
                     onChange={(e) => setCustomerAddress(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#00f0ff] transition resize-none"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#a0e4f1] transition resize-none"
                   />
                 </div>
 
@@ -356,7 +356,7 @@ export default function CartPage() {
                 <button
                   type="submit"
                   disabled={checkoutBusy || cart.length === 0}
-                  className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#a855f7] via-[#c084fc] to-[#00f0ff] py-3.5 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(0,240,255,0.4)] hover:shadow-[0_0_36px_rgba(0,240,255,0.6)] active:scale-[0.99] transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                  className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-3.5 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(160,228,241,0.35)] hover:shadow-[0_0_36px_rgba(160,228,241,0.55)] active:scale-[0.99] transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   {checkoutBusy ? (
                     <span>Processing Order...</span>

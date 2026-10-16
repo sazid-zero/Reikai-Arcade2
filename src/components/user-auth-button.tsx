@@ -64,10 +64,10 @@ export function UserAuthButton() {
       <div className="flex items-center gap-2">
         <Link
           href="/sign-in"
-          className="header-signin-btn inline-flex items-center gap-2 rounded-full border border-[#00f0ff]/40 bg-[#00f0ff]/10 px-3.5 py-1.5 font-['DM_Mono'] text-xs font-bold text-white transition-all duration-200 hover:border-[#00f0ff] hover:bg-[#00f0ff]/20 hover:shadow-[0_0_18px_rgba(0,240,255,0.4)] active:scale-95"
+          className="header-signin-btn inline-flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-3.5 py-1.5 font-['DM_Mono'] text-xs font-bold text-white transition-all duration-200 hover:border-[#a0e4f1] hover:bg-[#a0e4f1]/20 hover:shadow-[0_0_18px_rgba(160,228,241,0.4)] active:scale-95"
           data-testid="header-sign-in"
         >
-          <User size={13} className="text-[#00f0ff]" />
+          <User size={13} className="text-[#a0e4f1]" />
           <span>SIGN IN</span>
         </Link>
       </div>
@@ -83,26 +83,26 @@ export function UserAuthButton() {
       <button
         type="button"
         onClick={() => setDropdownOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full border border-[#00f0ff]/50 bg-black/40 p-1 pr-2.5 transition-all hover:border-[#00f0ff] hover:shadow-[0_0_20px_rgba(0,240,255,0.35)] cursor-pointer"
+        className="flex items-center gap-2 rounded-full border border-[#a0e4f1]/50 bg-black/40 p-1 pr-2.5 transition-all hover:border-[#a0e4f1] hover:shadow-[0_0_20px_rgba(160,228,241,0.35)] cursor-pointer"
         aria-label="User profile menu"
         data-testid="header-user-profile"
       >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#a855f7] to-[#00f0ff] text-[11px] font-black text-white shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#c673e2] to-[#a0e4f1] text-[11px] font-black text-white shadow-[0_0_10px_rgba(160,228,241,0.5)]">
           {initials}
         </div>
         <span className="hidden sm:inline font-['DM_Mono'] text-[11px] font-bold text-zinc-200 max-w-[120px] truncate">
           {user.name || 'Player'}
         </span>
-        <ChevronDown size={12} className="text-[#00f0ff]" />
+        <ChevronDown size={12} className="text-[#a0e4f1]" />
       </button>
 
       {dropdownOpen && (
-        <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl border border-[#a855f7]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl border border-[#c673e2]/30 bg-[#050505]/95 p-2 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
           <div className="border-b border-white/10 px-3 py-2.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-bold text-white truncate">{user.name || 'Player'}</p>
               <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-[#00f0ff]/20 text-[#00f0ff] border border-[#00f0ff]/30'
+                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-[#a0e4f1]/20 text-[#a0e4f1] border border-[#a0e4f1]/30'
               }`}>
                 {isAdmin ? 'ADMIN' : 'MEMBER'}
               </span>
@@ -117,7 +117,7 @@ export function UserAuthButton() {
               onClick={() => setDropdownOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
             >
-              <ShoppingBag size={14} className="text-[#00f0ff]" />
+              <ShoppingBag size={14} className="text-[#a0e4f1]" />
               <span>My Orders</span>
             </Link>
             <Link

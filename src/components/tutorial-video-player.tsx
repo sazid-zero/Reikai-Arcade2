@@ -152,7 +152,7 @@ export function TutorialVideoPlayer({
       <div className="tutorial-top-hud">
         <div className="tutorial-kicker-pill">
           <span className="tutorial-live-indicator" />
-          <Sparkles size={11} className="text-[#00f0ff]" />
+          <Sparkles size={11} className="text-[#a0e4f1]" />
           <span>{kicker}</span>
         </div>
         <button
@@ -161,7 +161,7 @@ export function TutorialVideoPlayer({
           className="tutorial-quick-mute-btn"
           aria-label={isMuted ? 'Unmute tutorial video' : 'Mute tutorial video'}
         >
-          {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-[#00f0ff]" />}
+          {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-[#a0e4f1]" />}
           <span>{isMuted ? 'SOUND OFF' : 'SOUND ON'}</span>
         </button>
       </div>
@@ -182,7 +182,7 @@ export function TutorialVideoPlayer({
       {/* Lower Title & Tagline HUD */}
       <div className={`tutorial-info-hud ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
         <h3 className="tutorial-info-title">
-          {title.split(' ')[0]} <span className="text-[#00f0ff]">{title.split(' ').slice(1).join(' ')}</span>
+          {title.split(' ')[0]} <span className="text-[#a0e4f1]">{title.split(' ').slice(1).join(' ')}</span>
         </h3>
         <p className="tutorial-info-tagline">{tagline}</p>
       </div>

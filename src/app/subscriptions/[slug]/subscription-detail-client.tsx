@@ -92,7 +92,7 @@ export function SubscriptionDetailClient({ product }: Props) {
       : null
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -108,7 +108,7 @@ export function SubscriptionDetailClient({ product }: Props) {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_380px]">
           {/* Left – Image */}
           <div className="flex flex-col gap-5">
-            <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-900/30 to-[#07050e] shadow-2xl">
+            <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#4b22d2]/20 to-black shadow-2xl">
               {product.imageUrl ? (
                 <Image
                   src={product.imageUrl}
@@ -120,7 +120,7 @@ export function SubscriptionDetailClient({ product }: Props) {
                 />
               ) : (
                 <div className="flex h-full items-center justify-center">
-                  <Crown className="h-24 w-24 text-violet-400/30" />
+                  <Crown className="h-24 w-24 text-[#c673e2]/40" />
                 </div>
               )}
               {discount !== null && (
@@ -149,7 +149,7 @@ export function SubscriptionDetailClient({ product }: Props) {
           <div className="flex flex-col">
             {/* Brand badge */}
             {product.brand && (
-              <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest text-violet-300">
+              <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-[#c673e2]/30 bg-[#c673e2]/10 px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest text-[#c673e2]">
                 <Crown className="h-3 w-3" /> {product.brand}
               </span>
             )}
@@ -199,12 +199,12 @@ export function SubscriptionDetailClient({ product }: Props) {
                           outOfStock
                             ? 'cursor-not-allowed opacity-40 border-white/10 bg-white/[0.02]'
                             : isSel
-                            ? 'border-[#00f0ff] bg-gradient-to-r from-[#a855f7]/25 to-[#00f0ff]/15 shadow-[0_0_22px_rgba(0,240,255,0.3)]'
-                            : 'border-white/10 bg-white/[0.03] hover:border-[#00f0ff]/40 hover:bg-white/[0.06]'
+                            ? 'border-[#a0e4f1] bg-gradient-to-r from-[#4b22d2]/30 to-[#c673e2]/20 shadow-[0_0_22px_rgba(160,228,241,0.25)]'
+                            : 'border-white/10 bg-white/[0.03] hover:border-[#a0e4f1]/40 hover:bg-white/[0.06]'
                         }`}
                       >
                         {isSel && (
-                          <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#00f0ff] shadow-[0_0_8px_#00f0ff]">
+                          <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#a0e4f1] shadow-[0_0_8px_#a0e4f1]">
                             <Check className="h-2.5 w-2.5 text-black font-black" />
                           </span>
                         )}
@@ -213,7 +213,7 @@ export function SubscriptionDetailClient({ product }: Props) {
                             -{varDiscount}%
                           </span>
                         )}
-                        <span className={`text-xs font-bold ${isSel ? 'text-[#00f0ff]' : 'text-white'}`}>{label}</span>
+                        <span className={`text-xs font-bold ${isSel ? 'text-[#a0e4f1]' : 'text-white'}`}>{label}</span>
                         <span className="mt-1 font-mono text-sm font-black text-white">
                           {formatBDT(variant.price)}
                         </span>
@@ -235,7 +235,7 @@ export function SubscriptionDetailClient({ product }: Props) {
             {/* Price + discount */}
             {selectedVariant && (
               <div className="mt-6 flex items-end gap-3">
-                <span className="text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#00f0ff]">
+                <span className="text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#a0e4f1]">
                   {formatBDT(selectedVariant.price)}
                 </span>
                 <span className="text-sm text-white/40 font-mono">BDT</span>
@@ -278,7 +278,7 @@ export function SubscriptionDetailClient({ product }: Props) {
               className={`mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-2xl font-extrabold text-base transition-all duration-300 ${
                 added
                   ? 'bg-emerald-500 text-white shadow-[0_0_25px_rgba(16,185,129,0.4)]'
-                  : 'bg-gradient-to-r from-[#a855f7] to-[#00f0ff] text-white shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed'
+                  : 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-[0_0_30px_rgba(75,34,210,0.4)] hover:shadow-[0_0_40px_rgba(160,228,241,0.5)] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed'
               }`}
             >
               {added ? (
@@ -302,7 +302,7 @@ export function SubscriptionDetailClient({ product }: Props) {
                 { icon: RefreshCw, label: 'Any Region?', sub: 'Check description' },
               ].map(({ icon: Icon, label, sub }) => (
                 <div key={label} className="flex flex-col items-center gap-1 rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-center">
-                  <Icon className="h-4 w-4 text-violet-400" />
+                  <Icon className="h-4 w-4 text-[#a0e4f1]" />
                   <p className="text-[10px] font-bold text-white/80">{label}</p>
                   <p className="text-[10px] text-white/40">{sub}</p>
                 </div>
@@ -324,7 +324,7 @@ export function SubscriptionDetailClient({ product }: Props) {
                 <ul className="space-y-2">
                   {product.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-white/70">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-violet-400" />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#a0e4f1]" />
                       {feature}
                     </li>
                   ))}

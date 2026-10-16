@@ -65,14 +65,14 @@ function getStatusBadge(status: string) {
     case 'shipped':
       return {
         label: 'Dispatched',
-        className: 'border-[#00f0ff]/40 bg-[#00f0ff]/10 text-[#00f0ff]',
+        className: 'border-[#a0e4f1]/40 bg-[#a0e4f1]/10 text-[#a0e4f1]',
         icon: Truck,
       }
     case 'processing':
     case 'confirmed':
       return {
         label: status === 'processing' ? 'Processing' : 'Confirmed',
-        className: 'border-purple-500/40 bg-purple-950/50 text-purple-300',
+        className: 'border-[#c673e2]/40 bg-[#4b22d2]/20 text-[#c673e2]',
         icon: Package,
       }
     case 'cancelled':
@@ -126,8 +126,8 @@ export function OrdersClient({ initialOrders, user }: Props) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Header / Hero */}
-      <div className="relative mb-10 overflow-hidden rounded-3xl border border-white/5 bg-[#0d0822]/60 p-6 sm:p-10 backdrop-blur-xl shadow-2xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_20%,rgba(0,240,255,0.15),transparent_70%),radial-gradient(ellipse_60%_45%_at_20%_80%,rgba(168,85,247,0.2),transparent_65%)]" />
+      <div className="relative mb-10 overflow-hidden rounded-3xl border border-white/5 bg-black/90 p-6 sm:p-10 backdrop-blur-xl shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_20%,rgba(160,228,241,0.12),transparent_70%),radial-gradient(ellipse_60%_45%_at_20%_80%,rgba(75,34,210,0.2),transparent_65%)]" />
 
         <div className="relative">
           <nav className="mb-4 flex items-center gap-1.5 text-xs text-white/40">
@@ -138,12 +138,12 @@ export function OrdersClient({ initialOrders, user }: Props) {
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#00f0ff]/40 bg-[#00f0ff]/10 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-[#00f0ff] shadow-[0_0_12px_rgba(0,240,255,0.25)]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-[#a0e4f1] shadow-[0_0_12px_rgba(160,228,241,0.25)]">
                 <ShieldCheck className="h-3.5 w-3.5" /> ReiKai Vault Order Desk
               </span>
               <h1 className="mt-3 text-3xl sm:text-4xl font-black text-white">
                 Track &amp; View{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] via-[#ec4899] to-[#00f0ff] drop-shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] drop-shadow-[0_0_20px_rgba(160,228,241,0.3)]">
                   Your Orders
                 </span>
               </h1>
@@ -155,9 +155,9 @@ export function OrdersClient({ initialOrders, user }: Props) {
             {!user && (
               <Link
                 href="/sign-in"
-                className="inline-flex items-center gap-2 rounded-xl border border-[#00f0ff]/40 bg-[#00f0ff]/10 px-4 py-2.5 font-['DM_Mono'] text-xs font-bold text-white hover:bg-[#00f0ff]/20 transition shadow-[0_0_16px_rgba(0,240,255,0.25)]"
+                className="inline-flex items-center gap-2 rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-4 py-2.5 font-['DM_Mono'] text-xs font-bold text-white hover:bg-[#a0e4f1]/20 transition shadow-[0_0_16px_rgba(160,228,241,0.25)]"
               >
-                <User size={14} className="text-[#00f0ff]" />
+                <User size={14} className="text-[#a0e4f1]" />
                 <span>SIGN IN FOR FULL HISTORY</span>
               </Link>
             )}
@@ -172,12 +172,12 @@ export function OrdersClient({ initialOrders, user }: Props) {
                 placeholder="Enter 36-char Order ID to track..."
                 value={lookupQuery}
                 onChange={(e) => setLookupQuery(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50 transition font-mono"
+                className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition font-mono"
               />
             </div>
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-5 py-2.5 font-['DM_Mono'] text-xs font-bold text-white shadow-[0_0_16px_rgba(0,240,255,0.3)] hover:opacity-90 transition cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-5 py-2.5 font-['DM_Mono'] text-xs font-bold text-white shadow-[0_0_16px_rgba(75,34,210,0.35)] hover:opacity-90 transition cursor-pointer"
             >
               <span>TRACK ORDER</span>
               <ArrowRight size={14} />
@@ -190,14 +190,14 @@ export function OrdersClient({ initialOrders, user }: Props) {
       {/* Orders List */}
       <div>
         <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-          <Package className="h-5 w-5 text-[#00f0ff]" />
+          <Package className="h-5 w-5 text-[#a0e4f1]" />
           <span>{user ? 'Your Order History' : 'Recent Lookups'}</span>
           <span className="text-xs font-mono text-white/40">({initialOrders.length})</span>
         </h2>
 
         {initialOrders.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl border border-white/5 bg-[#0d0822]/40 backdrop-blur-xl p-8 shadow-2xl">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-500/10 border border-purple-500/20 text-[#00f0ff] shadow-[0_0_24px_rgba(0,240,255,0.2)]">
+          <div className="py-20 text-center rounded-3xl border border-white/5 bg-black/60 backdrop-blur-xl p-8 shadow-2xl">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#4b22d2]/20 border border-[#c673e2]/30 text-[#a0e4f1] shadow-[0_0_24px_rgba(160,228,241,0.2)]">
               <ShoppingBag size={28} />
             </div>
             <h3 className="text-xl font-extrabold text-white">No Orders Placed Yet</h3>
@@ -207,7 +207,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
             <div className="mt-6 flex flex-wrap gap-3 justify-center">
               <Link
                 href="/games"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#a855f7] to-[#00f0ff] shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:opacity-90 transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#4b22d2] to-[#c673e2] shadow-[0_0_20px_rgba(75,34,210,0.4)] hover:opacity-90 transition"
               >
                 <span>Browse Games</span>
                 <ArrowRight size={14} />
@@ -216,7 +216,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
                 href="/top-up"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:text-white transition"
               >
-                <Zap size={14} className="text-[#00f0ff]" />
+                <Zap size={14} className="text-[#a0e4f1]" />
                 <span>Instant Top-Up</span>
               </Link>
             </div>
@@ -237,7 +237,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
               return (
                 <div
                   key={order.id}
-                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md transition-all duration-300 hover:border-[#00f0ff]/50 hover:bg-white/[0.05] hover:shadow-[0_12px_36px_rgba(0,0,0,0.6),0_0_24px_rgba(0,240,255,0.2)]"
+                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md transition-all duration-300 hover:border-[#a0e4f1]/50 hover:bg-white/[0.05] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
                     <div>
@@ -253,7 +253,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
                     </div>
 
                     <div className="text-left sm:text-right">
-                      <span className="font-mono text-base font-black text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+                      <span className="font-mono text-base font-black text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.4)]">
                         {formatTaka(order.total)}
                       </span>
                       <p className="text-[11px] text-white/40 uppercase tracking-wider font-mono">
@@ -284,7 +284,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
                     </span>
                     <Link
                       href={`/orders/${order.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00f0ff] group-hover:translate-x-0.5 transition-transform"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#a0e4f1] group-hover:translate-x-0.5 transition-transform"
                     >
                       <span>Track &amp; View Details</span>
                       <ExternalLink size={13} />

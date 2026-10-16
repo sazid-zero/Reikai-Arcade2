@@ -155,7 +155,7 @@ export function TutorialVideoClient() {
             </Link>
             <div className="flex items-center gap-3 mt-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary border border-primary/30">
-                <Video size={20} className="text-[#00f0ff]" />
+                <Video size={20} className="text-[#a0e4f1]" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
@@ -200,12 +200,12 @@ export function TutorialVideoClient() {
               {/* Video Source Card */}
               <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-4">
-                  <Film size={18} className="text-[#00f0ff]" />
+                  <Film size={18} className="text-[#a0e4f1]" />
                   <h2 className="text-base font-bold text-white">Video Source</h2>
                 </div>
 
                 {/* Upload Button Box */}
-                <div className="mb-5 rounded-xl border border-dashed border-white/20 bg-white/[0.02] p-5 text-center transition hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/5">
+                <div className="mb-5 rounded-xl border border-dashed border-white/20 bg-white/[0.02] p-5 text-center transition hover:border-[#a0e4f1]/50 hover:bg-[#a0e4f1]/5">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -215,7 +215,7 @@ export function TutorialVideoClient() {
                     id="video-file-input"
                   />
                   <div className="flex flex-col items-center gap-2">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 text-[#00f0ff]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 text-[#a0e4f1]">
                       {uploading ? <RefreshCw size={20} className="animate-spin" /> : <Upload size={20} />}
                     </div>
                     <div>
@@ -223,7 +223,7 @@ export function TutorialVideoClient() {
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="font-semibold text-sm text-white hover:text-[#00f0ff] transition-colors"
+                        className="font-semibold text-sm text-white hover:text-[#a0e4f1] transition-colors"
                       >
                         {uploading ? 'Uploading Video...' : 'Click to Upload New Tutorial Video'}
                       </button>
@@ -259,7 +259,7 @@ export function TutorialVideoClient() {
                     onChange={(e) => setConfig({ ...config, videoUrl: e.target.value })}
                     required
                     placeholder="/tutorial-sample.mp4 or https://cdn.example.com/video.mp4"
-                    className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white font-mono placeholder:text-zinc-600 focus:border-[#00f0ff] focus:outline-none"
+                    className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white font-mono placeholder:text-zinc-600 focus:border-[#a0e4f1] focus:outline-none"
                   />
                 </div>
               </div>
@@ -267,7 +267,7 @@ export function TutorialVideoClient() {
               {/* HUD Copy & Editorial Overlays */}
               <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-4">
-                  <Sparkles size={18} className="text-[#a855f7]" />
+                  <Sparkles size={18} className="text-[#c673e2]" />
                   <h2 className="text-base font-bold text-white">Player HUD &amp; Editorial Copy</h2>
                 </div>
 
@@ -281,7 +281,7 @@ export function TutorialVideoClient() {
                       value={config.kicker}
                       onChange={(e) => setConfig({ ...config, kicker: e.target.value })}
                       placeholder="01 // TUTORIAL GUIDE"
-                      className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-[#00f0ff] focus:outline-none"
+                      className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-[#a0e4f1] focus:outline-none"
                     />
                   </div>
 
@@ -294,7 +294,7 @@ export function TutorialVideoClient() {
                       value={config.title}
                       onChange={(e) => setConfig({ ...config, title: e.target.value })}
                       placeholder="PLAY YOUR WAY"
-                      className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white font-bold placeholder:text-zinc-600 focus:border-[#00f0ff] focus:outline-none"
+                      className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white font-bold placeholder:text-zinc-600 focus:border-[#a0e4f1] focus:outline-none"
                     />
                   </div>
 
@@ -307,7 +307,7 @@ export function TutorialVideoClient() {
                       value={config.tagline}
                       onChange={(e) => setConfig({ ...config, tagline: e.target.value })}
                       placeholder="WATCH OUR STEP-BY-STEP ORDERING & REDEMPTION WALKTHROUGH."
-                      className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-[#00f0ff] focus:outline-none resize-none"
+                      className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-[#a0e4f1] focus:outline-none resize-none"
                     />
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export function TutorialVideoClient() {
                         value={config.posterUrl}
                         onChange={(e) => setConfig({ ...config, posterUrl: e.target.value })}
                         placeholder="/cat-panel-ps5.jpg"
-                        className="flex-1 rounded-xl border border-white/10 bg-black/40 px-4 py-2 text-sm text-white font-mono placeholder:text-zinc-600 focus:border-[#00f0ff] focus:outline-none"
+                        className="flex-1 rounded-xl border border-white/10 bg-black/40 px-4 py-2 text-sm text-white font-mono placeholder:text-zinc-600 focus:border-[#a0e4f1] focus:outline-none"
                       />
                       <input
                         ref={posterInputRef}
@@ -410,7 +410,7 @@ export function TutorialVideoClient() {
             <div className="sticky top-8">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Eye size={15} className="text-[#00f0ff]" />
+                  <Eye size={15} className="text-[#a0e4f1]" />
                   <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Live Storefront Preview
                   </span>
@@ -431,8 +431,8 @@ export function TutorialVideoClient() {
                 />
 
                 {/* Overlaid preview badge */}
-                <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 rounded-full border border-[#00f0ff]/40 bg-black/70 px-3 py-1 text-[11px] font-mono font-bold text-white shadow-lg">
-                  <span className="h-2 w-2 rounded-full bg-[#00f0ff] animate-pulse" />
+                <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-black/70 px-3 py-1 text-[11px] font-mono font-bold text-white shadow-lg">
+                  <span className="h-2 w-2 rounded-full bg-[#a0e4f1] animate-pulse" />
                   <span>{config.kicker || '01 // TUTORIAL GUIDE'}</span>
                 </div>
               </div>

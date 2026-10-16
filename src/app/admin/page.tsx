@@ -39,12 +39,12 @@ export default async function AdminPage() {
             <img
               src="/logo.jpeg"
               alt="ReiKai Arcade"
-              className="w-14 h-14 rounded-2xl object-cover border border-[#00f0ff]/40 shadow-[0_0_20px_rgba(0,240,255,0.35)] shrink-0"
+              className="w-14 h-14 rounded-2xl object-cover border border-[#a0e4f1]/40 shadow-[0_0_20px_rgba(0,240,255,0.35)] shrink-0"
             />
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#00f0ff]">ReiKai Control Room</p>
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#a0e4f1]">ReiKai Control Room</p>
               <h1 className="mt-1 text-3xl font-black tracking-tight md:text-4xl text-white">
-                Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-[#00f0ff]">Dashboard</span>
+                Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c673e2] to-[#a0e4f1]">Dashboard</span>
               </h1>
               <p className="mt-1 text-xs text-muted-foreground">Signed in as <span className="text-foreground">{session.user.email}</span></p>
             </div>
@@ -62,7 +62,7 @@ export default async function AdminPage() {
                 <LogOut className="h-4 w-4" /> Sign Out
               </button>
             </form>
-            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-5 py-3 font-extrabold text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all">
+            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#c673e2] to-[#a0e4f1] px-5 py-3 font-extrabold text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all">
               + New Product
             </Link>
           </div>

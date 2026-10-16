@@ -63,40 +63,40 @@ export function MobileRightSidebar() {
       subtitle: 'DualSense, headsets & gear',
       href: '/accessories',
       icon: Headphones,
-      color: 'text-pink-400',
-      bgColor: 'bg-pink-500/15 border-pink-500/30',
+      color: 'text-[#5ba2c0]',
+      bgColor: 'bg-[#5ba2c0]/15 border-[#5ba2c0]/30',
     },
     {
       title: 'PS5 Games',
       subtitle: 'Exclusives, hits & discs',
       href: '/games',
       icon: Gamepad2,
-      color: 'text-purple-400',
-      bgColor: 'bg-purple-500/15 border-purple-500/30',
+      color: 'text-[#c673e2]',
+      bgColor: 'bg-[#4b22d2]/20 border-[#c673e2]/30',
     },
     {
       title: 'Game Top-Up',
       subtitle: 'Valorant, PUBG, Genshin',
       href: '/top-up',
       icon: Zap,
-      color: 'text-[#00f0ff]',
-      bgColor: 'bg-[#00f0ff]/15 border-[#00f0ff]/30',
+      color: 'text-[#a0e4f1]',
+      bgColor: 'bg-[#a0e4f1]/15 border-[#a0e4f1]/30',
     },
     {
       title: 'Subscriptions',
       subtitle: 'PS Plus, Game Pass & EA',
       href: '/subscriptions',
       icon: Crown,
-      color: 'text-violet-400',
-      bgColor: 'bg-violet-500/15 border-violet-500/30',
+      color: 'text-[#c673e2]',
+      bgColor: 'bg-[#c673e2]/15 border-[#c673e2]/30',
     },
     {
       title: 'Gift Cards',
       subtitle: 'PSN, Steam, Google & Apple',
       href: '/gift-cards',
       icon: Gift,
-      color: 'text-amber-400',
-      bgColor: 'bg-amber-500/15 border-amber-500/30',
+      color: 'text-[#a0e4f1]',
+      bgColor: 'bg-[#4b22d2]/20 border-[#a0e4f1]/30',
     },
   ];
 
@@ -134,7 +134,7 @@ export function MobileRightSidebar() {
 
       {/* Right Drawer */}
       <aside
-        className={`fixed top-0 right-0 bottom-0 w-[84vw] max-w-[340px] z-[300] bg-[#090416] border-l border-white/10 shadow-[-16px_0_48px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-y-auto transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed top-0 right-0 bottom-0 w-[84vw] max-w-[340px] z-[300] bg-[#000000] border-l border-white/10 shadow-[-16px_0_48px_rgba(0,0,0,0.95)] flex flex-col justify-between overflow-y-auto transition-transform duration-300 ease-out md:hidden ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="dialog"
@@ -152,10 +152,10 @@ export function MobileRightSidebar() {
               <img
                 src="/logo.jpeg"
                 alt="Reikai Arcade"
-                className="w-8 h-8 rounded-lg object-cover border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
+                className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-[0_0_10px_rgba(160,228,241,0.3)]"
               />
               <span className="font-['Outfit'] font-black tracking-[0.14em] text-white text-sm">
-                REIKAI <span className="text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.7)]">ARCADE</span>
+                REIKAI <span className="text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.7)]">ARCADE</span>
               </span>
             </Link>
 
@@ -178,11 +178,11 @@ export function MobileRightSidebar() {
                 closeMenu();
                 openSearch();
               }}
-              className="w-full h-10 px-3.5 rounded-xl bg-white/[0.05] border border-white/10 hover:border-[#00f0ff]/50 flex items-center justify-between text-xs text-zinc-400 transition"
+              className="w-full h-10 px-3.5 rounded-xl bg-white/[0.05] border border-white/10 hover:border-[#a0e4f1]/50 flex items-center justify-between text-xs text-zinc-400 transition"
               data-testid="sidebar-search-trigger"
             >
               <span className="font-['DM_Mono'] truncate">Search games, accessories...</span>
-              <Search size={15} className="text-[#00f0ff] shrink-0 ml-2" />
+              <Search size={15} className="text-[#a0e4f1] shrink-0 ml-2" />
             </button>
           </div>
 
@@ -201,7 +201,7 @@ export function MobileRightSidebar() {
                     href={p.href}
                     onClick={closeMenu}
                     className={`flex items-center justify-between p-2.5 rounded-xl transition group ${
-                      isActive ? 'bg-[#00f0ff]/10 border border-[#00f0ff]/30 text-white' : 'hover:bg-white/5 text-zinc-200'
+                      isActive ? 'bg-[#a0e4f1]/10 border border-[#a0e4f1]/30 text-white' : 'hover:bg-white/5 text-zinc-200'
                     }`}
                     data-testid={`sidebar-page-${p.title.toLowerCase().replace(/\s+/g, '-')}`}
                   >
@@ -212,13 +212,13 @@ export function MobileRightSidebar() {
                         <Icon size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-white group-hover:text-[#00f0ff] transition">
+                        <div className="text-xs font-bold text-white group-hover:text-[#a0e4f1] transition">
                           {p.title}
                         </div>
                         <div className="text-[11px] text-zinc-400">{p.subtitle}</div>
                       </div>
                     </div>
-                    <ChevronRight size={16} className="text-zinc-500 group-hover:text-[#00f0ff] transition" />
+                    <ChevronRight size={16} className="text-zinc-500 group-hover:text-[#a0e4f1] transition" />
                   </Link>
                 );
               })}
@@ -240,7 +240,7 @@ export function MobileRightSidebar() {
                     href={q.href}
                     onClick={closeMenu}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition ${
-                      isActive ? 'bg-white/10 text-[#00f0ff]' : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                      isActive ? 'bg-white/10 text-[#a0e4f1]' : 'text-zinc-300 hover:bg-white/5 hover:text-white'
                     }`}
                     data-testid={`sidebar-link-${q.title.toLowerCase().replace(/\s+/g, '-')}`}
                   >
@@ -259,7 +259,7 @@ export function MobileRightSidebar() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#a855f7] to-[#00f0ff] flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4b22d2] to-[#c673e2] flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-[0_0_10px_rgba(198,115,226,0.4)]">
                     {(user.name || user.email || 'U').slice(0, 2).toUpperCase()}
                   </div>
                   <div className="min-w-0">
@@ -273,7 +273,7 @@ export function MobileRightSidebar() {
                   className={`text-[9px] font-['DM_Mono'] font-bold px-1.5 py-0.5 rounded ${
                     user.role === 'admin'
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                      : 'bg-[#00f0ff]/20 text-[#00f0ff] border border-[#00f0ff]/30'
+                      : 'bg-[#a0e4f1]/20 text-[#a0e4f1] border border-[#a0e4f1]/30'
                   }`}
                 >
                   {user.role === 'admin' ? 'ADMIN' : 'MEMBER'}
@@ -294,7 +294,7 @@ export function MobileRightSidebar() {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-red-400 hover:border-red-400/30 hover:bg-red-500/10 text-xs font-semibold transition"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-red-400 hover:border-red-400/30 hover:bg-red-500/10 text-xs font-semibold transition cursor-pointer"
               >
                 <LogOut size={14} />
                 <span>Sign Out</span>
@@ -305,7 +305,7 @@ export function MobileRightSidebar() {
               <Link
                 href="/sign-in"
                 onClick={closeMenu}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#a855f7] to-[#00f0ff] text-black font-['DM_Mono'] font-bold text-xs tracking-wider uppercase shadow-[0_0_20px_rgba(0,240,255,0.4)] transition hover:opacity-95 active:scale-98"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white font-['DM_Mono'] font-bold text-xs tracking-wider uppercase shadow-[0_0_20px_rgba(75,34,210,0.4)] transition hover:opacity-95 active:scale-98"
                 data-testid="sidebar-sign-in"
               >
                 <User size={14} />

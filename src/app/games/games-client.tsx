@@ -75,9 +75,9 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
     return (
       <Link
         href={`/games/${game.slug}`}
-        className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-md transition-all duration-300 hover:border-[#00f0ff]/50 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.6),0_0_24px_rgba(0,240,255,0.2)] group"
+        className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-md transition-all duration-300 hover:border-[#a0e4f1]/50 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] group"
       >
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-[#00f0ff]/40 transition">
+        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-[#a0e4f1]/40 transition">
           {game.imageUrl ? (
             <Image src={game.imageUrl} alt={game.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="96px" />
           ) : (
@@ -86,7 +86,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
         </div>
         <div className="flex flex-1 flex-col justify-between min-w-0">
           <div>
-            <p className="font-bold text-white truncate group-hover:text-[#00f0ff] transition">{game.name}</p>
+            <p className="font-bold text-white truncate group-hover:text-[#a0e4f1] transition">{game.name}</p>
             <p className="mt-0.5 text-xs text-white/50 line-clamp-2">{game.shortDescription}</p>
             <div className="mt-1 flex flex-wrap gap-1">
               {game.tags.slice(0, 3).map((t) => (
@@ -98,7 +98,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
           </div>
           <div className="flex items-center gap-3 mt-2">
             {lowestVariant ? (
-              <span className="font-mono font-black text-sm text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+              <span className="font-mono font-black text-sm text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.4)]">
                 {formatTaka(lowestVariant.price)}
               </span>
             ) : (
@@ -107,7 +107,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
             {inStock ? (
               <button
                 onClick={handleAdd}
-                className="rounded-lg bg-gradient-to-r from-[#a855f7] to-[#00f0ff] px-3.5 py-1.5 text-xs font-bold text-white shadow-[0_0_16px_rgba(0,240,255,0.35)] hover:shadow-[0_0_22px_rgba(0,240,255,0.5)] transition"
+                className="rounded-lg bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-3.5 py-1.5 text-xs font-bold text-white shadow-[0_0_16px_rgba(160,228,241,0.35)] hover:shadow-[0_0_22px_rgba(160,228,241,0.5)] transition"
               >
                 Add to Cart
               </button>
@@ -123,7 +123,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
   return (
     <Link
       href={`/games/${game.slug}`}
-      className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden backdrop-blur-md transition-all duration-300 hover:border-[#00f0ff]/50 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.6),0_0_24px_rgba(0,240,255,0.2)]"
+      className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden backdrop-blur-md transition-all duration-300 hover:border-[#a0e4f1]/50 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
         {game.imageUrl ? (
@@ -145,7 +145,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
           </div>
         )}
         {game.featured && (
-          <div className="absolute top-2 left-2 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-[#00f0ff] backdrop-blur-md shadow-[0_0_12px_rgba(0,240,255,0.3)]">
+          <div className="absolute top-2 left-2 rounded-full bg-[#a0e4f1]/20 border border-[#a0e4f1]/40 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-[#a0e4f1] backdrop-blur-md shadow-[0_0_12px_rgba(160,228,241,0.3)]">
             FEATURED
           </div>
         )}
@@ -159,13 +159,13 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
               </span>
             ))}
           </div>
-          <h3 className="font-bold text-white text-xs sm:text-sm line-clamp-1 sm:line-clamp-2 group-hover:text-[#00f0ff] transition mt-0.5">{game.name}</h3>
+          <h3 className="font-bold text-white text-xs sm:text-sm line-clamp-1 sm:line-clamp-2 group-hover:text-[#a0e4f1] transition mt-0.5">{game.name}</h3>
           {game.platform && <p className="text-[10px] sm:text-xs text-white/40 truncate">{game.platform}</p>}
         </div>
         <div className="mt-2 flex items-center justify-between pt-1.5 border-t border-white/5">
           {lowestVariant ? (
             <div className="min-w-0">
-              <span className="font-mono font-black text-xs sm:text-sm text-[#00f0ff] drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+              <span className="font-mono font-black text-xs sm:text-sm text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.4)]">
                 {formatTaka(lowestVariant.price)}
               </span>
               {lowestVariant.compareAtPrice && (
@@ -180,7 +180,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
           {inStock && (
             <button
               onClick={handleAdd}
-              className="rounded-xl border border-[#00f0ff]/40 bg-[#00f0ff]/10 p-1.5 sm:p-2 text-[#00f0ff] hover:bg-gradient-to-r hover:from-[#a855f7] hover:to-[#00f0ff] hover:text-white hover:border-transparent transition shadow-[0_0_12px_rgba(0,240,255,0.2)] shrink-0 ml-1 cursor-pointer"
+              className="rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 p-1.5 sm:p-2 text-[#a0e4f1] hover:bg-gradient-to-r hover:from-[#4b22d2] hover:to-[#a0e4f1] hover:text-white hover:border-transparent transition shadow-[0_0_12px_rgba(160,228,241,0.2)] shrink-0 ml-1 cursor-pointer"
               aria-label="Add game to bag"
             >
               <ShoppingCart size={14} />
@@ -236,7 +236,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
   }, [games, searchQuery, selectedPlatform, selectedCategory, sortBy])
 
   return (
-    <div className="min-h-screen bg-[#06020e] text-[#f4f2ff]">
+    <div className="min-h-screen bg-[#000000] text-[#f4f2ff]">
       <SiteHeader />
 
       {/* Main Catalog - Starts directly with filters & items */}
@@ -248,7 +248,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <ChevronRight className="h-3 w-3" />
             <span className="text-white/80 font-semibold">Games</span>
           </nav>
-          <span className="font-mono text-[11px] text-[#00f0ff]">{filteredGames.length} games</span>
+          <span className="font-mono text-[11px] text-[#a0e4f1]">{filteredGames.length} games</span>
         </div>
 
         {/* Responsive Compact Filter Bar */}
@@ -261,7 +261,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
               placeholder="Search games..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/50 transition"
+              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
             />
           </div>
 
@@ -270,7 +270,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <select
               value={selectedPlatform}
               onChange={(e) => setSelectedPlatform(e.target.value)}
-              className="h-9 rounded-xl border border-white/10 bg-[#0d0822] px-2.5 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
+              className="h-9 rounded-xl border border-white/10 bg-black/90 px-2.5 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
             >
               <option value="all">All Platforms</option>
               {platforms.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -280,7 +280,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="h-9 rounded-xl border border-white/10 bg-[#0d0822] px-2.5 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
+                className="h-9 rounded-xl border border-white/10 bg-black/90 px-2.5 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
               >
                 <option value="all">All Categories</option>
                 {categories.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -290,7 +290,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="col-span-2 sm:col-span-1 h-9 rounded-xl border border-white/10 bg-[#0d0822] px-2.5 text-xs text-white focus:outline-none focus:border-[#00f0ff]"
+              className="col-span-2 sm:col-span-1 h-9 rounded-xl border border-white/10 bg-black/90 px-2.5 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
             >
               <option value="featured">Featured First</option>
               <option value="name">Name A-Z</option>
@@ -302,14 +302,14 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <div className="hidden sm:flex gap-1 rounded-xl border border-white/10 p-0.5 bg-white/[0.03] h-9 items-center">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`rounded-lg p-1.5 transition ${viewMode === 'grid' ? 'bg-[#00f0ff]/20 text-[#00f0ff]' : 'text-white/40 hover:text-white'}`}
+                className={`rounded-lg p-1.5 transition ${viewMode === 'grid' ? 'bg-[#a0e4f1]/20 text-[#a0e4f1]' : 'text-white/40 hover:text-white'}`}
                 aria-label="Grid view"
               >
                 <LayoutGrid size={15} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`rounded-lg p-1.5 transition ${viewMode === 'list' ? 'bg-[#00f0ff]/20 text-[#00f0ff]' : 'text-white/40 hover:text-white'}`}
+                className={`rounded-lg p-1.5 transition ${viewMode === 'list' ? 'bg-[#a0e4f1]/20 text-[#a0e4f1]' : 'text-white/40 hover:text-white'}`}
                 aria-label="List view"
               >
                 <List size={15} />
@@ -320,7 +320,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
 
         {/* Results: 2 columns on phone, multi-column wrap on PC */}
         {filteredGames.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl border border-white/5 bg-[#0d0822]/40 backdrop-blur-xl p-8">
+          <div className="py-20 text-center rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl p-8">
             <p className="text-4xl mb-3">🎮</p>
             <p className="text-white/60">
               {games.length === 0 ? 'No games in the catalog yet. Check back soon!' : 'No games match your filters.'}
@@ -328,7 +328,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             {searchQuery || selectedPlatform !== 'all' || selectedCategory !== 'all' ? (
               <button
                 onClick={() => { setSearchQuery(''); setSelectedPlatform('all'); setSelectedCategory('all') }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00f0ff] hover:underline cursor-pointer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#a0e4f1] hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>
