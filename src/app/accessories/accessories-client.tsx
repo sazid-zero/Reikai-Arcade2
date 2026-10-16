@@ -71,9 +71,9 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
     return (
       <Link
         href={`/accessories/${item.slug}`}
-        className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-md transition-all duration-300 hover:border-[#a0e4f1]/50 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] group"
+        className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] group"
       >
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-[#a0e4f1]/40 transition">
+        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-white/15 transition">
           {item.imageUrl ? (
             <Image src={item.imageUrl} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="96px" />
           ) : (
@@ -82,13 +82,13 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
         </div>
         <div className="flex flex-1 flex-col justify-between min-w-0">
           <div>
-            <p className="font-bold text-white truncate group-hover:text-[#a0e4f1] transition">{item.name}</p>
+            <p className="font-bold text-white truncate group-hover:text-white transition">{item.name}</p>
             <p className="text-xs text-[#c673e2]/90 font-mono mt-0.5">{item.brand}</p>
             <p className="text-xs text-white/50 line-clamp-1 mt-0.5">{item.shortDescription}</p>
           </div>
           <div className="flex items-center gap-3 mt-2">
             {firstVariant?.price != null ? (
-              <span className="font-mono font-black text-sm text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.4)]">
+              <span className="font-mono font-black text-sm text-[#a0e4f1] drop-shadow-lg">
                 {formatTaka(firstVariant.price)}
               </span>
             ) : (
@@ -97,7 +97,7 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
             {inStock ? (
               <button
                 onClick={handleAdd}
-                className="rounded-lg bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-3.5 py-1.5 text-xs font-bold text-white shadow-[0_0_16px_rgba(160,228,241,0.35)] hover:shadow-[0_0_22px_rgba(160,228,241,0.5)] transition"
+                className="rounded-lg bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-3.5 py-1.5 text-xs font-bold text-white shadow-lg hover:shadow-lg transition"
               >
                 Add to Cart
               </button>
@@ -113,7 +113,7 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
   return (
     <Link
       href={`/accessories/${item.slug}`}
-      className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden backdrop-blur-md transition-all duration-300 hover:border-[#a0e4f1]/50 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
+      className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
     >
       <div className="relative aspect-square overflow-hidden bg-white/5">
         {item.imageUrl ? (
@@ -135,7 +135,7 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
           </div>
         )}
         {item.featured && (
-          <div className="absolute top-2 left-2 rounded-full bg-[#a0e4f1]/20 border border-[#a0e4f1]/40 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-[#a0e4f1] backdrop-blur-md shadow-[0_0_12px_rgba(160,228,241,0.3)]">
+          <div className="absolute top-2 left-2 rounded-full bg-[#a0e4f1]/20 border border-[#a0e4f1]/40 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-[#a0e4f1] backdrop-blur-md shadow-lg">
             FEATURED
           </div>
         )}
@@ -145,7 +145,7 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
           {item.brand && (
             <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[#c673e2]/90">{item.brand}</p>
           )}
-          <h3 className="font-bold text-white text-xs sm:text-sm line-clamp-2 group-hover:text-[#a0e4f1] transition mt-0.5">{item.name}</h3>
+          <h3 className="font-bold text-white text-xs sm:text-sm line-clamp-2 group-hover:text-white transition mt-0.5">{item.name}</h3>
           <div className="hidden sm:flex flex-wrap gap-1 mt-1.5">
             {item.tags.slice(0, 2).map((t) => (
               <span key={t} className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50 font-mono">
@@ -157,7 +157,7 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
         <div className="mt-2 flex items-center justify-between pt-1.5 border-t border-white/5">
           {firstVariant?.price != null ? (
             <div className="min-w-0">
-              <span className="font-mono font-black text-xs sm:text-sm text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.4)]">
+              <span className="font-mono font-black text-xs sm:text-sm text-[#a0e4f1] drop-shadow-lg">
                 {formatTaka(firstVariant.price)}
               </span>
               {firstVariant.compareAtPrice && (
@@ -172,7 +172,7 @@ function AccessoryCard({ item, viewMode }: { item: Accessory; viewMode: 'grid' |
           {inStock && (
             <button
               onClick={handleAdd}
-              className="rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 p-1.5 sm:p-2 text-[#a0e4f1] hover:bg-gradient-to-r hover:from-[#4b22d2] hover:to-[#a0e4f1] hover:text-white hover:border-transparent transition shadow-[0_0_12px_rgba(160,228,241,0.2)] shrink-0 ml-1 cursor-pointer"
+              className="rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 p-1.5 sm:p-2 text-[#a0e4f1] hover:bg-gradient-to-r hover:from-[#4b22d2] hover:to-[#a0e4f1] hover:text-white hover:border-transparent transition shadow-lg shrink-0 ml-1 cursor-pointer"
               aria-label="Add accessory to bag"
             >
               <ShoppingCart size={14} />

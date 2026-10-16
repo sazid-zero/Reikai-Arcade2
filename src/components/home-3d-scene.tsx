@@ -439,7 +439,7 @@ export function Home3dScene({
         <img
           src="/logo.jpeg"
           alt="Reikai Arcade 3D Emblem"
-          className="w-64 h-64 object-contain filter drop-shadow-[0_0_40px_rgba(168,85,247,0.7)] animate-pulse"
+          className="w-64 h-64 object-contain filter drop-shadow-lg animate-pulse"
         />
       </div>
     );

@@ -220,7 +220,7 @@ export function TopUpDetailClient({ product }: Props) {
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-[#a0e4f1]/40 active:scale-[0.98]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/15 active:scale-[0.98]"
                 >
                   {added ? (
                     <>

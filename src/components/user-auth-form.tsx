@@ -166,14 +166,14 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#4b22d2]/15 via-[#a0e4f1]/10 to-transparent blur-[120px] pointer-events-none -z-10" />
 
       <div className="w-full max-w-md">
-        <div className="relative rounded-3xl border border-white/10 bg-black/95 p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl">
+        <div className="relative rounded-3xl border border-white/10 bg-black/95 p-6 sm:p-8 shadow-lg backdrop-blur-2xl">
           {/* Top Brand & Badge */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <img
                 src="/logo.jpeg"
                 alt="ReiKai Arcade"
-                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-[0_0_15px_rgba(160,228,241,0.4)] group-hover:shadow-[0_0_22px_rgba(160,228,241,0.7)] transition-all"
+                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-lg group-hover:shadow-lg transition-all"
               />
               <div>
                 <span className="font-black tracking-tight text-white text-base block leading-none">
@@ -200,7 +200,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               }}
               className={`py-2.5 rounded-xl font-['DM_Mono'] text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 mode === 'signin'
-                  ? 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-[0_0_20px_rgba(75,34,210,0.35)]'
+                  ? 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-lg'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
@@ -215,7 +215,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               }}
               className={`py-2.5 rounded-xl font-['DM_Mono'] text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 mode === 'signup'
-                  ? 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-[0_0_20px_rgba(75,34,210,0.35)]'
+                  ? 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-lg'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
@@ -274,7 +274,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
                     Password
                   </label>
-                  <span className="text-[11px] text-zinc-400 hover:text-[#a0e4f1] cursor-pointer transition">
+                  <span className="text-[11px] text-zinc-400 hover:text-white cursor-pointer transition">
                     Forgot password?
                   </span>
                 </div>
@@ -317,7 +317,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               <button
                 type="submit"
                 disabled={pending}
-                className="w-full mt-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-[0_0_25px_rgba(75,34,210,0.4)] hover:shadow-[0_0_35px_rgba(160,228,241,0.5)] disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                className="w-full mt-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
               >
                 {pending ? (
                   <>
@@ -415,7 +415,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                         placeholder="017XXXXXXXX"
                         autoComplete="tel"
                         required
-                        className="w-full rounded-xl border border-[#a0e4f1]/30 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition shadow-[0_0_15px_rgba(160,228,241,0.08)]"
+                        className="w-full rounded-xl border border-[#a0e4f1]/30 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition shadow-lg"
                       />
                     </div>
                     <p className="mt-1 text-[11px] text-zinc-400 flex items-center gap-1">
@@ -451,7 +451,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                         placeholder="gamer@domain.com"
                         autoComplete="email"
                         required
-                        className="w-full rounded-xl border border-[#c673e2]/30 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#c673e2] focus:ring-1 focus:ring-[#c673e2]/50 transition shadow-[0_0_15px_rgba(198,115,226,0.08)]"
+                        className="w-full rounded-xl border border-[#c673e2]/30 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#c673e2] focus:ring-1 focus:ring-[#c673e2]/50 transition shadow-lg"
                       />
                     </div>
 
@@ -537,7 +537,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               <button
                 type="submit"
                 disabled={pending}
-                className="w-full mt-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-[0_0_25px_rgba(75,34,210,0.4)] hover:shadow-[0_0_35px_rgba(160,228,241,0.5)] disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                className="w-full mt-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
               >
                 {pending ? (
                   <>
@@ -581,7 +581,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
             </Link>
             <Link
               href="/admin/sign-in"
-              className="inline-flex items-center gap-1 font-mono text-[11px] text-zinc-500 hover:text-[#a0e4f1] transition"
+              className="inline-flex items-center gap-1 font-mono text-[11px] text-zinc-500 hover:text-white transition"
             >
               <ShieldCheck className="h-3 w-3 text-[#a0e4f1]" />
               <span>Admin Portal →</span>

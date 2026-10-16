@@ -200,7 +200,7 @@ export function SubscriptionDetailClient({ product }: Props) {
                             ? 'cursor-not-allowed opacity-40 border-white/10 bg-white/[0.02]'
                             : isSel
                             ? 'border-[#a0e4f1] bg-gradient-to-r from-[#4b22d2]/30 to-[#c673e2]/20 shadow-[0_0_22px_rgba(160,228,241,0.25)]'
-                            : 'border-white/10 bg-white/[0.03] hover:border-[#a0e4f1]/40 hover:bg-white/[0.06]'
+                            : 'border-white/10 bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.06]'
                         }`}
                       >
                         {isSel && (

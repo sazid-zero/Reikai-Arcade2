@@ -152,10 +152,10 @@ export function MobileRightSidebar() {
               <img
                 src="/logo.jpeg"
                 alt="Reikai Arcade"
-                className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-[0_0_10px_rgba(160,228,241,0.3)]"
+                className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-lg"
               />
               <span className="font-['Outfit'] font-black tracking-[0.14em] text-white text-sm">
-                REIKAI <span className="text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.7)]">ARCADE</span>
+                REIKAI <span className="text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
               </span>
             </Link>
 
@@ -178,7 +178,7 @@ export function MobileRightSidebar() {
                 closeMenu();
                 openSearch();
               }}
-              className="w-full h-10 px-3.5 rounded-xl bg-white/[0.05] border border-white/10 hover:border-[#a0e4f1]/50 flex items-center justify-between text-xs text-zinc-400 transition"
+              className="w-full h-10 px-3.5 rounded-xl bg-white/[0.05] border border-white/10 hover:border-white/20 flex items-center justify-between text-xs text-zinc-400 transition"
               data-testid="sidebar-search-trigger"
             >
               <span className="font-['DM_Mono'] truncate">Search games, accessories...</span>
@@ -212,13 +212,13 @@ export function MobileRightSidebar() {
                         <Icon size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-white group-hover:text-[#a0e4f1] transition">
+                        <div className="text-xs font-bold text-white group-hover:text-white transition">
                           {p.title}
                         </div>
                         <div className="text-[11px] text-zinc-400">{p.subtitle}</div>
                       </div>
                     </div>
-                    <ChevronRight size={16} className="text-zinc-500 group-hover:text-[#a0e4f1] transition" />
+                    <ChevronRight size={16} className="text-zinc-500 group-hover:text-white transition" />
                   </Link>
                 );
               })}
@@ -259,7 +259,7 @@ export function MobileRightSidebar() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4b22d2] to-[#c673e2] flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-[0_0_10px_rgba(198,115,226,0.4)]">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4b22d2] to-[#c673e2] flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-lg">
                     {(user.name || user.email || 'U').slice(0, 2).toUpperCase()}
                   </div>
                   <div className="min-w-0">
@@ -305,7 +305,7 @@ export function MobileRightSidebar() {
               <Link
                 href="/sign-in"
                 onClick={closeMenu}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white font-['DM_Mono'] font-bold text-xs tracking-wider uppercase shadow-[0_0_20px_rgba(75,34,210,0.4)] transition hover:opacity-95 active:scale-98"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white font-['DM_Mono'] font-bold text-xs tracking-wider uppercase shadow-lg transition hover:opacity-95 active:scale-98"
                 data-testid="sidebar-sign-in"
               >
                 <User size={14} />

@@ -115,7 +115,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
               <Link
                 key={product.id}
                 href={`/subscriptions/${product.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-[#a0e4f1]/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] hover:-translate-y-1"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-white/20 hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] hover:-translate-y-1"
               >
                 {/* Image */}
                 <div className="relative aspect-square w-full overflow-hidden bg-black/60">
@@ -129,12 +129,12 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center">
-                      <Crown className="h-8 w-8 text-[#a0e4f1]/40 transition-colors group-hover:text-[#a0e4f1]" />
+                      <Crown className="h-8 w-8 text-[#a0e4f1]/40 transition-colors group-hover:text-white" />
                     </div>
                   )}
                   <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/60 to-transparent" />
                   {product.featured && (
-                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-[0_0_12px_rgba(160,228,241,0.4)]">
+                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-lg">
                       Featured
                     </span>
                   )}
@@ -142,7 +142,7 @@ export default function SubscriptionsClient({ products }: { products: Subscripti
 
                 {/* Info */}
                 <div className="p-2.5 sm:p-3.5">
-                  <p className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1 sm:line-clamp-2 group-hover:text-[#a0e4f1] transition-colors">
+                  <p className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1 sm:line-clamp-2 group-hover:text-white transition-colors">
                     {product.name}
                   </p>
                   {product.brand && (

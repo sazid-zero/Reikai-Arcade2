@@ -18,10 +18,10 @@ export function SiteFooter() {
               <img
                 src="/logo.jpeg"
                 alt="Reikai Arcade"
-                className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-[0_0_15px_rgba(160,228,241,0.4)] transition-transform duration-300 hover:scale-110"
+                className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-lg transition-transform duration-300 hover:scale-110"
               />
               <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
-                REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.7)]">ARCADE</span>
+                REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
               </span>
             </Link>
             <p className="footer-blurb">

@@ -138,12 +138,12 @@ export function OrdersClient({ initialOrders, user }: Props) {
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-[#a0e4f1] shadow-[0_0_12px_rgba(160,228,241,0.25)]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-[#a0e4f1] shadow-lg">
                 <ShieldCheck className="h-3.5 w-3.5" /> ReiKai Vault Order Desk
               </span>
               <h1 className="mt-3 text-3xl sm:text-4xl font-black text-white">
                 Track &amp; View{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] drop-shadow-[0_0_20px_rgba(160,228,241,0.3)]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] drop-shadow-lg">
                   Your Orders
                 </span>
               </h1>
@@ -155,7 +155,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
             {!user && (
               <Link
                 href="/sign-in"
-                className="inline-flex items-center gap-2 rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-4 py-2.5 font-['DM_Mono'] text-xs font-bold text-white hover:bg-[#a0e4f1]/20 transition shadow-[0_0_16px_rgba(160,228,241,0.25)]"
+                className="inline-flex items-center gap-2 rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-4 py-2.5 font-['DM_Mono'] text-xs font-bold text-white hover:bg-white/[0.08] transition shadow-lg"
               >
                 <User size={14} className="text-[#a0e4f1]" />
                 <span>SIGN IN FOR FULL HISTORY</span>
@@ -177,7 +177,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
             </div>
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-5 py-2.5 font-['DM_Mono'] text-xs font-bold text-white shadow-[0_0_16px_rgba(75,34,210,0.35)] hover:opacity-90 transition cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-5 py-2.5 font-['DM_Mono'] text-xs font-bold text-white shadow-lg hover:opacity-90 transition cursor-pointer"
             >
               <span>TRACK ORDER</span>
               <ArrowRight size={14} />
@@ -197,7 +197,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
 
         {initialOrders.length === 0 ? (
           <div className="py-20 text-center rounded-3xl border border-white/5 bg-black/60 backdrop-blur-xl p-8 shadow-2xl">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#4b22d2]/20 border border-[#c673e2]/30 text-[#a0e4f1] shadow-[0_0_24px_rgba(160,228,241,0.2)]">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#4b22d2]/20 border border-[#c673e2]/30 text-[#a0e4f1] shadow-lg">
               <ShoppingBag size={28} />
             </div>
             <h3 className="text-xl font-extrabold text-white">No Orders Placed Yet</h3>
@@ -207,7 +207,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
             <div className="mt-6 flex flex-wrap gap-3 justify-center">
               <Link
                 href="/games"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#4b22d2] to-[#c673e2] shadow-[0_0_20px_rgba(75,34,210,0.4)] hover:opacity-90 transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#4b22d2] to-[#c673e2] shadow-lg hover:opacity-90 transition"
               >
                 <span>Browse Games</span>
                 <ArrowRight size={14} />
@@ -237,7 +237,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
               return (
                 <div
                   key={order.id}
-                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md transition-all duration-300 hover:border-[#a0e4f1]/50 hover:bg-white/[0.05] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
+                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
                     <div>
@@ -253,7 +253,7 @@ export function OrdersClient({ initialOrders, user }: Props) {
                     </div>
 
                     <div className="text-left sm:text-right">
-                      <span className="font-mono text-base font-black text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.4)]">
+                      <span className="font-mono text-base font-black text-[#a0e4f1] drop-shadow-lg">
                         {formatTaka(order.total)}
                       </span>
                       <p className="text-[11px] text-white/40 uppercase tracking-wider font-mono">

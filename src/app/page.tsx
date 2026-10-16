@@ -466,7 +466,7 @@ function Header({
               className="header-logo-img"
             />
             <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm sm:text-base">
-              REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.7)]">ARCADE</span>
+              REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
             </span>
           </button>
 
@@ -486,8 +486,8 @@ function Header({
             <button
               type="button"
               onClick={() => setCategoriesDropdown((prev) => !prev)}
-              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition cursor-pointer ${
-                categoriesDropdown ? 'text-[#a0e4f1] bg-[#a0e4f1]/10' : ''
+              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition cursor-pointer ${
+                categoriesDropdown ? 'text-white bg-white/8' : ''
               }`}
               data-testid="button-categories-dropdown"
             >
@@ -503,24 +503,24 @@ function Header({
               >
                 <div className="rounded-2xl border border-[#c673e2]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl">
                   <Link href="/games" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-[#a0e4f1]"><Gamepad2 size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">PS5 Games</strong><span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-white"><Gamepad2 size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-white">PS5 Games</strong><span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span></div>
                   </Link>
                   <Link href="/top-up" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#a0e4f1]"><Zap size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Game Top-Up</strong><span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-white">Game Top-Up</strong><span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span></div>
                   </Link>
                   <Link href="/accessories" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-[#a0e4f1]"><Headphones size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Accessories</strong><span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-white"><Headphones size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-white">Accessories</strong><span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span></div>
                   </Link>
                   <Link href="/subscriptions" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-[#a0e4f1]"><Crown size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Subscriptions</strong><span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-white"><Crown size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-white">Subscriptions</strong><span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span></div>
                   </Link>
                   <Link href="/gift-cards" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-[#a0e4f1]"><Gift size={16} /></div>
-                    <div><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1]">Gift Cards</strong><span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-white"><Gift size={16} /></div>
+                    <div><strong className="block text-xs font-bold text-white group-hover:text-white">Gift Cards</strong><span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span></div>
                   </Link>
                 </div>
               </div>
@@ -569,7 +569,7 @@ function Header({
           <button
             type="button"
             onClick={() => openSearch()}
-            className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-[#a0e4f1]/50 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
+            className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-white/20 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
             aria-label="Search store"
             data-testid="mobile-search-bar"
           >
@@ -584,8 +584,8 @@ function Header({
             onClick={toggleMobileMenu}
             className={`mobile-menu-toggle-btn h-10 w-10 shrink-0 rounded-xl border flex items-center justify-center transition active:scale-95 cursor-pointer ${
               isMobileMenuOpen
-                ? 'border-[#a0e4f1] text-[#a0e4f1] bg-[#a0e4f1]/15 shadow-[0_0_12px_rgba(160,228,241,0.35)]'
-                : 'bg-white/[0.06] border-white/10 text-white hover:text-[#a0e4f1] hover:border-white/20'
+                ? 'border-[#a0e4f1] text-white bg-white/8 shadow-lg'
+                : 'bg-white/[0.06] border-white/10 text-white hover:text-white hover:border-white/20'
             }`}
             aria-label="Toggle navigation menu"
             data-testid="mobile-menu-toggle"
@@ -1636,7 +1636,7 @@ export default function StorefrontPage() {
                   className="header-logo-img"
                 />
                 <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
-                  REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.7)]">ARCADE</span>
+                  REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
                 </span>
               </button>
               <p className="footer-blurb">

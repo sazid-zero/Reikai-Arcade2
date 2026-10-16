@@ -64,11 +64,10 @@ export function UserAuthButton() {
       <div className="flex items-center gap-2">
         <Link
           href="/sign-in"
-          className="header-signin-btn inline-flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 px-3.5 py-1.5 font-['DM_Mono'] text-xs font-bold text-white transition-all duration-200 hover:border-[#a0e4f1] hover:bg-[#a0e4f1]/20 hover:shadow-[0_0_18px_rgba(160,228,241,0.4)] active:scale-95"
+          className="header-signin-btn inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-3.5 py-1.5 font-['DM_Mono'] text-xs font-bold text-white transition-all duration-200 hover:border-white/25 hover:bg-white/[0.08] hover:shadow-lg active:scale-95"
           data-testid="header-sign-in"
         >
-          <User size={13} className="text-[#a0e4f1]" />
-          <span>SIGN IN</span>
+          <User size={13} className="text-white/60" />`n          <span>SIGN IN</span>
         </Link>
       </div>
     )
@@ -83,26 +82,26 @@ export function UserAuthButton() {
       <button
         type="button"
         onClick={() => setDropdownOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full border border-[#a0e4f1]/50 bg-black/40 p-1 pr-2.5 transition-all hover:border-[#a0e4f1] hover:shadow-[0_0_20px_rgba(160,228,241,0.35)] cursor-pointer"
+        className="flex items-center gap-2 rounded-full border border-[#a0e4f1]/50 bg-black/40 p-1 pr-2.5 transition-all hover:border-white/25 hover:shadow-lg cursor-pointer"
         aria-label="User profile menu"
         data-testid="header-user-profile"
       >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#c673e2] to-[#a0e4f1] text-[11px] font-black text-white shadow-[0_0_10px_rgba(160,228,241,0.5)]">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#c673e2] to-[#a0e4f1] text-[11px] font-black text-white shadow-lg">
           {initials}
         </div>
         <span className="hidden sm:inline font-['DM_Mono'] text-[11px] font-bold text-zinc-200 max-w-[120px] truncate">
           {user.name || 'Player'}
         </span>
-        <ChevronDown size={12} className="text-[#a0e4f1]" />
+        <ChevronDown size={12} className="text-white/40" />
       </button>
 
       {dropdownOpen && (
-        <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl border border-[#c673e2]/30 bg-[#050505]/95 p-2 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
           <div className="border-b border-white/10 px-3 py-2.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-bold text-white truncate">{user.name || 'Player'}</p>
               <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-[#a0e4f1]/20 text-[#a0e4f1] border border-[#a0e4f1]/30'
+                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/10 text-white/70 border border-white/15'
               }`}>
                 {isAdmin ? 'ADMIN' : 'MEMBER'}
               </span>
@@ -117,7 +116,7 @@ export function UserAuthButton() {
               onClick={() => setDropdownOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
             >
-              <ShoppingBag size={14} className="text-[#a0e4f1]" />
+              <ShoppingBag size={14} className="text-white/40" />
               <span>My Orders</span>
             </Link>
             <Link

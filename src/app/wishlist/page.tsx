@@ -16,7 +16,7 @@ export default function WishlistPage() {
 
       <main className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center text-center py-20 rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl p-8 shadow-2xl">
-          <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c673e2]/20 to-[#4b22d2]/20 border border-[#c673e2]/30 text-[#c673e2] shadow-[0_0_30px_rgba(198,115,226,0.3)]">
+          <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c673e2]/20 to-[#4b22d2]/20 border border-[#c673e2]/30 text-[#c673e2] shadow-lg">
             <Heart size={36} className="fill-[#c673e2]/40 text-[#c673e2]" />
             <Sparkles size={16} className="absolute -top-1 -right-1 text-[#a0e4f1]" />
           </div>
@@ -31,7 +31,7 @@ export default function WishlistPage() {
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <Link
               href="/games"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] hover:opacity-90 transition shadow-[0_0_20px_rgba(160,228,241,0.35)]"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] hover:opacity-90 transition shadow-lg"
             >
               <Gamepad2 size={15} />
               <span>Explore Games</span>

@@ -53,7 +53,7 @@ export function SignInForm() {
               <img
                 src="/logo.jpeg"
                 alt="ReiKai Arcade"
-                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-[0_0_15px_rgba(160,228,241,0.4)]"
+                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-lg"
               />
               <span className="inline-flex items-center gap-1.5 rounded-full border border-[#a0e4f1]/30 bg-[#a0e4f1]/10 px-3 py-1 font-mono text-[11px] font-semibold tracking-wider uppercase text-[#a0e4f1]">
                 <KeyRound className="h-3 w-3 text-[#a0e4f1]" /> ReiKai Vault
@@ -78,7 +78,7 @@ export function SignInForm() {
               <button
                 type="button"
                 onClick={fillDefaults}
-                className="text-[11px] font-bold text-[#a0e4f1] underline hover:text-[#a0e4f1]/80 transition cursor-pointer"
+                className="text-[11px] font-bold text-[#a0e4f1] underline hover:text-white/80 transition cursor-pointer"
               >
                 Auto-fill
               </button>
@@ -141,7 +141,7 @@ export function SignInForm() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-extrabold text-white shadow-[0_0_25px_rgba(75,34,210,0.4)] hover:shadow-[0_0_35px_rgba(160,228,241,0.5)] disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+            className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-extrabold text-white shadow-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
           >
             {pending ? (
               <>

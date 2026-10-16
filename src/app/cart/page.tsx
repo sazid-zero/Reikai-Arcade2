@@ -114,7 +114,7 @@ export default function CartPage() {
             <div className="flex flex-col gap-3">
               <Link
                 href={`/orders/${placedOrderId}`}
-                className="w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-3 text-sm font-bold text-white shadow-[0_0_20px_rgba(160,228,241,0.35)] hover:shadow-[0_0_28px_rgba(160,228,241,0.55)] transition text-center"
+                className="w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-3 text-sm font-bold text-white shadow-lg hover:shadow-lg transition text-center"
               >
                 Track Order Details →
               </Link>
@@ -129,7 +129,7 @@ export default function CartPage() {
         ) : cart.length === 0 ? (
           /* Empty Bag Screen */
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/[0.03] text-purple-400 shadow-[0_0_30px_rgba(198,115,226,0.2)]">
+            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/[0.03] text-purple-400 shadow-lg">
               <ShoppingBag size={40} className="text-[#a0e4f1]" />
             </div>
             <h1 className="text-2xl font-black text-white sm:text-3xl">Your Cart is Empty</h1>
@@ -139,7 +139,7 @@ export default function CartPage() {
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
                 href="/games"
-                className="rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_16px_rgba(160,228,241,0.3)] hover:shadow-[0_0_24px_rgba(160,228,241,0.5)] transition"
+                className="rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:shadow-lg transition"
               >
                 Browse Games →
               </Link>
@@ -251,7 +251,7 @@ export default function CartPage() {
                           </button>
                         </div>
 
-                        <span className="font-mono font-black text-sm sm:text-base text-[#a0e4f1] drop-shadow-[0_0_10px_rgba(160,228,241,0.3)]">
+                        <span className="font-mono font-black text-sm sm:text-base text-[#a0e4f1] drop-shadow-lg">
                           {formatTaka(item.price * item.quantity)}
                         </span>
                       </div>
@@ -299,7 +299,7 @@ export default function CartPage() {
                   <div className="my-2 border-t border-white/10" />
                   <div className="flex justify-between text-base font-black text-white">
                     <span>Total Amount</span>
-                    <span className="font-mono text-lg text-[#a0e4f1] drop-shadow-[0_0_12px_rgba(160,228,241,0.4)]">
+                    <span className="font-mono text-lg text-[#a0e4f1] drop-shadow-lg">
                       {formatTaka(cartTotal)}
                     </span>
                   </div>
@@ -356,7 +356,7 @@ export default function CartPage() {
                 <button
                   type="submit"
                   disabled={checkoutBusy || cart.length === 0}
-                  className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-3.5 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(160,228,241,0.35)] hover:shadow-[0_0_36px_rgba(160,228,241,0.55)] active:scale-[0.99] transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                  className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-3.5 text-sm font-extrabold text-white shadow-lg hover:shadow-lg active:scale-[0.99] transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   {checkoutBusy ? (
                     <span>Processing Order...</span>

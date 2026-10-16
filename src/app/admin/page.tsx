@@ -39,7 +39,7 @@ export default async function AdminPage() {
             <img
               src="/logo.jpeg"
               alt="ReiKai Arcade"
-              className="w-14 h-14 rounded-2xl object-cover border border-[#a0e4f1]/40 shadow-[0_0_20px_rgba(0,240,255,0.35)] shrink-0"
+              className="w-14 h-14 rounded-2xl object-cover border border-[#a0e4f1]/40 shadow-lg shrink-0"
             />
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#a0e4f1]">ReiKai Control Room</p>
@@ -62,7 +62,7 @@ export default async function AdminPage() {
                 <LogOut className="h-4 w-4" /> Sign Out
               </button>
             </form>
-            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#c673e2] to-[#a0e4f1] px-5 py-3 font-extrabold text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all">
+            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#c673e2] to-[#a0e4f1] px-5 py-3 font-extrabold text-white shadow-lg hover:shadow-lg transition-all">
               + New Product
             </Link>
           </div>

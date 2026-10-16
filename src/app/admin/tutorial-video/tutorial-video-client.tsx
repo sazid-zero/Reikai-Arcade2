@@ -205,7 +205,7 @@ export function TutorialVideoClient() {
                 </div>
 
                 {/* Upload Button Box */}
-                <div className="mb-5 rounded-xl border border-dashed border-white/20 bg-white/[0.02] p-5 text-center transition hover:border-[#a0e4f1]/50 hover:bg-[#a0e4f1]/5">
+                <div className="mb-5 rounded-xl border border-dashed border-white/20 bg-white/[0.02] p-5 text-center transition hover:border-white/20 hover:bg-[#a0e4f1]/5">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -223,7 +223,7 @@ export function TutorialVideoClient() {
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="font-semibold text-sm text-white hover:text-[#a0e4f1] transition-colors"
+                        className="font-semibold text-sm text-white hover:text-white transition-colors"
                       >
                         {uploading ? 'Uploading Video...' : 'Click to Upload New Tutorial Video'}
                       </button>
