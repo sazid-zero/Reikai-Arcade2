@@ -19,7 +19,7 @@ const productSchema = z.object({
   brand: z.string().trim().max(80).optional(),
   platform: z.string().trim().max(80).optional(),
   category: z.string().trim().max(80).optional(),
-  imageUrl: z.string().url().or(z.literal('')).optional(),
+  imageUrl: z.string().url().or(z.literal('')).or(z.string().startsWith('/')).optional(),
   shortDescription: z.string().trim().max(500).optional(),
   description: z.string().trim().optional(),
   featured: z.boolean().optional(),
