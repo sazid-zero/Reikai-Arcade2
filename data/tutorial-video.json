@@ -1,10 +1,11 @@
 {
   "videoUrl": "/tutorial-sample.mp4",
-  "posterUrl": "/cat-panel-ps5.jpg",
+  "posterUrl": "/uploads/dualsense_edge_in_cinematic_blue_light-7c47080d.png",
   "title": "PLAY YOUR WAY",
   "kicker": "01 // TUTORIAL GUIDE",
   "tagline": "WATCH OUR STEP-BY-STEP ORDERING & REDEMPTION WALKTHROUGH.",
   "autoPlay": true,
   "loop": true,
-  "muted": true
+  "muted": true,
+  "updatedAt": "2026-10-17T17:32:02.449Z"
 }
