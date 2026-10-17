@@ -32,7 +32,28 @@ export function HomeBannerCarousel({
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [inView, setInView] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // IntersectionObserver: accurately detect when banner enters & leaves viewport
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [loaded]);
 
   // Fetch from admin API if no initial slides provided
   useEffect(() => {
@@ -84,6 +105,7 @@ export function HomeBannerCarousel({
     <div className="hbc-wrapper">
       {/* Banner */}
       <section
+        ref={sectionRef}
         className="hbc-section"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
@@ -119,7 +141,7 @@ export function HomeBannerCarousel({
 
         {/* Content */}
         <div className="hbc-content">
-          <div className="hbc-text" key={slide.id}>
+          <div className={`hbc-text ${inView ? 'is-revealed' : ''}`} key={`${slide.id}-${inView}`}>
             {slide.label && (
               <p className="hbc-label">{slide.label}</p>
             )}
