@@ -846,7 +846,7 @@ export default function StorefrontPage() {
             <button type="button" className="sf-cat-card" onClick={() => setCategory('consoles')} data-testid="button-category-consoles">
               <div className="sf-cat-card-bg">
                 <img
-                  src="https://images.unsplash.com/photo-1607016284318-d1384f8d6214?w=600&q=80&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&q=80&auto=format&fit=crop"
                   alt=""
                   aria-hidden="true"
                   loading="lazy"

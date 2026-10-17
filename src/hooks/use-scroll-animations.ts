@@ -8,13 +8,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * High-performance, hardware-accelerated scroll entrance animations.
- * - Always re-animates on scroll in both directions (toggleActions: 'play reverse play reverse')
- * - Pure GPU transforms (translate3d, opacity) without expensive filter:blur re-rasterization
- * - Targeted to current storefront sections, titles, and banner items
+ *
+ * Rules:
+ * - Elements animate in smoothly when scrolling down into view (start: 'top 82%').
+ * - Once in view, elements STAY VISIBLE while user is in the section (onLeave: 'none').
+ * - Elements STAY VISIBLE when scrolling up through the section (onEnterBack: 'none').
+ * - Only when scrolled all the way back up ABOVE the section does it reset (onLeaveBack: 'reverse').
+ *   -> This allows re-triggering entrance animations on subsequent scroll-downs without vanishing mid-section!
  */
 export default function useScrollAnimations(reducedMotion: boolean) {
   useEffect(() => {
     if (reducedMotion) return;
+
+    // Small timeout to allow DOM layout / Next.js hydration to stabilize
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
 
     const ctx = gsap.context(() => {
       /* ─── 1. SECTION HEADERS & TITLES: Hero-style upward cascade ──────── */
@@ -33,21 +42,21 @@ export default function useScrollAnimations(reducedMotion: boolean) {
         gsap.fromTo(
           targets,
           {
-            y: (i) => (i === 1 ? 32 : 20),
+            y: (i) => (i === 1 ? 28 : 16),
             opacity: 0,
           },
           {
             y: 0,
             opacity: 1,
-            stagger: 0.1,
-            duration: 0.85,
+            stagger: 0.09,
+            duration: 0.8,
             ease: 'power3.out',
             force3D: true,
             scrollTrigger: {
               trigger: head,
-              start: 'top 90%',
-              end: 'bottom 5%',
-              toggleActions: 'play reverse play reverse',
+              start: 'top 82%',
+              // onEnter: play, onLeave: none (never disappear!), onEnterBack: none, onLeaveBack: reverse (reset when scrolled away above)
+              toggleActions: 'play none none reverse',
             },
           }
         );
@@ -62,19 +71,18 @@ export default function useScrollAnimations(reducedMotion: boolean) {
         if (items.length > 0) {
           gsap.fromTo(
             items,
-            { y: 24, opacity: 0 },
+            { y: 26, opacity: 0 },
             {
               y: 0,
               opacity: 1,
               stagger: 0.08,
-              duration: 0.75,
+              duration: 0.8,
               ease: 'power3.out',
               force3D: true,
               scrollTrigger: {
                 trigger: wrapper,
-                start: 'top 88%',
-                end: 'bottom 8%',
-                toggleActions: 'play reverse play reverse',
+                start: 'top 75%',
+                toggleActions: 'play none none reverse',
               },
             }
           );
@@ -86,20 +94,19 @@ export default function useScrollAnimations(reducedMotion: boolean) {
       if (catCards.length > 0) {
         gsap.fromTo(
           catCards,
-          { y: 36, opacity: 0, scale: 0.96 },
+          { y: 30, opacity: 0, scale: 0.97 },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            stagger: 0.06,
-            duration: 0.7,
+            stagger: 0.05,
+            duration: 0.65,
             ease: 'power3.out',
             force3D: true,
             scrollTrigger: {
               trigger: '.sf-cat-grid',
-              start: 'top 90%',
-              end: 'bottom 10%',
-              toggleActions: 'play reverse play reverse',
+              start: 'top 82%',
+              toggleActions: 'play none none reverse',
             },
           }
         );
@@ -112,23 +119,22 @@ export default function useScrollAnimations(reducedMotion: boolean) {
         if (cards.length > 0) {
           gsap.fromTo(
             cards,
-            { y: 32, opacity: 0 },
+            { y: 28, opacity: 0 },
             {
               y: 0,
               opacity: 1,
               stagger: {
-                amount: Math.min(0.35, cards.length * 0.04),
+                amount: Math.min(0.28, cards.length * 0.03),
                 grid: 'auto',
                 from: 'start',
               },
-              duration: 0.65,
+              duration: 0.6,
               ease: 'power3.out',
               force3D: true,
               scrollTrigger: {
                 trigger: grid,
-                start: 'top 92%',
-                end: 'bottom 8%',
-                toggleActions: 'play reverse play reverse',
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
               },
             }
           );
@@ -140,25 +146,27 @@ export default function useScrollAnimations(reducedMotion: boolean) {
       if (trustPillars.length > 0) {
         gsap.fromTo(
           trustPillars,
-          { y: 30, opacity: 0 },
+          { y: 26, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            stagger: 0.08,
-            duration: 0.7,
+            stagger: 0.07,
+            duration: 0.65,
             ease: 'power3.out',
             force3D: true,
             scrollTrigger: {
               trigger: trustPillars[0].parentElement ?? trustPillars[0],
-              start: 'top 90%',
-              end: 'bottom 8%',
-              toggleActions: 'play reverse play reverse',
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
             },
           }
         );
       }
     });
 
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+    };
   }, [reducedMotion]);
 }

@@ -9541,42 +9541,24 @@
 }
 .hbc-text {
   max-width: 520px;
+  animation: hbc-slide-fade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.hbc-text .hbc-label {
-  animation: hbc-hero-cascade 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.05s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-title {
-  animation: hbc-hero-cascade 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.12s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-subtitle {
-  animation: hbc-hero-cascade 0.70s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.20s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-desc {
-  animation: hbc-hero-cascade 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.28s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-actions {
-  animation: hbc-hero-cascade 0.80s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.36s;
-  will-change: transform, opacity;
-}
-
-@keyframes hbc-hero-cascade {
+@keyframes hbc-slide-fade {
   from {
     opacity: 0;
-    transform: translate3d(0, 24px, 0);
+    transform: translate3d(0, 10px, 0);
   }
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
+}
+.hbc-text .hbc-label,
+.hbc-text .hbc-title,
+.hbc-text .hbc-subtitle,
+.hbc-text .hbc-desc,
+.hbc-text .hbc-actions {
+  will-change: transform, opacity;
 }
 
 /* Label */
