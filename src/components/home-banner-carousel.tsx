@@ -36,8 +36,14 @@ export function HomeBannerCarousel({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // IntersectionObserver: accurately detect when banner enters & leaves viewport
+  // IntersectionObserver: accurately detect when banner enters & leaves viewport (desktop only)
   useEffect(() => {
+    // On phone devices, keep banner items immediately visible with zero delay
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      setInView(true);
+      return;
+    }
+
     const el = sectionRef.current;
     if (!el) return;
 

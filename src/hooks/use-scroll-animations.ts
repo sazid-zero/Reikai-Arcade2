@@ -12,6 +12,11 @@ export default function useScrollAnimations(reducedMotion: boolean) {
   useEffect(() => {
     if (reducedMotion) return;
 
+    // Disable scroll animations entirely on phone for pure 120Hz performance
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return;
+    }
+
     // Small delay to ensure client hydration and dynamic catalogs are in DOM
     const initTimer = setTimeout(() => {
       const targets = document.querySelectorAll<HTMLElement>(

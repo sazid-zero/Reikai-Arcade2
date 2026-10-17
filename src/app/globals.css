@@ -9087,44 +9087,46 @@
   .sf-section-head { margin-bottom: 32px; }
 }
 
-/* ── Cinematic Slow Scroll Reveal for Section Headers (Slow Luxury Entrance) ── */
-.sf-section-head .sf-label,
-.sf-browse-head .sf-label,
-.sf-signal-text .sf-label {
-  opacity: 0;
-  transform: translate3d(0, 22px, 0);
-  transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1), transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-}
+/* ── Cinematic Slow Scroll Reveal for Section Headers (Desktop Only) ── */
+@media (min-width: 769px) {
+  .sf-section-head .sf-label,
+  .sf-browse-head .sf-label,
+  .sf-signal-text .sf-label {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1), transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+  }
 
-.sf-section-head .sf-title,
-.sf-browse-head .sf-title,
-.sf-signal-text .sf-signal-title {
-  opacity: 0;
-  transform: translate3d(0, 42px, 0);
-  transition: opacity 1.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 1.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
-  will-change: transform, opacity;
-}
+  .sf-section-head .sf-title,
+  .sf-browse-head .sf-title,
+  .sf-signal-text .sf-signal-title {
+    opacity: 0;
+    transform: translate3d(0, 42px, 0);
+    transition: opacity 1.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 1.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+    will-change: transform, opacity;
+  }
 
-.sf-signal-text .sf-signal-desc,
-.sf-section-head p:not(.sf-label) {
-  opacity: 0;
-  transform: translate3d(0, 26px, 0);
-  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.24s, transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
-  will-change: transform, opacity;
-}
+  .sf-signal-text .sf-signal-desc,
+  .sf-section-head p:not(.sf-label) {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.24s, transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
+    will-change: transform, opacity;
+  }
 
-/* In-View: slowly and gracefully glide into position */
-.sf-section-head.is-revealed .sf-label,
-.sf-browse-head.is-revealed .sf-label,
-.sf-signal-text.is-revealed .sf-label,
-.sf-section-head.is-revealed .sf-title,
-.sf-browse-head.is-revealed .sf-title,
-.sf-signal-text.is-revealed .sf-signal-title,
-.sf-signal-text.is-revealed .sf-signal-desc,
-.sf-section-head.is-revealed p:not(.sf-label) {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+  /* In-View: slowly and gracefully glide into position */
+  .sf-section-head.is-revealed .sf-label,
+  .sf-browse-head.is-revealed .sf-label,
+  .sf-signal-text.is-revealed .sf-label,
+  .sf-section-head.is-revealed .sf-title,
+  .sf-browse-head.is-revealed .sf-title,
+  .sf-signal-text.is-revealed .sf-signal-title,
+  .sf-signal-text.is-revealed .sf-signal-desc,
+  .sf-section-head.is-revealed p:not(.sf-label) {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 /* ── Category Card Grid ── */
@@ -9579,49 +9581,77 @@
 @media (max-width: 480px) {
   .hbc-content { padding: 0 44px; }
 }
-/* ── Cinematic Slow Scroll Reveal for Banner Carousel Items ── */
-.hbc-text {
-  max-width: 520px;
-}
-.hbc-text .hbc-label {
-  opacity: 0;
-  transform: translate3d(0, 18px, 0);
-  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-title {
-  opacity: 0;
-  transform: translate3d(0, 36px, 0);
-  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-subtitle {
-  opacity: 0;
-  transform: translate3d(0, 22px, 0);
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.22s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.22s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-desc {
-  opacity: 0;
-  transform: translate3d(0, 22px, 0);
-  transition: opacity 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.30s, transform 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.30s;
-  will-change: transform, opacity;
-}
-.hbc-text .hbc-actions {
-  opacity: 0;
-  transform: translate3d(0, 24px, 0);
-  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.38s, transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.38s;
-  will-change: transform, opacity;
+/* ── Cinematic Slow Scroll Reveal for Banner Carousel Items (Desktop Only) ── */
+@media (min-width: 769px) {
+  .hbc-text {
+    max-width: 520px;
+  }
+  .hbc-text .hbc-label {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+  }
+  .hbc-text .hbc-title {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+    will-change: transform, opacity;
+  }
+  .hbc-text .hbc-subtitle {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.22s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.22s;
+    will-change: transform, opacity;
+  }
+  .hbc-text .hbc-desc {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition: opacity 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.30s, transform 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.30s;
+    will-change: transform, opacity;
+  }
+  .hbc-text .hbc-actions {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.38s, transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.38s;
+    will-change: transform, opacity;
+  }
+
+  /* When in view: slowly and gracefully glide into position */
+  .hbc-text.is-revealed .hbc-label,
+  .hbc-text.is-revealed .hbc-title,
+  .hbc-text.is-revealed .hbc-subtitle,
+  .hbc-text.is-revealed .hbc-desc,
+  .hbc-text.is-revealed .hbc-actions {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-/* When in view: slowly and gracefully glide into position */
-.hbc-text.is-revealed .hbc-label,
-.hbc-text.is-revealed .hbc-title,
-.hbc-text.is-revealed .hbc-subtitle,
-.hbc-text.is-revealed .hbc-desc,
-.hbc-text.is-revealed .hbc-actions {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+/* ── Mobile Performance Override: 100% static, instant rendering on phone ── */
+@media (max-width: 768px) {
+  .sf-section-head .sf-label,
+  .sf-browse-head .sf-label,
+  .sf-signal-text .sf-label,
+  .sf-section-head .sf-title,
+  .sf-browse-head .sf-title,
+  .sf-signal-text .sf-signal-title,
+  .sf-signal-text .sf-signal-desc,
+  .sf-section-head p:not(.sf-label),
+  .hbc-text,
+  .hbc-text .hbc-label,
+  .hbc-text .hbc-title,
+  .hbc-text .hbc-subtitle,
+  .hbc-text .hbc-desc,
+  .hbc-text .hbc-actions,
+  .sf-cat-card,
+  .sf-trust-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
 }
 
 /* Label */
