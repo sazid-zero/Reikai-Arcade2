@@ -37,6 +37,7 @@ import { useSearch } from '@/components/search-modal';
 import { normalizeProductImageUrl } from '@/lib/utils';
 import { TutorialVideoPlayer } from '@/components/tutorial-video-player';
 import { UserAuthButton } from '@/components/user-auth-button';
+import { CinematicHero } from '@/components/cinematic-hero';
 import { MobileBottomNav } from '@/components/mobile-bottom-nav';
 import { MobileRightSidebar } from '@/components/mobile-right-sidebar';
 import { useMobileMenu } from '@/components/mobile-menu-context';
@@ -668,184 +669,6 @@ function mapDbRowsToProducts(rows: any[]): Product[] {
   return Array.from(map.values());
 }
 
-type HeroStage = {
-  num: string;
-  tabLabel: string;
-  badge: string;
-  title: string;
-  p1: string;
-  p2: string;
-  ctaPrimary: string;
-  ctaPrimaryHref?: string;
-  ctaPrimaryTarget?: string;
-  ctaSecondary: string;
-  ctaSecondaryHref?: string;
-  ctaSecondaryTarget?: string;
-};
-
-const heroStages: HeroStage[] = [
-  {
-    num: '01',
-    tabLabel: 'GAMES',
-    badge: 'CORE GAMING CATALOG // PHYSICAL & DIGITAL',
-    title: 'Console & PC Games',
-    p1: 'Original PS5, PS4, Nintendo Switch and PC game discs and digital editions.',
-    p2: 'Grab the latest AAA releases, legendary RPGs, and indie blockbusters with instant dispatch and guaranteed authenticity.',
-    ctaPrimary: 'Shop Games',
-    ctaPrimaryHref: '/games',
-    ctaSecondary: 'Browse Drop',
-    ctaSecondaryTarget: 'browse',
-  },
-  {
-    num: '02',
-    tabLabel: 'ACCESSORIES',
-    badge: 'PRO HARDWARE // CONTROLLERS & GEAR',
-    title: 'Gaming Accessories',
-    p1: 'High-performance DualSense Wireless controllers, custom faceplates, pro headsets, and charging docks.',
-    p2: 'Equip tournament-grade precision, tactile haptic feedback, and celestial aesthetic mods for your setup.',
-    ctaPrimary: 'Shop Accessories',
-    ctaPrimaryHref: '/accessories',
-    ctaSecondary: 'Explore Categories',
-    ctaSecondaryTarget: 'categories',
-  },
-  {
-    num: '03',
-    tabLabel: 'TOP-UPS',
-    badge: 'INSTANT DIGITAL RELOAD // ZERO FRICTION',
-    title: 'Game Top-Ups',
-    p1: 'Instant in-game credits, wallet codes, and digital reloads for all major mobile, PC, and console games.',
-    p2: 'Instant code dispatch, 100% verified publisher vouchers, zero waiting time directly to your player account.',
-    ctaPrimary: 'Instant Top-Up',
-    ctaPrimaryHref: '/top-up',
-    ctaSecondary: 'View Rates',
-    ctaSecondaryTarget: 'categories',
-  },
-  {
-    num: '04',
-    tabLabel: 'SUBSCRIPTIONS',
-    badge: 'MEMBERSHIP VAULT // PASSES & CODES',
-    title: 'Subscriptions & Passes',
-    p1: 'PlayStation Plus, Xbox Game Pass, EA Play, and global gift cards with instant automated digital activation.',
-    p2: 'Unlock monthly games, online multiplayer access, exclusive cloud saves, and member perks with zero hassle.',
-    ctaPrimary: 'Get Subscriptions',
-    ctaPrimaryHref: '/subscriptions',
-    ctaSecondary: 'Gift Cards',
-    ctaSecondaryHref: '/gift-cards',
-  },
-];
-
-const categoryRail = [
-  {
-    title: 'Game Top-Up',
-    desc: 'Instant mobile & PC top-up',
-    icon: Zap,
-    href: '/top-up',
-  },
-  {
-    title: 'Subscriptions',
-    desc: 'Gaming & digital pass',
-    icon: Sparkles,
-    href: '/gift-cards',
-  },
-  {
-    title: 'Gift Cards',
-    desc: 'Global digital codes',
-    icon: Gem,
-    href: '/gift-cards',
-  },
-  {
-    title: 'Console Games',
-    desc: 'PlayStation, Xbox, PC',
-    icon: Gamepad2,
-    href: '/games',
-  },
-  {
-    title: 'Accessories',
-    desc: 'Gaming gear & perks',
-    icon: ShoppingBag,
-    href: '/accessories',
-  },
-];
-
-const STAGE_WINDOWS = [
-  // Stage 0: starts visible, then scrolls down & fades completely gone between 0.15 and 0.23
-  { enterStart: -0.05, enterEnd: 0.00, exitStart: 0.15, exitEnd: 0.23, center: 0.07 },
-  // Stage 1: scrolls UP (0.26..0.33), plateaus, then scrolls DOWN completely gone (0.43..0.50)
-  { enterStart: 0.26, enterEnd: 0.33, exitStart: 0.43, exitEnd: 0.50, center: 0.38 },
-  // Stage 2: scrolls UP (0.53..0.60), plateaus, then scrolls DOWN completely gone (0.70..0.77)
-  { enterStart: 0.53, enterEnd: 0.60, exitStart: 0.70, exitEnd: 0.77, center: 0.65 },
-  // Stage 3: scrolls UP (0.80..0.87), plateaus, exits towards categories (0.96..1.00)
-  { enterStart: 0.80, enterEnd: 0.87, exitStart: 0.96, exitEnd: 1.00, center: 0.91 },
-];
-
-const STAGE_CENTERS = STAGE_WINDOWS.map((w) => w.center);
-
-type StageMotion = {
-  opacity: number;
-  translateY: number;
-  blur: number;
-  active: boolean;
-};
-
-function getStageMotion(progress: number, stageIdx: number): StageMotion {
-  const win = STAGE_WINDOWS[stageIdx];
-  const { enterStart, enterEnd, exitStart, exitEnd } = win;
-
-  // 1. Before entering: waiting below
-  if (progress < enterStart) {
-    return {
-      opacity: 0,
-      translateY: 110,
-      blur: 8,
-      active: false,
-    };
-  }
-
-  // 2. Entering: scrolls UP slowly into place (+110px -> 0px)
-  if (progress >= enterStart && progress < enterEnd) {
-    const t = enterEnd > enterStart ? (progress - enterStart) / (enterEnd - enterStart) : 1;
-    const ease = t * t * (3 - 2 * t);
-    return {
-      opacity: ease,
-      translateY: (1 - ease) * 110,
-      blur: (1 - ease) * 8,
-      active: ease > 0.5,
-    };
-  }
-
-  // 3. Plateau: centered, slow subtle parallax breathing drift
-  if (progress >= enterEnd && progress < exitStart) {
-    const plateauProgress = (progress - enterEnd) / (exitStart - enterEnd);
-    const drift = (plateauProgress - 0.5) * 12;
-    return {
-      opacity: 1,
-      translateY: drift,
-      blur: 0,
-      active: true,
-    };
-  }
-
-  // 4. Exiting: scrolls UP and floats away into the void (0px -> -110px)
-  if (progress >= exitStart && progress < exitEnd) {
-    const t = (progress - exitStart) / (exitEnd - exitStart);
-    const ease = t * t * (3 - 2 * t);
-    return {
-      opacity: 1 - ease,
-      translateY: -ease * 110,
-      blur: ease * 8,
-      active: ease < 0.5,
-    };
-  }
-
-  // 5. Completely gone above
-  return {
-    opacity: 0,
-    translateY: -110,
-    blur: 8,
-    active: false,
-  };
-}
-
 export default function StorefrontPage() {
   const { addToCart, cartCount, setCartOpen } = useCart();
   const [liveProducts, setLiveProducts] = useState<Product[]>(products);
@@ -855,29 +678,9 @@ export default function StorefrontPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [signalEmail, setSignalEmail] = useState('');
   const [signalSubscribed, setSignalSubscribed] = useState(false);
-  const [heroScrollProgress, setHeroScrollProgress] = useState(0);
-  const [activeStage, setActiveStage] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const heroTrackRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   useScrollAnimations(reducedMotion);
-
-  const jumpToStage = (idx: number) => {
-    setActiveStage(idx);
-    const mobileNow = typeof window !== 'undefined' && window.innerWidth <= 768;
-    if (!mobileNow) {
-      const track = heroTrackRef.current;
-      if (!track) return;
-      const trackTop = window.scrollY + track.getBoundingClientRect().top;
-      const trackScrollable = track.offsetHeight - window.innerHeight;
-      const targetScroll = trackTop + (STAGE_CENTERS[idx] ?? 0) * trackScrollable;
-      if (lenis) {
-        lenis.scrollTo(targetScroll, { duration: 1.2 });
-      } else {
-        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-      }
-    }
-  };
 
   useEffect(() => {
     fetch('/api/catalog')
@@ -909,30 +712,6 @@ export default function StorefrontPage() {
       const scrollTop = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(max > 0 ? Math.min(1, scrollTop / max) : 0);
-
-      const track = heroTrackRef.current;
-      if (track) {
-        const rect = track.getBoundingClientRect();
-        const trackScrollable = track.offsetHeight - window.innerHeight;
-        const mobileNow = window.innerWidth <= 768;
-
-        if (!mobileNow && trackScrollable > 0) {
-          const rawProgress = -rect.top / trackScrollable;
-          const clamped = Math.max(0, Math.min(1, rawProgress));
-          setHeroScrollProgress(clamped);
-
-          let nearestStage = 0;
-          let minDiff = 999;
-          STAGE_CENTERS.forEach((c, i) => {
-            const d = Math.abs(clamped - c);
-            if (d < minDiff) {
-              minDiff = d;
-              nearestStage = i;
-            }
-          });
-          setActiveStage(nearestStage);
-        }
-      }
     };
 
     const onResize = () => {
@@ -957,7 +736,7 @@ export default function StorefrontPage() {
         lenis.off('scroll', onScroll);
       }
     };
-  }, [activeStage, lenis]);
+  }, [lenis]);
 
   const filteredProducts = useMemo(() => {
     const q = catalogSearch.trim().toLowerCase();
@@ -1031,248 +810,14 @@ export default function StorefrontPage() {
         aria-hidden="true"
       />
 
-      {/* ── REDESIGNED 3D MULTI-STAGE SCROLL TRACK (WITH CINEMATIC HERO VIDEO & INK OVERLAY) ── */}
-      <section className="hero-scroll-track" ref={heroTrackRef} id="discover">
-        <div className="hero-sticky-viewport">
-          {/* Cinematic Background Video Layer */}
-          <div className="hero-video-bg" aria-hidden="true">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              className="hero-bg-video"
-            >
-              <source src="/videos/hero.mp4" type="video/mp4" />
-            </video>
-            {/* Simple darkened overlay (black/20) - no colored overlay */}
-            <div className="hero-video-overlay" />
-          </div>
+      {/* Top Header */}
+      <Header
+        cartCount={cartCount}
+        onCart={() => setCartOpen(true)}
+      />
 
-          {/* Top Header */}
-          <Header
-            cartCount={cartCount}
-            onCart={() => setCartOpen(true)}
-            onStageJump={jumpToStage}
-          />
-
-          {/* Right Vertical Category Rail (matching sample video) */}
-          <aside className="hero-right-dock" aria-label="Quick Category Access">
-            {categoryRail.map((cat, i) => {
-              const Icon = cat.icon;
-              return (
-                <Link
-                  key={cat.title}
-                  href={cat.href}
-                  className="hero-dock-card"
-                  data-testid={`dock-category-${i}`}
-                >
-                  <div className="hero-dock-icon">
-                    <Icon size={19} />
-                  </div>
-                  <div className="hero-dock-content">
-                    <span className="hero-dock-title">{cat.title}</span>
-                    <span className="hero-dock-desc">{cat.desc}</span>
-                  </div>
-                  <ArrowRight size={14} className="hero-dock-arrow" />
-                </Link>
-              );
-            })}
-          </aside>
-
-          {/* Left/Center Multi-Phase Story Hero Content (Scroll parallax on PC, active tab on phone) */}
-          <div className="hero-story-container">
-            {heroStages.map((stage, idx) => {
-              if (isMobile) {
-                const isActive = activeStage === idx;
-                return (
-                  <div
-                    key={stage.num}
-                    className={`hero-stage-item hero-stage-mobile ${isActive ? 'hero-stage-active' : 'hero-stage-inactive'}`}
-                    aria-hidden={!isActive}
-                  >
-                    {/* Editorial Headline */}
-                    <h1 className="hero-editorial-headline hero-editorial-gradient">
-                      {stage.title}
-                    </h1>
-
-                    {/* Story Paragraph */}
-                    <div className="hero-two-col-grid">
-                      <p className="hero-story-para">{stage.p1}</p>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="hero-action-buttons">
-                      {stage.ctaPrimaryHref ? (
-                        <Link
-                          href={stage.ctaPrimaryHref}
-                          className="hero-primary-btn"
-                          data-testid={`button-hero-primary-${idx}`}
-                        >
-                          <ShoppingCart size={15} />
-                          <span>{stage.ctaPrimary}</span>
-                          <ArrowRight size={15} />
-                        </Link>
-                      ) : (
-                        <button
-                          type="button"
-                          className="hero-primary-btn"
-                          onClick={() => stage.ctaPrimaryTarget && scrollToId(stage.ctaPrimaryTarget, lenis)}
-                          data-testid={`button-hero-primary-${idx}`}
-                        >
-                          <ShoppingCart size={15} />
-                          <span>{stage.ctaPrimary}</span>
-                          <ArrowRight size={15} />
-                        </button>
-                      )}
-
-                      {stage.ctaSecondaryHref ? (
-                        <Link
-                          href={stage.ctaSecondaryHref}
-                          className="hero-secondary-btn"
-                          data-testid={`button-hero-secondary-${idx}`}
-                        >
-                          <Globe size={15} />
-                          <span>{stage.ctaSecondary}</span>
-                        </Link>
-                      ) : (
-                        <button
-                          type="button"
-                          className="hero-secondary-btn"
-                          onClick={() => stage.ctaSecondaryTarget && scrollToId(stage.ctaSecondaryTarget, lenis)}
-                          data-testid={`button-hero-secondary-${idx}`}
-                        >
-                          <Globe size={15} />
-                          <span>{stage.ctaSecondary}</span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              }
-
-              // PC / Big Screen version: continuous scroll-triggered tab switching with multi-depth parallax
-              const motion = getStageMotion(heroScrollProgress, idx);
-              const isVisible = motion.opacity > 0.005;
-              const y = motion.translateY;
-
-              return (
-                <div
-                  key={stage.num}
-                  className="hero-stage-item hero-stage-desktop"
-                  style={{
-                    opacity: motion.opacity,
-                    filter: motion.blur > 0.15 ? `blur(${motion.blur.toFixed(1)}px)` : 'none',
-                    pointerEvents: motion.active ? 'auto' : 'none',
-                    visibility: isVisible ? 'visible' : 'hidden',
-                  }}
-                  aria-hidden={!motion.active}
-                >
-                  {/* Editorial Headline (Parallax factor 1.0) */}
-                  <h1
-                    className="hero-editorial-headline hero-editorial-gradient"
-                    style={{
-                      transform: `translate3d(0, ${y.toFixed(1)}px, 0)`,
-                    }}
-                  >
-                    {stage.title}
-                  </h1>
-
-                  {/* Story Paragraph (Parallax factor 0.75 - subtle drag) */}
-                  <div
-                    className="hero-two-col-grid"
-                    style={{
-                      transform: `translate3d(0, ${(y * 0.75).toFixed(1)}px, 0)`,
-                    }}
-                  >
-                    <p className="hero-story-para">{stage.p1}</p>
-                  </div>
-
-                  {/* Action Buttons (Parallax factor 0.55 - anchors composition) */}
-                  <div
-                    className="hero-action-buttons"
-                    style={{
-                      transform: `translate3d(0, ${(y * 0.55).toFixed(1)}px, 0)`,
-                    }}
-                  >
-                    {stage.ctaPrimaryHref ? (
-                      <Link
-                        href={stage.ctaPrimaryHref}
-                        className="hero-primary-btn"
-                        data-testid={`button-hero-primary-${idx}`}
-                      >
-                        <ShoppingCart size={15} />
-                        <span>{stage.ctaPrimary}</span>
-                        <ArrowRight size={15} />
-                      </Link>
-                    ) : (
-                      <button
-                        type="button"
-                        className="hero-primary-btn"
-                        onClick={() => stage.ctaPrimaryTarget && scrollToId(stage.ctaPrimaryTarget, lenis)}
-                        data-testid={`button-hero-primary-${idx}`}
-                      >
-                        <ShoppingCart size={15} />
-                        <span>{stage.ctaPrimary}</span>
-                        <ArrowRight size={15} />
-                      </button>
-                    )}
-
-                    {stage.ctaSecondaryHref ? (
-                      <Link
-                        href={stage.ctaSecondaryHref}
-                        className="hero-secondary-btn"
-                        data-testid={`button-hero-secondary-${idx}`}
-                      >
-                        <Globe size={15} />
-                        <span>{stage.ctaSecondary}</span>
-                      </Link>
-                    ) : (
-                      <button
-                        type="button"
-                        className="hero-secondary-btn"
-                        onClick={() => stage.ctaSecondaryTarget && scrollToId(stage.ctaSecondaryTarget, lenis)}
-                        data-testid={`button-hero-secondary-${idx}`}
-                      >
-                        <Globe size={15} />
-                        <span>{stage.ctaSecondary}</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Bottom-Left Stage Navigator */}
-          <div className="hero-stage-nav" aria-label="Hero Stage Navigator">
-            <div className="hero-stage-pills">
-              {heroStages.map((s, idx) => (
-                <button
-                  key={s.tabLabel}
-                  type="button"
-                  className={`hero-stage-pill ${activeStage === idx ? 'active' : ''}`}
-                  onClick={() => jumpToStage(idx)}
-                  aria-label={`Jump to stage ${s.tabLabel}`}
-                >
-                  {s.tabLabel}
-                </button>
-              ))}
-            </div>
-            <div className="hero-stage-indicator-bar" aria-hidden="true">
-              <div
-                className="hero-stage-indicator-fill"
-                style={{
-                  width: isMobile
-                    ? `${((activeStage + 1) / heroStages.length) * 100}%`
-                    : `${Math.max(4, Math.min(100, Math.round(heroScrollProgress * 100)))}%`,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── CINEMATIC LUXURY HERO (Letter-by-Letter Reveal, Parallax & Responsive Video) ── */}
+      <CinematicHero onExplore={() => scrollToId('categories', lenis)} />
 
       <div className="marquee" aria-label="Store highlights">
         <div className="marquee-track">
