@@ -7,221 +7,156 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Runs once on mount. Wires up:
- *  - Staggered reveal-up animations for [data-reveal] elements
- *  - Parallax on [data-parallax] elements (depth controlled by data-speed)
- *  - Section background colour shifts
- *  - Horizontal marquee speed boost on scroll velocity
- *  - Counter number animations for .hero-stat strong elements
+ * High-performance, hardware-accelerated scroll entrance animations.
+ * - Always re-animates on scroll in both directions (toggleActions: 'play reverse play reverse')
+ * - Pure GPU transforms (translate3d, opacity) without expensive filter:blur re-rasterization
+ * - Targeted to current storefront sections, titles, and banner items
  */
 export default function useScrollAnimations(reducedMotion: boolean) {
   useEffect(() => {
     if (reducedMotion) return;
 
     const ctx = gsap.context(() => {
+      /* ─── 1. SECTION HEADERS & TITLES: Hero-style upward cascade ──────── */
+      const sectionHeads = gsap.utils.toArray<HTMLElement>(
+        '.sf-section-head, .sf-browse-head, .sf-signal-copy, .section-head'
+      );
 
-      /* ─── 1. REVEAL: every [data-reveal] staggered fade+slide ──────── */
-      const revealGroups = gsap.utils.toArray<HTMLElement>('[data-reveal-group]');
-      revealGroups.forEach((group) => {
-        const items = gsap.utils.toArray<HTMLElement>('[data-reveal]', group);
+      sectionHeads.forEach((head) => {
+        const label = head.querySelector('.sf-label');
+        const title = head.querySelector('.sf-title, .sf-signal-title, h2');
+        const desc = head.querySelector('.sf-signal-sub, p:not(.sf-label)');
+
+        const targets = [label, title, desc].filter(Boolean) as HTMLElement[];
+        if (targets.length === 0) return;
+
         gsap.fromTo(
-          items,
-          { y: 48, opacity: 0, filter: 'blur(4px)' },
+          targets,
+          {
+            y: (i) => (i === 1 ? 32 : 20),
+            opacity: 0,
+          },
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
-            stagger: 0.12,
-            duration: 0.9,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: group,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      });
-
-      /* ─── Standalone [data-reveal] (outside groups) ─────────────────── */
-      const soloReveals = gsap.utils.toArray<HTMLElement>('[data-reveal]:not([data-reveal-group] [data-reveal])');
-      soloReveals.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: 36, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
+            stagger: 0.1,
             duration: 0.85,
             ease: 'power3.out',
+            force3D: true,
             scrollTrigger: {
-              trigger: el,
-              start: 'top 88%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      });
-
-      /* ─── 2. PARALLAX: [data-parallax] layers ────────────────────────── */
-      const parallaxEls = gsap.utils.toArray<HTMLElement>('[data-parallax]');
-      parallaxEls.forEach((el) => {
-        const speed = parseFloat(el.dataset.parallax ?? '0.25');
-        const dir = el.dataset.parallaxDir === 'down' ? 1 : -1;
-        gsap.to(el, {
-          yPercent: dir * speed * 100,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el.closest('section') ?? el,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        });
-      });
-
-      /* ─── 3. HERO NUMBER COUNTERS ────────────────────────────────────── */
-      const stats = gsap.utils.toArray<HTMLElement>('.hero-stat strong');
-      stats.forEach((el) => {
-        const target = parseInt(el.textContent ?? '0', 10);
-        gsap.fromTo(
-          el,
-          { textContent: 0 },
-          {
-            textContent: target,
-            duration: 2,
-            ease: 'power2.out',
-            snap: { textContent: 1 },
-            scrollTrigger: { trigger: el, start: 'top 90%' },
-            onUpdate() {
-              const val = Math.round(parseFloat(el.textContent ?? '0'));
-              el.textContent = String(val).padStart(2, '0');
-            },
-          }
-        );
-      });
-
-      /* ─── 4. SECTION KICKERS: letter-by-letter reveal ───────────────── */
-      const kickers = gsap.utils.toArray<HTMLElement>('.section-kicker');
-      kickers.forEach((el) => {
-        const text = el.textContent ?? '';
-        el.innerHTML = text
-          .split('')
-          .map((ch) => `<span style="display:inline-block">${ch === ' ' ? '&nbsp;' : ch}</span>`)
-          .join('');
-        gsap.fromTo(
-          el.querySelectorAll('span'),
-          { y: 14, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.025,
-            duration: 0.45,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: el,
+              trigger: head,
               start: 'top 90%',
-              toggleActions: 'play none none none',
+              end: 'bottom 5%',
+              toggleActions: 'play reverse play reverse',
             },
           }
         );
       });
 
-      /* ─── 5. CATEGORY ROW hover-line stagger ────────────────────────── */
-      const categoryRows = gsap.utils.toArray<HTMLElement>('.category-row');
-      gsap.fromTo(
-        categoryRows,
-        { x: -40, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.7,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: '.category-list',
-            start: 'top 82%',
-            toggleActions: 'play none none none',
-          },
+      /* ─── 2. BANNER CAROUSEL ITEMS: Hero-like staggered entrance ──────── */
+      const bannerWrappers = gsap.utils.toArray<HTMLElement>('.hbc-wrapper, .hbc-section');
+      bannerWrappers.forEach((wrapper) => {
+        const items = wrapper.querySelectorAll<HTMLElement>(
+          '.hbc-label, .hbc-title, .hbc-subtitle, .hbc-desc, .hbc-actions'
+        );
+        if (items.length > 0) {
+          gsap.fromTo(
+            items,
+            { y: 24, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              stagger: 0.08,
+              duration: 0.75,
+              ease: 'power3.out',
+              force3D: true,
+              scrollTrigger: {
+                trigger: wrapper,
+                start: 'top 88%',
+                end: 'bottom 8%',
+                toggleActions: 'play reverse play reverse',
+              },
+            }
+          );
         }
-      );
+      });
 
-      /* ─── 6. FEATURE CARDS: stacked slide-in ────────────────────────── */
-      const featureCards = gsap.utils.toArray<HTMLElement>('.feature-card');
-      featureCards.forEach((card, i) => {
+      /* ─── 3. CATEGORY CARDS: Staggered entry from center ───────────────── */
+      const catCards = gsap.utils.toArray<HTMLElement>('.sf-cat-card');
+      if (catCards.length > 0) {
         gsap.fromTo(
-          card,
-          { y: 80, opacity: 0, rotate: i === 0 ? 14 : -12 },
+          catCards,
+          { y: 36, opacity: 0, scale: 0.96 },
           {
             y: 0,
             opacity: 1,
-            rotate: i === 0 ? 5 : -7,
-            duration: 1.1,
-            ease: 'expo.out',
-            delay: i * 0.15,
+            scale: 1,
+            stagger: 0.06,
+            duration: 0.7,
+            ease: 'power3.out',
+            force3D: true,
             scrollTrigger: {
-              trigger: '.feature-stack',
-              start: 'top 80%',
-              toggleActions: 'play none none none',
+              trigger: '.sf-cat-grid',
+              start: 'top 90%',
+              end: 'bottom 10%',
+              toggleActions: 'play reverse play reverse',
             },
           }
         );
+      }
+
+      /* ─── 4. SHELF & PRODUCT CARDS: Butter-smooth cascade ─────────────── */
+      const productGrids = gsap.utils.toArray<HTMLElement>('.product-grid, .product-shelf-track');
+      productGrids.forEach((grid) => {
+        const cards = grid.querySelectorAll<HTMLElement>('.standard-product-card, .product-shelf-card');
+        if (cards.length > 0) {
+          gsap.fromTo(
+            cards,
+            { y: 32, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              stagger: {
+                amount: Math.min(0.35, cards.length * 0.04),
+                grid: 'auto',
+                from: 'start',
+              },
+              duration: 0.65,
+              ease: 'power3.out',
+              force3D: true,
+              scrollTrigger: {
+                trigger: grid,
+                start: 'top 92%',
+                end: 'bottom 8%',
+                toggleActions: 'play reverse play reverse',
+              },
+            }
+          );
+        }
       });
 
-      /* ─── 7. PRODUCT CARDS: grid cascade ────────────────────────────── */
-      const productCards = gsap.utils.toArray<HTMLElement>('.product-card');
-      gsap.fromTo(
-        productCards,
-        { y: 60, opacity: 0, scale: 0.94 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          stagger: { amount: 0.5, grid: 'auto', from: 'start' },
-          duration: 0.75,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.product-grid',
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-
-      /* ─── 8. CATEGORY ART: parallax inner content ───────────────────── */
-      gsap.to('.category-art::before', {
-        yPercent: -30,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.category-art',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-
-      /* ─── 9. SIGNAL SECTION: horizontal slide ───────────────────────── */
-      gsap.fromTo(
-        '.signal-inner > *',
-        { x: (i) => (i % 2 === 0 ? -60 : 60), opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          stagger: 0.12,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.signal-section',
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-
-      /* ─── 10. MARQUEE: pure smooth CSS animation without scroll velocity interference ── */
-      // Scroll velocity boost removed per user request to prevent collision with continuous marquee flow
-
-
+      /* ─── 5. TRUST PILLARS & TUTORIAL CARDS: Staggered rise ───────────── */
+      const trustPillars = gsap.utils.toArray<HTMLElement>('.trust-pillar-card, .tutorial-card');
+      if (trustPillars.length > 0) {
+        gsap.fromTo(
+          trustPillars,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.08,
+            duration: 0.7,
+            ease: 'power3.out',
+            force3D: true,
+            scrollTrigger: {
+              trigger: trustPillars[0].parentElement ?? trustPillars[0],
+              start: 'top 90%',
+              end: 'bottom 8%',
+              toggleActions: 'play reverse play reverse',
+            },
+          }
+        );
+      }
     });
 
     return () => ctx.revert();

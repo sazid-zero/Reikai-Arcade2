@@ -11,31 +11,60 @@ interface CinematicHeroProps {
 
 export function CinematicHero({ onExplore }: CinematicHeroProps) {
   const [mounted, setMounted] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Trigger the slow cinematic reveal on mount
     const timer = setTimeout(() => setMounted(true), 100);
 
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
+    let rafId: number | null = null;
+    let isHeroInView = true;
+
+    // Pause scroll tracking completely when hero is scrolled past viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isHeroInView = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    const onScroll = () => {
+      if (!isHeroInView || !contentRef.current) return;
+      if (rafId !== null) return;
+
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        if (!contentRef.current) return;
+        const y = window.scrollY;
+        if (y > 750) {
+          contentRef.current.style.opacity = '0';
+          contentRef.current.style.pointerEvents = 'none';
+          return;
+        }
+        const opacity = Math.max(0, 1 - y / 550);
+        contentRef.current.style.opacity = String(opacity);
+        contentRef.current.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
+        contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
+      });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
   const word1 = 'REIKAI'.split('');
   const word2 = 'ARCADE'.split('');
-
-  // Subtle scroll fade only (no cursor/mouse movement)
-  const textOpacity = Math.max(0, 1 - scrollY / 550);
-  const textBlur = Math.min(8, scrollY * 0.02);
 
   const scrollToCatalog = () => {
     if (onExplore) {
@@ -86,11 +115,9 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
       {/* ── 2. CINEMATIC HERO CENTERPIECE (Perfect Vertical Centering Inside Viewport) ── */}
       <div
-        className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-10 flex-1 flex flex-col items-center justify-center text-center transition-all duration-300 py-4"
-        style={{
-          opacity: textOpacity,
-          filter: textBlur > 0.2 ? `blur(${textBlur}px)` : 'none',
-        }}
+        ref={contentRef}
+        className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-10 flex-1 flex flex-col items-center justify-center text-center py-4"
+        style={{ willChange: 'transform, opacity' }}
       >
         {/* Letter-by-Letter Cinematic Title: "REIKAI ARCADE" */}
         <h1

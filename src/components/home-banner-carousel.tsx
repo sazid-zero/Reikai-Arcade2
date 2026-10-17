@@ -105,6 +105,8 @@ export function HomeBannerCarousel({
                   alt=""
                   className="hbc-backdrop-img"
                   draggable={false}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
                 />
               )}
               <div

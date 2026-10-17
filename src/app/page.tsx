@@ -676,10 +676,10 @@ export default function StorefrontPage() {
   const [filter, setFilter] = useState<'all' | Product['type']>('all');
   const [catalogSearch, setCatalogSearch] = useState('');
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [signalEmail, setSignalEmail] = useState('');
   const [signalSubscribed, setSignalSubscribed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   useScrollAnimations(reducedMotion);
 
@@ -709,10 +709,17 @@ export default function StorefrontPage() {
       return mobileNow;
     };
 
+    let rafId: number | null = null;
     const onScroll = () => {
-      const scrollTop = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(max > 0 ? Math.min(1, scrollTop / max) : 0);
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        if (progressBarRef.current) {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+          progressBarRef.current.style.width = `${pct}%`;
+        }
+      });
     };
 
     const onResize = () => {
@@ -722,22 +729,17 @@ export default function StorefrontPage() {
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
-    if (lenis) {
-      lenis.on('scroll', onScroll);
-    }
 
     checkMobile();
     onScroll();
 
     return () => {
       media.removeEventListener('change', onPreference);
+      if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
-      if (lenis) {
-        lenis.off('scroll', onScroll);
-      }
     };
-  }, [lenis]);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     const q = catalogSearch.trim().toLowerCase();
@@ -804,10 +806,10 @@ export default function StorefrontPage() {
 
   return (
     <main className="site-shell noise" id="top">
-      {/* Scroll progress indicator */}
+      {/* Scroll progress indicator (hardware-accelerated, zero React re-renders) */}
       <div
+        ref={progressBarRef}
         className="scroll-progress-bar"
-        style={{ '--scroll-pct': `${scrollProgress * 100}%` } as CSSProperties}
         aria-hidden="true"
       />
 
@@ -842,7 +844,15 @@ export default function StorefrontPage() {
 
           <div className="sf-cat-grid" data-reveal-group>
             <button type="button" className="sf-cat-card" onClick={() => setCategory('consoles')} data-testid="button-category-consoles">
-              <div className="sf-cat-card-bg"><img src="https://images.unsplash.com/photo-1607016284318-d1384f8d6214?w=600&q=80&auto=format&fit=crop" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-bg">
+                <img
+                  src="https://images.unsplash.com/photo-1607016284318-d1384f8d6214?w=600&q=80&auto=format&fit=crop"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="sf-cat-card-body">
                 <span className="sf-cat-num">01</span>
                 <strong className="sf-cat-name">Consoles</strong>
@@ -852,7 +862,15 @@ export default function StorefrontPage() {
             </button>
 
             <button type="button" className="sf-cat-card" onClick={() => setCategory('games')} data-testid="button-category-games">
-              <div className="sf-cat-card-bg"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80&auto=format&fit=crop" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-bg">
+                <img
+                  src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80&auto=format&fit=crop"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="sf-cat-card-body">
                 <span className="sf-cat-num">02</span>
                 <strong className="sf-cat-name">Games</strong>
@@ -862,7 +880,15 @@ export default function StorefrontPage() {
             </button>
 
             <button type="button" className="sf-cat-card" onClick={() => setCategory('gear')} data-testid="button-category-gear">
-              <div className="sf-cat-card-bg"><img src="https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=600&q=80&auto=format&fit=crop" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-bg">
+                <img
+                  src="https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=600&q=80&auto=format&fit=crop"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="sf-cat-card-body">
                 <span className="sf-cat-num">03</span>
                 <strong className="sf-cat-name">Setup Gear</strong>
@@ -872,7 +898,15 @@ export default function StorefrontPage() {
             </button>
 
             <button type="button" className="sf-cat-card" onClick={() => setCategory('top-ups')} data-testid="button-category-topups">
-              <div className="sf-cat-card-bg"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80&auto=format&fit=crop" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-bg">
+                <img
+                  src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80&auto=format&fit=crop"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="sf-cat-card-body">
                 <span className="sf-cat-num">04</span>
                 <strong className="sf-cat-name">Top-Ups</strong>
@@ -882,7 +916,15 @@ export default function StorefrontPage() {
             </button>
 
             <button type="button" className="sf-cat-card" onClick={() => { window.location.href = '/gift-cards'; }} data-testid="button-category-giftcards">
-              <div className="sf-cat-card-bg"><img src="https://images.unsplash.com/photo-1556742393-d75f468bfcb0?w=600&q=80&auto=format&fit=crop" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-bg">
+                <img
+                  src="https://images.unsplash.com/photo-1556742393-d75f468bfcb0?w=600&q=80&auto=format&fit=crop"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="sf-cat-card-body">
                 <span className="sf-cat-num">05</span>
                 <strong className="sf-cat-name">Gift Cards</strong>
@@ -892,7 +934,15 @@ export default function StorefrontPage() {
             </button>
 
             <button type="button" className="sf-cat-card" onClick={() => { window.location.href = '/subscriptions'; }} data-testid="button-category-subscriptions">
-              <div className="sf-cat-card-bg"><img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=600&q=80&auto=format&fit=crop" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-bg">
+                <img
+                  src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=600&q=80&auto=format&fit=crop"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="sf-cat-card-body">
                 <span className="sf-cat-num">06</span>
                 <strong className="sf-cat-name">Subscriptions</strong>
