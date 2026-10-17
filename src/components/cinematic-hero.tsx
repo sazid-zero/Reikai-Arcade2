@@ -21,6 +21,8 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
     let rafId: number | null = null;
     let isHeroInView = true;
 
+    const isMobile = () => typeof window !== 'undefined' && window.innerWidth <= 768;
+
     // Pause scroll tracking completely when hero is scrolled past viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -33,7 +35,20 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       observer.observe(containerRef.current);
     }
 
+    const resetMobileStyles = () => {
+      if (contentRef.current) {
+        contentRef.current.style.opacity = '1';
+        contentRef.current.style.transform = 'none';
+        contentRef.current.style.pointerEvents = 'auto';
+      }
+    };
+
     const onScroll = () => {
+      // On phone, disable disappear/reappear on scroll for pure 120Hz performance & stability
+      if (isMobile()) {
+        resetMobileStyles();
+        return;
+      }
       if (!isHeroInView || !contentRef.current) return;
       if (rafId !== null) return;
 
@@ -53,13 +68,27 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       });
     };
 
+    const onResize = () => {
+      if (isMobile()) {
+        resetMobileStyles();
+      } else {
+        onScroll();
+      }
+    };
+
+    if (isMobile()) {
+      resetMobileStyles();
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
 
     return () => {
       clearTimeout(timer);
       observer.disconnect();
       if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 
