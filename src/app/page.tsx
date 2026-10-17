@@ -22,6 +22,7 @@ import {
   Lock,
   Menu,
   Minus,
+  Package,
   Plus,
   Search,
   ShieldCheck,
@@ -529,6 +530,26 @@ function Header({
               </div>
             )}
           </div>
+
+          {/* Offers Link */}
+          <Link
+            href="/#browse"
+            className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition"
+            data-testid="nav-link-offers"
+          >
+            <Gift size={13} className="text-[#a0e4f1]" />
+            <span>Offers</span>
+          </Link>
+
+          {/* Orders Link */}
+          <Link
+            href="/orders"
+            className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition"
+            data-testid="nav-link-orders"
+          >
+            <Package size={13} className="text-white/60" />
+            <span>Orders</span>
+          </Link>
         </nav>
 
         {/* Desktop actions */}
@@ -865,7 +886,7 @@ export default function StorefrontPage() {
             <button type="button" className="sf-cat-card" onClick={() => setCategory('games')} data-testid="button-category-games">
               <div className="sf-cat-card-bg">
                 <img
-                  src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1677722016462-c1c367f02a40?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
                   alt=""
                   aria-hidden="true"
                   loading="lazy"
@@ -919,7 +940,7 @@ export default function StorefrontPage() {
             <button type="button" className="sf-cat-card" onClick={() => { window.location.href = '/gift-cards'; }} data-testid="button-category-giftcards">
               <div className="sf-cat-card-bg">
                 <img
-                  src="https://images.unsplash.com/photo-1556742393-d75f468bfcb0?w=600&q=80&auto=format&fit=crop"
+                  src="https://blackhawknetwork.com/sites/default/files/2023-07/BHN-0623-digital-gifts_1200x560.jpg"
                   alt=""
                   aria-hidden="true"
                   loading="lazy"

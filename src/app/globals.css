@@ -367,7 +367,7 @@
 .header-nav {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 12px;
 }
 .header-nav a {
   color: #94a3b8;

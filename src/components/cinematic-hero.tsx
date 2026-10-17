@@ -251,15 +251,15 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       {/* ── 3. BOTTOM AMBIENT STATUS BAR & SCROLL PROMPT ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 pb-4 sm:pb-6 flex items-center justify-between text-[10px] font-['DM_Mono'] tracking-[0.25em] uppercase text-zinc-300/80 pointer-events-none">
         {/* Left Specification Index */}
-        <div className="hidden sm:block">
+        <div className="hidden sm:block flex-1 text-left">
           <span>01 // STOREFRONT INDEX</span>
         </div>
 
-        {/* Center Scroll Prompt */}
+        {/* Center Scroll Prompt — anchored at exact 50% dead horizontal center */}
         <button
           type="button"
           onClick={scrollToCatalog}
-          className="pointer-events-auto mx-auto sm:mx-0 flex flex-col items-center gap-1 text-zinc-300/80 hover:text-white transition-colors cursor-pointer group"
+          className="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-6 pointer-events-auto flex flex-col items-center gap-1 text-zinc-300/80 hover:text-white transition-colors cursor-pointer group"
           aria-label="Scroll to explore products"
         >
           <span className="tracking-[0.3em]">EXPLORE</span>
@@ -270,7 +270,7 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         </button>
 
         {/* Right Status Indicator */}
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="hidden sm:flex flex-1 justify-end items-center gap-2 text-right">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           <span>AUTHENTICATED // DIRECT DISPATCH</span>
         </div>

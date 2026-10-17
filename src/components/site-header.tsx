@@ -19,6 +19,8 @@ import {
   Gift,
   Crown,
   Headphones,
+
+  Package,
 } from 'lucide-react';
 import { UserAuthButton } from '@/components/user-auth-button';
 import { MobileBottomNav } from '@/components/mobile-bottom-nav';
@@ -235,6 +237,28 @@ export function SiteHeader({
                 </div>
               )}
             </div>
+
+            {/* Offers Link */}
+            <Link
+              href="/#browse"
+              className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition"
+              data-testid="nav-link-offers"
+            >
+              <Gift size={13} className="text-[#a0e4f1]" />
+              <span>Offers</span>
+            </Link>
+
+            {/* Orders Link */}
+            <Link
+              href="/orders"
+              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition ${
+                pathname.startsWith('/orders') ? 'text-white bg-white/8' : ''
+              }`}
+              data-testid="nav-link-orders"
+            >
+              <Package size={13} className="text-white/60" />
+              <span>Orders</span>
+            </Link>
           </nav>
 
           {/* Desktop Actions */}

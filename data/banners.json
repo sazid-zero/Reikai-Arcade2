@@ -1,0 +1,36 @@
+{
+  "autoPlayInterval": 6000,
+  "slides": [
+    {
+      "id": "banner-default-1",
+      "title": "PlayStation 5 Slim",
+      "subtitle": "Next-Gen Console",
+      "description": "The most powerful PlayStation yet — 1TB Ultra-Fast SSD, Ray Tracing, and 4K 120Hz. Now in a sleeker form factor.",
+      "label": "Available Now",
+      "ctaText": "View Console",
+      "ctaHref": "/games",
+      "secondaryCtaText": "",
+      "secondaryCtaHref": "",
+      "imageUrl": "/covers/ps5-slim.jpg",
+      "overlayColor": "",
+      "active": true,
+      "order": 0
+    },
+    {
+      "id": "banner-default-2",
+      "title": "DualSense Edge™",
+      "subtitle": "Pro Controller",
+      "description": "Swappable stick modules, remappable back buttons, adjustable trigger travel. Built for those who need the edge.",
+      "label": "Pro Hardware",
+      "ctaText": "Explore Controller",
+      "ctaHref": "/accessories",
+      "secondaryCtaText": "",
+      "secondaryCtaHref": "",
+      "imageUrl": "/uploads/dualsense_edge_in_cinematic_blue_light-11f2e2cd.png",
+      "overlayColor": "",
+      "active": true,
+      "order": 1
+    }
+  ],
+  "updatedAt": "2026-10-17T16:34:26.242Z"
+}
