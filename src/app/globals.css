@@ -9086,15 +9086,24 @@
 
 /* ── Category Card Grid ── */
 .sf-cat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
 }
-@media (max-width: 900px) {
-  .sf-cat-grid { grid-template-columns: repeat(2, 1fr); }
+.sf-cat-grid .sf-cat-card {
+  flex: 0 0 calc(25% - 9px);
+  min-width: 180px;
 }
-@media (max-width: 500px) {
-  .sf-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+@media (max-width: 1100px) {
+  .sf-cat-grid .sf-cat-card { flex: 0 0 calc(33.333% - 8px); min-width: 160px; }
+}
+@media (max-width: 900px) {
+  .sf-cat-grid .sf-cat-card { flex: 0 0 calc(33.333% - 8px); min-width: 140px; }
+}
+@media (max-width: 640px) {
+  .sf-cat-grid { gap: 8px; }
+  .sf-cat-grid .sf-cat-card { flex: 0 0 calc(50% - 4px); min-width: 0; }
 }
 .sf-cat-card {
   position: relative;
@@ -9127,11 +9136,11 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.35;
+  opacity: 0.55;
   transition: opacity 0.4s;
 }
 .sf-cat-card:hover .sf-cat-card-bg img {
-  opacity: 0.5;
+  opacity: 0.72;
 }
 .sf-cat-card::after {
   content: '';
@@ -9512,8 +9521,8 @@
 }
 @media (max-width: 768px) {
   .hbc-section {
-    height: auto;
-    min-height: 420px;
+    /* Keep wide cinematic banner proportions — roughly 16:7 */
+    height: clamp(200px, 56vw, 310px);
   }
 }
 .hbc-backdrop { position: absolute; inset: 0; z-index: 0; }
@@ -9524,7 +9533,7 @@
 .hbc-content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; padding: 0 72px; max-width: 1280px; margin: 0 auto; }
 @media (max-width: 768px) {
   .hbc-content {
-    padding: 48px 20px 56px;
+    padding: 20px 20px 44px;
     align-items: flex-end;
   }
 }
