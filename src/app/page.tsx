@@ -42,6 +42,7 @@ import { HomeBannerCarousel } from '@/components/home-banner-carousel';
 import { MobileBottomNav } from '@/components/mobile-bottom-nav';
 import { MobileRightSidebar } from '@/components/mobile-right-sidebar';
 import { useMobileMenu } from '@/components/mobile-menu-context';
+import { SiteFooter } from '@/components/site-footer';
 
 
 const products: Product[] = [
@@ -1131,62 +1132,8 @@ export default function StorefrontPage() {
         </div>
       </section>
 
-      <footer className="site-footer">
-        <div className="footer-inner">
-          <div className="footer-top">
-            <div className="footer-brand-col">
-              <button
-                type="button"
-                className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-3"
-                onClick={() => scrollToId('top')}
-                data-testid="button-footer-home"
-              >
-                <img
-                  src="/logo.jpeg"
-                  alt="Reikai Arcade"
-                  className="header-logo-img"
-                />
-                <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
-                  REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
-                </span>
-              </button>
-              <p className="footer-blurb">
-                A celestial storefront for consoles, cosmic artifacts, and curated gear engineered for those who play beyond.
-              </p>
-              <div className="footer-status-pill">
-                <span className="status-live-dot" />
-                <span>ORBITAL SERVERS: 100% OPERATIONAL</span>
-              </div>
-            </div>
-            <div className="footer-links">
-              <div>
-                <h3>Navigate</h3>
-                <a href="#browse" data-testid="link-footer-shop">Shop</a>
-                <a href="#categories" data-testid="link-footer-categories">Categories</a>
-                <a href="#signal" data-testid="link-footer-signal">Signal</a>
-              </div>
-              <div>
-                <h3>Hardware Vault</h3>
-                <button type="button" className="footer-quick-filter" onClick={() => { setCategory('consoles'); scrollToId('browse'); }}>Consoles</button>
-                <button type="button" className="footer-quick-filter" onClick={() => { setCategory('games'); scrollToId('browse'); }}>Games</button>
-                <button type="button" className="footer-quick-filter" onClick={() => { setCategory('gear'); scrollToId('browse'); }}>Setup Gear</button>
-              </div>
-              <div>
-                <h3>Protocol</h3>
-                <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer" data-testid="link-footer-license">
-                  Model license
-                </a>
-                <a href="#top" data-testid="link-footer-accessibility">Accessibility</a>
-                <a href="#top" data-testid="link-footer-status">Store status</a>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <span>© 2025 REIKAI ARCADE · VOID PROTOCOL · ALL RIGHTS RESERVED</span>
-            <span className="footer-disclaimer">GENUINE SONY PLAYSTATION HARDWARE · SECURE END-TO-END TRANSACTIONS</span>
-          </div>
-        </div>
-      </footer>
+      {/* ── FOOTER ── */}
+      <SiteFooter />
 
       {/* Mobile bottom nav – only renders at ≤768px via CSS */}
       <MobileBottomNav
