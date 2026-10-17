@@ -816,143 +816,85 @@ export default function StorefrontPage() {
         onCart={() => setCartOpen(true)}
       />
 
-      {/* ── CINEMATIC LUXURY HERO (Letter-by-Letter Reveal, Parallax & Responsive Video) ── */}
+      {/* ── CINEMATIC LUXURY HERO ── */}
       <CinematicHero onExplore={() => scrollToId('categories', lenis)} />
 
       <div className="marquee" aria-label="Store highlights">
         <div className="marquee-track">
           {[0, 1].map((copy) => (
             <span key={copy}>
-              REIKAI ARCADE / BEYOND THE VOID <i /> CELESTIAL DROPS / ZERO FRICTION <i /> PLAY BEYOND <i /> REIKAI ARCADE <i /> OBSIDIAN VAULT <i />
+              REIKAI ARCADE <i /> CURATED HARDWARE <i /> VERIFIED CODES <i /> INSTANT DELIVERY <i /> REIKAI ARCADE <i /> DIRECT DISPATCH <i />
             </span>
           ))}
         </div>
       </div>
 
-      <section className="section category-section" id="categories" aria-labelledby="categories-title">
-        <div className="cat-split">
-          {/* ── LEFT PANEL ── Interactive Tutorial Video Player (Admin Uploaded & Managed) */}
-          <div className="cat-panel-left" data-testid="tutorial-video-wrapper">
-            <TutorialVideoPlayer />
+      <section className="sf-section" id="categories" aria-labelledby="categories-title">
+        <div className="sf-section-inner">
+          <div className="sf-section-head" data-reveal>
+            <p className="sf-label">The Vault</p>
+            <h2 id="categories-title" className="sf-title">Browse by category.</h2>
           </div>
 
-          {/* ── RIGHT PANEL ── header + category rows */}
-          <div className="cat-panel-right" data-reveal-group>
-            <div className="cat-right-head" data-reveal>
-              <div className="section-kicker">01 // Pick your lane</div>
-              <h2 id="categories-title" className="cat-right-title">
-                Find your<br /><span>next level.</span>
-              </h2>
-              <p className="cat-right-lead">
-                The setup is personal. Start with the thing you cannot stop thinking about, then build out from there.
-              </p>
-            </div>
+          <div className="sf-cat-grid" data-reveal-group>
+            <button type="button" className="sf-cat-card" onClick={() => setCategory('consoles')} data-testid="button-category-consoles">
+              <div className="sf-cat-card-bg"><img src="/cat-panel-left.jpg" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-body">
+                <span className="sf-cat-num">01</span>
+                <strong className="sf-cat-name">Consoles</strong>
+                <span className="sf-cat-desc">Official. Genuine. Next-gen.</span>
+              </div>
+              <ArrowDownRight size={16} className="sf-cat-arrow" />
+            </button>
 
-            <div className="cat-menu-list" data-reveal>
-              {/* CONSOLES */}
-              <button
-                type="button"
-                className="cat-menu-row"
-                onClick={() => setCategory('consoles')}
-                data-testid="button-category-consoles"
-              >
-                <span className="cat-menu-num">01</span>
-                <div className="cat-menu-bar" />
-                <div className="cat-menu-copy">
-                  <strong>CONSOLES</strong>
-                  <span>Play the latest. Official and genuine.</span>
-                </div>
-                <div className="cat-menu-thumb">
-                  <img src="/cat-panel-left.jpg" alt="Consoles" />
-                </div>
-                <div className="cat-menu-arrow">
-                  <ArrowDownRight size={18} />
-                </div>
-              </button>
+            <button type="button" className="sf-cat-card" onClick={() => setCategory('games')} data-testid="button-category-games">
+              <div className="sf-cat-card-bg"><img src="/cat-thumb-games.jpg" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-body">
+                <span className="sf-cat-num">02</span>
+                <strong className="sf-cat-name">Games</strong>
+                <span className="sf-cat-desc">Digital, physical, exclusive.</span>
+              </div>
+              <ArrowDownRight size={16} className="sf-cat-arrow" />
+            </button>
 
-              {/* GAMES */}
-              <button
-                type="button"
-                className="cat-menu-row"
-                onClick={() => setCategory('games')}
-                data-testid="button-category-games"
-              >
-                <span className="cat-menu-num">02</span>
-                <div className="cat-menu-bar" />
-                <div className="cat-menu-copy">
-                  <strong>GAMES</strong>
-                  <span>Digital &amp; physical. New releases and classics.</span>
-                </div>
-                <div className="cat-menu-thumb">
-                  <img src="/cat-thumb-games.jpg" alt="Games" />
-                </div>
-                <div className="cat-menu-arrow">
-                  <ArrowDownRight size={18} />
-                </div>
-              </button>
+            <button type="button" className="sf-cat-card" onClick={() => setCategory('gear')} data-testid="button-category-gear">
+              <div className="sf-cat-card-bg"><img src="/cat-thumb-gear.jpg" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-body">
+                <span className="sf-cat-num">03</span>
+                <strong className="sf-cat-name">Setup Gear</strong>
+                <span className="sf-cat-desc">Controllers, headsets &amp; more.</span>
+              </div>
+              <ArrowDownRight size={16} className="sf-cat-arrow" />
+            </button>
 
-              {/* SETUP GEAR */}
-              <button
-                type="button"
-                className="cat-menu-row"
-                onClick={() => setCategory('gear')}
-                data-testid="button-category-gear"
-              >
-                <span className="cat-menu-num">03</span>
-                <div className="cat-menu-bar" />
-                <div className="cat-menu-copy">
-                  <strong>SETUP GEAR</strong>
-                  <span>Controllers, headsets, keyboards and more.</span>
-                </div>
-                <div className="cat-menu-thumb">
-                  <img src="/cat-thumb-gear.jpg" alt="Setup Gear" />
-                </div>
-                <div className="cat-menu-arrow">
-                  <ArrowDownRight size={18} />
-                </div>
-              </button>
-
-              {/* DIGITAL TOP-UPS */}
-              <button
-                type="button"
-                className="cat-menu-row"
-                onClick={() => setCategory('top-ups')}
-                data-testid="button-category-topups"
-              >
-                <span className="cat-menu-num">04</span>
-                <div className="cat-menu-bar" />
-                <div className="cat-menu-copy">
-                  <strong>DIGITAL TOP-UPS</strong>
-                  <span>Fast, secure, and reliable.</span>
-                </div>
-                <div className="cat-menu-thumb">
-                  <img src="/cat-thumb-topups.jpg" alt="Digital Top-Ups" />
-                </div>
-                <div className="cat-menu-arrow">
-                  <ArrowDownRight size={18} />
-                </div>
-              </button>
-            </div>
+            <button type="button" className="sf-cat-card" onClick={() => setCategory('top-ups')} data-testid="button-category-topups">
+              <div className="sf-cat-card-bg"><img src="/cat-thumb-topups.jpg" alt="" aria-hidden="true" /></div>
+              <div className="sf-cat-card-body">
+                <span className="sf-cat-num">04</span>
+                <strong className="sf-cat-name">Top-Ups</strong>
+                <span className="sf-cat-desc">Fast, secure, instant.</span>
+              </div>
+              <ArrowDownRight size={16} className="sf-cat-arrow" />
+            </button>
           </div>
         </div>
       </section>
 
 
-      <section className="section browse-section" id="browse" aria-labelledby="browse-title">
-        <div className="browse-bg-layer" aria-hidden="true" />
-        <div className="section-inner browse-section-inner">
-          <div className="browse-head" data-reveal-group>
-            <div>
-              <div className="section-kicker">02 / The current drop</div>
-              <h2 className="section-title" id="browse-title" data-reveal>Good stuff. <span>Right now.</span></h2>
+      <section className="sf-section sf-section--alt" id="browse" aria-labelledby="browse-title">
+        <div className="sf-section-inner">
+          <div className="sf-browse-head" data-reveal-group>
+            <div data-reveal>
+              <p className="sf-label">Current Drop</p>
+              <h2 className="sf-title" id="browse-title">The vault, right now.</h2>
             </div>
-            <div className="browse-controls-row" data-reveal>
-              <div className="filter-bar" role="group" aria-label="Filter products">
+            <div className="sf-browse-controls" data-reveal>
+              <div className="sf-filter-bar" role="group" aria-label="Filter products">
                 {filterLabels.map((item) => (
                   <button
                     type="button"
                     key={item.id}
-                    className={`filter-button ${filter === item.id ? 'active' : ''}`}
+                    className={`sf-filter-btn ${filter === item.id ? 'active' : ''}`}
                     onClick={() => setFilter(item.id)}
                     data-testid={`button-filter-${item.id}`}
                   >
@@ -960,46 +902,43 @@ export default function StorefrontPage() {
                   </button>
                 ))}
               </div>
-              <div className="catalog-search-sort">
-                <div className="catalog-search-wrap">
-                  <Search size={14} className="catalog-search-icon" />
-                  <input
-                    type="text"
-                    placeholder="Search current drop..."
-                    value={catalogSearch}
-                    onChange={(e) => setCatalogSearch(e.target.value)}
-                    className="catalog-search-input"
-                    aria-label="Filter products in current drop"
-                    data-testid="input-catalog-search"
-                  />
-                  {catalogSearch && (
-                    <button
-                      type="button"
-                      onClick={() => setCatalogSearch('')}
-                      className="catalog-search-clear-btn"
-                      aria-label="Clear filter search"
-                    >
-                      <X size={13} />
-                    </button>
-                  )}
-                </div>
+              <div className="sf-search-wrap">
+                <Search size={14} className="sf-search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search catalog..."
+                  value={catalogSearch}
+                  onChange={(e) => setCatalogSearch(e.target.value)}
+                  className="sf-search-input"
+                  aria-label="Filter products in current drop"
+                  data-testid="input-catalog-search"
+                />
+                {catalogSearch && (
+                  <button
+                    type="button"
+                    onClick={() => setCatalogSearch('')}
+                    className="sf-search-clear"
+                    aria-label="Clear search"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
               </div>
             </div>
           </div>
-          {/* View More CTA row — shown when a specific category tab is active */}
           {filter !== 'all' && (() => {
             const viewMoreMap: Record<string, { href: string; label: string }> = {
-              games: { href: '/games', label: 'View All Games' },
-              gear: { href: '/accessories', label: 'View All Accessories' },
-              'top-ups': { href: '/top-up', label: 'View All Top-Ups' },
-              consoles: { href: '/games', label: 'View All Consoles' },
+              games: { href: '/games', label: 'View all games' },
+              gear: { href: '/accessories', label: 'View all accessories' },
+              'top-ups': { href: '/top-up', label: 'View all top-ups' },
+              consoles: { href: '/games', label: 'View all consoles' },
             };
             const vm = viewMoreMap[filter];
             return vm ? (
-              <div className="browse-view-more-row">
-                <Link href={vm.href} className="store-shelf-view-more" data-testid={`link-view-more-${filter}`}>
+              <div className="sf-view-more-row">
+                <Link href={vm.href} className="sf-view-more-link" data-testid={`link-view-more-${filter}`}>
                   <span>{vm.label}</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={13} />
                 </Link>
               </div>
             ) : null;
@@ -1012,27 +951,22 @@ export default function StorefrontPage() {
                 <ProductCard key={product.id} product={product} onAdd={addToCart} />
               ))
             ) : (
-              <div className="catalog-empty-wrap">
-                <Search size={32} className="text-[#c673e2] opacity-60 mb-2" />
-                <h3 className="text-lg font-bold">
-                  {catalogSearch
-                    ? `No products match "${catalogSearch}"`
-                    : 'No products in this category yet.'}
+              <div className="sf-empty-state">
+                <Search size={26} className="sf-empty-icon" />
+                <h3 className="sf-empty-title">
+                  {catalogSearch ? `No results for "${catalogSearch}"` : 'Nothing here yet.'}
                 </h3>
-                <p className="text-sm text-white/50 mt-1 max-w-sm">
+                <p className="sf-empty-desc">
                   {catalogSearch
-                    ? 'Try searching another keyword or reset the filter to view all available drops.'
-                    : 'Check back soon — new drops land regularly.'}
+                    ? 'Try another keyword or reset the filter.'
+                    : 'New drops land regularly — check back soon.'}
                 </p>
                 <button
                   type="button"
-                  className="button-primary mt-4 text-xs py-2 px-5 inline-flex items-center gap-2"
-                  onClick={() => {
-                    setCatalogSearch('');
-                    setFilter('all');
-                  }}
+                  className="sf-empty-reset"
+                  onClick={() => { setCatalogSearch(''); setFilter('all'); }}
                 >
-                  Reset Search &amp; Filters
+                  Reset filters
                 </button>
               </div>
             )}
@@ -1040,106 +974,82 @@ export default function StorefrontPage() {
         </div>
       </section>
 
-      <section className="section trust-section" aria-labelledby="trust-title">
-        <div className="trust-section-inner">
-          <div className="trust-head" data-reveal>
-            <div className="section-kicker">03 // Why ReiKai</div>
-            <h2 id="trust-title" className="trust-title">Built different. <span>Backed by trust.</span></h2>
+      <section className="sf-section" aria-labelledby="trust-title">
+        <div className="sf-section-inner">
+          <div className="sf-section-head" data-reveal>
+            <p className="sf-label">Why ReiKai</p>
+            <h2 id="trust-title" className="sf-title">Built different. Backed by trust.</h2>
           </div>
-          <div className="trust-grid" data-reveal>
-            <div className="trust-card">
-              <div className="trust-card-icon"><ShieldCheck size={22} /></div>
-              <strong>100% Genuine</strong>
-              <span>All products are sourced from official publishers and authorized distributors. No fakes, no grey market.</span>
-            </div>
-            <div className="trust-card">
-              <div className="trust-card-icon"><Zap size={22} /></div>
-              <strong>Instant Delivery</strong>
-              <span>Digital codes and top-ups delivered to your screen and SMS within seconds of payment confirmation.</span>
-            </div>
-            <div className="trust-card">
-              <div className="trust-card-icon"><Lock size={22} /></div>
-              <strong>Secure Checkout</strong>
-              <span>bKash, Nagad, Visa, Mastercard & encrypted ReiKai escrow wallet — your payment is always protected.</span>
-            </div>
-            <div className="trust-card">
-              <div className="trust-card-icon"><Headphones size={22} /></div>
-              <strong>24/7 Support</strong>
-              <span>Live chat and Discord support around the clock. Any issue resolved within 2 hours, guaranteed.</span>
-            </div>
-            <div className="trust-card">
-              <div className="trust-card-icon"><Globe size={22} /></div>
-              <strong>Nationwide Shipping</strong>
-              <span>Same-day dispatch for physical gear across Bangladesh. Real-time tracking from warehouse to door.</span>
-            </div>
-            <div className="trust-card">
-              <div className="trust-card-icon"><Sparkles size={22} /></div>
-              <strong>Exclusive Drops</strong>
-              <span>First access to limited editions, bundles, and restocks before they go public — subscribe to the vault.</span>
-            </div>
+          <div className="sf-trust-grid" data-reveal-group>
+            {[
+              { icon: <ShieldCheck size={20} />, title: '100% Genuine', desc: 'All products sourced from official publishers and authorized distributors. No fakes, no grey market.' },
+              { icon: <Zap size={20} />, title: 'Instant Delivery', desc: 'Digital codes and top-ups delivered within seconds of payment confirmation.' },
+              { icon: <Lock size={20} />, title: 'Secure Checkout', desc: 'bKash, Nagad, Visa, Mastercard and encrypted ReiKai escrow — your payment is always protected.' },
+              { icon: <Headphones size={20} />, title: '24/7 Support', desc: 'Live chat and Discord support around the clock. Any issue resolved within 2 hours, guaranteed.' },
+              { icon: <Globe size={20} />, title: 'Nationwide Shipping', desc: 'Same-day dispatch for physical gear across Bangladesh with real-time tracking.' },
+              { icon: <Sparkles size={20} />, title: 'Exclusive Drops', desc: 'First access to limited editions, bundles, and restocks before they go public.' },
+            ].map(({ icon, title, desc }) => (
+              <div className="sf-trust-card" key={title} data-reveal>
+                <div className="sf-trust-icon">{icon}</div>
+                <strong className="sf-trust-title">{title}</strong>
+                <span className="sf-trust-desc">{desc}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="signal-section" id="signal" aria-labelledby="signal-title">
-        <div className="signal-inner">
-          {/* Left: headline + telemetry */}
-          <div className="signal-left">
-            <div className="section-kicker" style={{ color: 'rgba(192,132,252,0.85)', marginBottom: '16px' }}>
-              04 // ReiKai Frequency
-            </div>
-<h2 className="signal-title" id="signal-title">
-  Get drop alerts<br /><span>first.</span>
-  </h2>
-            <div className="signal-telemetry">
-              <div className="telemetry-pill">
-                <span className="telemetry-dot" />
-                <span>FREQ 142.85 MHz</span>
-              </div>
-              <div className="telemetry-pill">
-                <span>ENCRYPT: QUANTUM 256</span>
-              </div>
-              <div className="telemetry-pill">
-                <span>2,490 OPERATORS ONLINE</span>
-              </div>
-            </div>
+      {/* ── TUTORIAL VIDEOS ── */}
+      <section className="sf-section sf-section--alt" aria-labelledby="tutorial-title">
+        <div className="sf-section-inner">
+          <div className="sf-section-head" data-reveal>
+            <p className="sf-label">How It Works</p>
+            <h2 id="tutorial-title" className="sf-title">Everything you need to know.</h2>
           </div>
+          <div className="sf-tutorial-wrap" data-reveal>
+            <TutorialVideoPlayer />
+          </div>
+        </div>
+      </section>
 
-          {/* Center: divider */}
-          <div className="signal-divider" aria-hidden="true" />
-
-          {/* Right: copy + transmitter form */}
-          <div className="signal-cta-block">
-            <p className="signal-copy">
-              Join our mailing list for new product launches, restocks, deals, and gaming updates.
+      {/* ── NEWSLETTER ── */}
+      <section className="sf-signal-section" id="signal" aria-labelledby="signal-title">
+        <div className="sf-signal-inner">
+          <div className="sf-signal-text" data-reveal>
+            <p className="sf-label">Stay Connected</p>
+            <h2 id="signal-title" className="sf-signal-title">Get drop alerts first.</h2>
+            <p className="sf-signal-desc">
+              New launches, restocks, deals, and gaming updates — delivered directly to your inbox.
             </p>
+          </div>
+          <div className="sf-signal-form-wrap" data-reveal>
             <form
-              className="signal-form"
+              className="sf-signal-form"
               onSubmit={(e) => {
                 e.preventDefault();
                 setSignalSubscribed(true);
               }}
             >
               {!signalSubscribed ? (
-                <div className="signal-input-wrap">
+                <div className="sf-signal-input-row">
                   <input
                     type="email"
                     required
-                    placeholder="ENTER PILOT COMMS ID // EMAIL"
+                    placeholder="Your email address"
                     value={signalEmail}
                     onChange={(e) => setSignalEmail(e.target.value)}
-                    className="signal-field"
-                    aria-label="Email address for ReiKai Frequency"
+                    className="sf-signal-input"
+                    aria-label="Email address for ReiKai updates"
                   />
-                  <button type="submit" className="signal-submit-btn" data-testid="button-signal-submit">
-                    <span>JOIN LIST</span>
+                  <button type="submit" className="sf-signal-submit" data-testid="button-signal-submit">
+                    <span>Subscribe</span>
                     <ArrowRight size={14} />
                   </button>
                 </div>
               ) : (
-                <div className="signal-success-msg">
-                  <span className="signal-success-icon">✓</span>
-                  <span>FREQUENCY LOCKED // ACCESS GRANTED TO VAULT DROPS</span>
+                <div className="sf-signal-success">
+                  <span className="sf-signal-check">✓</span>
+                  <span>You're on the list. Drop alerts incoming.</span>
                 </div>
               )}
             </form>
