@@ -38,6 +38,7 @@ import { normalizeProductImageUrl } from '@/lib/utils';
 import { TutorialVideoPlayer } from '@/components/tutorial-video-player';
 import { UserAuthButton } from '@/components/user-auth-button';
 import { CinematicHero } from '@/components/cinematic-hero';
+import { HomeBannerCarousel } from '@/components/home-banner-carousel';
 import { MobileBottomNav } from '@/components/mobile-bottom-nav';
 import { MobileRightSidebar } from '@/components/mobile-right-sidebar';
 import { useMobileMenu } from '@/components/mobile-menu-context';
@@ -492,9 +493,9 @@ function Header({
               }`}
               data-testid="button-categories-dropdown"
             >
-              <Layers size={13} className="text-[#a0e4f1]" />
+              <Layers size={13} className="text-white/60" />
               <span>Categories</span>
-              <ChevronDown size={12} className={`nav-chevron text-zinc-400 transition-transform duration-200 ${categoriesDropdown ? 'rotate-180 text-[#a0e4f1]' : ''}`} />
+              <ChevronDown size={12} className={`nav-chevron text-zinc-400 transition-transform duration-200 ${categoriesDropdown ? 'rotate-180 text-white' : ''}`} />
             </button>
             {categoriesDropdown && (
               <div
@@ -502,25 +503,25 @@ function Header({
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="rounded-2xl border border-[#c673e2]/30 bg-[#080315]/95 p-2 shadow-2xl backdrop-blur-2xl">
+                <div className="rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-xl">
                   <Link href="/games" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 group-hover:text-white"><Gamepad2 size={16} /></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition"><Gamepad2 size={16} /></div>
                     <div><strong className="block text-xs font-bold text-white group-hover:text-white">PS5 Games</strong><span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span></div>
                   </Link>
                   <Link href="/top-up" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-[#a0e4f1]"><Zap size={16} /></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition"><Zap size={16} /></div>
                     <div><strong className="block text-xs font-bold text-white group-hover:text-white">Game Top-Up</strong><span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span></div>
                   </Link>
                   <Link href="/accessories" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-400 group-hover:text-white"><Headphones size={16} /></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition"><Headphones size={16} /></div>
                     <div><strong className="block text-xs font-bold text-white group-hover:text-white">Accessories</strong><span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span></div>
                   </Link>
                   <Link href="/subscriptions" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 group-hover:text-white"><Crown size={16} /></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition"><Crown size={16} /></div>
                     <div><strong className="block text-xs font-bold text-white group-hover:text-white">Subscriptions</strong><span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span></div>
                   </Link>
                   <Link href="/gift-cards" className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 group-hover:text-white"><Gift size={16} /></div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition"><Gift size={16} /></div>
                     <div><strong className="block text-xs font-bold text-white group-hover:text-white">Gift Cards</strong><span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span></div>
                   </Link>
                 </div>
@@ -828,6 +829,9 @@ export default function StorefrontPage() {
           ))}
         </div>
       </div>
+
+      {/* ── ADMIN-CONTROLLED BANNER CAROUSEL ── */}
+      <HomeBannerCarousel />
 
       <section className="sf-section" id="categories" aria-labelledby="categories-title">
         <div className="sf-section-inner">

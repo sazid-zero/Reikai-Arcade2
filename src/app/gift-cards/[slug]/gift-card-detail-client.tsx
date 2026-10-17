@@ -89,7 +89,7 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
         <div className="grid gap-10 lg:grid-cols-[380px_1fr]">
           {/* ── Left: Card Image ── */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#4b22d2]/20 to-black shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-2xl">
               {product.imageUrl ? (
                 <Image
                   src={product.imageUrl}
@@ -101,7 +101,7 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
                 />
               ) : (
                 <div className="flex h-full flex-col items-center justify-center gap-4">
-                  <Gift className="h-20 w-20 text-[#c673e2]/50" />
+                  <Gift className="h-20 w-20 text-white/20" />
                   <p className="text-sm text-white/30">{product.name}</p>
                 </div>
               )}
@@ -144,7 +144,7 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
                       onClick={() => setSelectedVariantIdx(idx)}
                       className={`rounded-xl border px-4 py-2.5 font-mono text-sm font-bold transition-all ${
                         selectedVariantIdx === idx
-                          ? 'border-[#a0e4f1] bg-gradient-to-r from-[#4b22d2]/30 to-[#c673e2]/20 text-[#a0e4f1] shadow-[0_0_20px_rgba(160,228,241,0.25)]'
+                          ? 'border-white bg-white text-black shadow-lg'
                           : 'border-white/10 bg-white/[0.04] text-white/70 hover:border-white/25 hover:text-white'
                       }`}
                     >
@@ -163,7 +163,7 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
             {selectedVariant && (
               <div className="flex flex-wrap items-center gap-6">
                 <div>
-                  <span className="font-mono text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#a0e4f1]">
+                  <span className="font-mono text-4xl font-black text-white">
                     {formatBDT(selectedVariant.price)}
                   </span>
                   {selectedVariant.compareAtPrice && (
@@ -190,16 +190,16 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] py-4 text-sm font-black text-white shadow-[0_0_30px_rgba(75,34,210,0.4)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(160,228,241,0.5)] active:scale-[0.98]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-white py-4 text-sm font-bold text-black shadow-lg transition-all duration-300 hover:bg-zinc-200 active:scale-[0.98]"
                 >
-                  <Zap className="h-4 w-4" /> Place Order Now
+                  <Zap className="h-4 w-4 fill-black" /> Place Order Now
                 </button>
                 <button
                   type="button"
                   onClick={handleAddToCart}
                   className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/15 active:scale-[0.98]"
                 >
-                  {added ? <><Check className="h-4 w-4 text-[#a0e4f1]" /> Added!</> : 'Add to Bag'}
+                  {added ? <><Check className="h-4 w-4 text-emerald-400" /> Added!</> : 'Add to Bag'}
                 </button>
               </div>
             )}
@@ -212,7 +212,7 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
                 { icon: Zap, text: 'Instant delivery' },
               ].map(({ icon: Icon, text }) => (
                 <span key={text} className="flex items-center gap-1.5 text-xs text-white/40">
-                  <Icon className="h-3.5 w-3.5 text-[#a0e4f1]" /> {text}
+                  <Icon className="h-3.5 w-3.5 text-white/60" /> {text}
                 </span>
               ))}
             </div>
@@ -238,7 +238,7 @@ export function GiftCardDetailClient({ product }: { product: Product }) {
                   <ul className="space-y-2.5">
                     {product.features.map((f, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-white/70">
-                        <span className="mt-0.5 text-[#c673e2]">👉</span> {f}
+                        <span className="mt-0.5 text-white/50">👉</span> {f}
                       </li>
                     ))}
                   </ul>

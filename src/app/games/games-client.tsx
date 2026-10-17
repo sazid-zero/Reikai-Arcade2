@@ -75,7 +75,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
     return (
       <Link
         href={`/games/${game.slug}`}
-        className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] group"
+        className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-2xl group"
       >
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-white/15 transition">
           {game.imageUrl ? (
@@ -98,7 +98,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
           </div>
           <div className="flex items-center gap-3 mt-2">
             {lowestVariant ? (
-              <span className="font-mono font-black text-sm text-[#a0e4f1] drop-shadow-lg">
+              <span className="font-mono font-bold text-sm text-white">
                 {formatTaka(lowestVariant.price)}
               </span>
             ) : (
@@ -107,7 +107,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
             {inStock ? (
               <button
                 onClick={handleAdd}
-                className="rounded-lg bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-3.5 py-1.5 text-xs font-bold text-white shadow-lg hover:shadow-lg transition"
+                className="rounded-lg bg-white px-3.5 py-1.5 text-xs font-bold text-black hover:bg-zinc-200 transition shadow-md"
               >
                 Add to Cart
               </button>
@@ -123,7 +123,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
   return (
     <Link
       href={`/games/${game.slug}`}
-      className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)]"
+      className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-2xl"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
         {game.imageUrl ? (
@@ -145,7 +145,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
           </div>
         )}
         {game.featured && (
-          <div className="absolute top-2 left-2 rounded-full bg-[#a0e4f1]/20 border border-[#a0e4f1]/40 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-[#a0e4f1] backdrop-blur-md shadow-lg">
+          <div className="absolute top-2 left-2 rounded-full bg-white/10 border border-white/20 px-2 py-0.5 text-[9px] sm:text-[11px] font-bold text-white backdrop-blur-md shadow-md">
             FEATURED
           </div>
         )}
@@ -165,7 +165,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
         <div className="mt-2 flex items-center justify-between pt-1.5 border-t border-white/5">
           {lowestVariant ? (
             <div className="min-w-0">
-              <span className="font-mono font-black text-xs sm:text-sm text-[#a0e4f1] drop-shadow-lg">
+              <span className="font-mono font-bold text-xs sm:text-sm text-white">
                 {formatTaka(lowestVariant.price)}
               </span>
               {lowestVariant.compareAtPrice && (
@@ -180,7 +180,7 @@ function GameCard({ game, viewMode }: { game: Game; viewMode: 'grid' | 'list' })
           {inStock && (
             <button
               onClick={handleAdd}
-              className="rounded-xl border border-[#a0e4f1]/40 bg-[#a0e4f1]/10 p-1.5 sm:p-2 text-[#a0e4f1] hover:bg-gradient-to-r hover:from-[#4b22d2] hover:to-[#a0e4f1] hover:text-white hover:border-transparent transition shadow-lg shrink-0 ml-1 cursor-pointer"
+              className="rounded-xl border border-white/20 bg-white/10 p-1.5 sm:p-2 text-white hover:bg-white hover:text-black transition shadow-md shrink-0 ml-1 cursor-pointer"
               aria-label="Add game to bag"
             >
               <ShoppingCart size={14} />
@@ -248,7 +248,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <ChevronRight className="h-3 w-3" />
             <span className="text-white/80 font-semibold">Games</span>
           </nav>
-          <span className="font-mono text-[11px] text-[#a0e4f1]">{filteredGames.length} games</span>
+          <span className="font-mono text-[11px] text-zinc-400">{filteredGames.length} games</span>
         </div>
 
         {/* Responsive Compact Filter Bar */}
@@ -261,7 +261,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
               placeholder="Search games..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-white/40 focus:ring-0 transition"
             />
           </div>
 
@@ -270,7 +270,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <select
               value={selectedPlatform}
               onChange={(e) => setSelectedPlatform(e.target.value)}
-              className="h-9 rounded-xl border border-white/10 bg-black/90 px-2.5 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
+              className="h-9 rounded-xl border border-white/10 bg-zinc-950 px-2.5 text-xs text-white focus:outline-none focus:border-white/40"
             >
               <option value="all">All Platforms</option>
               {platforms.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -280,7 +280,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="h-9 rounded-xl border border-white/10 bg-black/90 px-2.5 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
+                className="h-9 rounded-xl border border-white/10 bg-zinc-950 px-2.5 text-xs text-white focus:outline-none focus:border-white/40"
               >
                 <option value="all">All Categories</option>
                 {categories.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -290,7 +290,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="col-span-2 sm:col-span-1 h-9 rounded-xl border border-white/10 bg-black/90 px-2.5 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
+              className="col-span-2 sm:col-span-1 h-9 rounded-xl border border-white/10 bg-zinc-950 px-2.5 text-xs text-white focus:outline-none focus:border-white/40"
             >
               <option value="featured">Featured First</option>
               <option value="name">Name A-Z</option>
@@ -302,14 +302,14 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             <div className="hidden sm:flex gap-1 rounded-xl border border-white/10 p-0.5 bg-white/[0.03] h-9 items-center">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`rounded-lg p-1.5 transition ${viewMode === 'grid' ? 'bg-[#a0e4f1]/20 text-[#a0e4f1]' : 'text-white/40 hover:text-white'}`}
+                className={`rounded-lg p-1.5 transition ${viewMode === 'grid' ? 'bg-white text-black' : 'text-white/40 hover:text-white'}`}
                 aria-label="Grid view"
               >
                 <LayoutGrid size={15} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`rounded-lg p-1.5 transition ${viewMode === 'list' ? 'bg-[#a0e4f1]/20 text-[#a0e4f1]' : 'text-white/40 hover:text-white'}`}
+                className={`rounded-lg p-1.5 transition ${viewMode === 'list' ? 'bg-white text-black' : 'text-white/40 hover:text-white'}`}
                 aria-label="List view"
               >
                 <List size={15} />
@@ -320,7 +320,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
 
         {/* Results: 2 columns on phone, multi-column wrap on PC */}
         {filteredGames.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl p-8">
+          <div className="py-20 text-center rounded-3xl border border-white/10 bg-zinc-950/80 backdrop-blur-xl p-8">
             <p className="text-4xl mb-3">🎮</p>
             <p className="text-white/60">
               {games.length === 0 ? 'No games in the catalog yet. Check back soon!' : 'No games match your filters.'}
@@ -328,7 +328,7 @@ export default function GamesPageClient({ games }: { games: Game[] }) {
             {searchQuery || selectedPlatform !== 'all' || selectedCategory !== 'all' ? (
               <button
                 onClick={() => { setSearchQuery(''); setSelectedPlatform('all'); setSelectedCategory('all') }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#a0e4f1] hover:underline cursor-pointer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-white hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>

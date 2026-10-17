@@ -267,7 +267,7 @@ export function TutorialVideoClient() {
               {/* HUD Copy & Editorial Overlays */}
               <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-4">
-                  <Sparkles size={18} className="text-[#c673e2]" />
+                  <Sparkles size={18} className="text-white/70" />
                   <h2 className="text-base font-bold text-white">Player HUD &amp; Editorial Copy</h2>
                 </div>
 
@@ -389,15 +389,15 @@ export function TutorialVideoClient() {
                 <button
                   type="submit"
                   disabled={saving || uploading}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 px-6 py-3 font-bold text-sm text-white shadow-lg shadow-purple-600/30 hover:opacity-95 transition disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-bold text-sm text-black shadow-lg hover:bg-zinc-200 transition disabled:opacity-50 cursor-pointer"
                 >
                   {saving ? (
                     <>
-                      <RefreshCw size={16} className="animate-spin" /> Saving Changes...
+                      <RefreshCw size={16} className="animate-spin text-black" /> Saving Changes...
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 size={16} /> Save &amp; Update Homepage Video
+                      <CheckCircle2 size={16} className="text-black" /> Save &amp; Update Homepage Video
                     </>
                   )}
                 </button>
@@ -410,7 +410,7 @@ export function TutorialVideoClient() {
             <div className="sticky top-8">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Eye size={15} className="text-[#a0e4f1]" />
+                  <Eye size={15} className="text-white/70" />
                   <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Live Storefront Preview
                   </span>
@@ -431,8 +431,8 @@ export function TutorialVideoClient() {
                 />
 
                 {/* Overlaid preview badge */}
-                <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 rounded-full border border-[#a0e4f1]/40 bg-black/70 px-3 py-1 text-[11px] font-mono font-bold text-white shadow-lg">
-                  <span className="h-2 w-2 rounded-full bg-[#a0e4f1] animate-pulse" />
+                <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 rounded-full border border-white/20 bg-black/80 px-3 py-1 text-[11px] font-mono font-bold text-white shadow-lg">
+                  <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
                   <span>{config.kicker || '01 // TUTORIAL GUIDE'}</span>
                 </div>
               </div>

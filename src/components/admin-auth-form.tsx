@@ -54,42 +54,42 @@ export function AdminSignInForm() {
               <img
                 src="/logo.jpeg"
                 alt="ReiKai Arcade"
-                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-lg"
+                className="w-10 h-10 rounded-xl object-cover border border-white/15 shadow-lg"
               />
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#a0e4f1]/30 bg-[#a0e4f1]/10 px-3 py-1 font-mono text-[11px] font-semibold tracking-wider uppercase text-[#a0e4f1]">
-                <KeyRound className="h-3 w-3 text-[#a0e4f1]" /> ReiKai Staff
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 font-mono text-[11px] font-semibold tracking-wider uppercase text-white/90">
+                <KeyRound className="h-3 w-3 text-white/60" /> ReiKai Staff
               </span>
             </div>
             <span className="text-[11px] font-mono text-zinc-500">v2.0</span>
           </div>
 
           <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-            Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c673e2] to-[#a0e4f1]">Control Room</span>
+            Admin <span className="text-white">Control Room</span>
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
             Authorized personnel only. Sign in with administrative credentials.
           </p>
 
           {/* Quick Credential Helper Banner */}
-          <div className="mt-5 rounded-2xl border border-[#c673e2]/20 bg-[#4b22d2]/10 p-4 text-xs text-zinc-300">
+          <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-xs text-zinc-300">
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-[#c673e2] flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5" /> Default Admin Login
+              <span className="font-semibold text-white/90 flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-white/60" /> Default Admin Login
               </span>
               <button
                 type="button"
                 onClick={fillDefaults}
-                className="text-[11px] font-bold text-[#a0e4f1] underline hover:text-white/80 transition cursor-pointer"
+                className="text-[11px] font-bold text-white underline hover:text-white/80 transition cursor-pointer"
               >
                 Auto-fill
               </button>
             </div>
             <div className="mt-2 grid grid-cols-2 gap-2 font-mono text-[11px]">
-              <div className="rounded-lg bg-black/40 px-2.5 py-1.5 border border-white/5">
+              <div className="rounded-lg bg-black/60 px-2.5 py-1.5 border border-white/10">
                 <span className="text-zinc-500 block text-[9px] uppercase">Email</span>
                 <span className="text-zinc-200">admin@reikai.arcade</span>
               </div>
-              <div className="rounded-lg bg-black/40 px-2.5 py-1.5 border border-white/5">
+              <div className="rounded-lg bg-black/60 px-2.5 py-1.5 border border-white/10">
                 <span className="text-zinc-500 block text-[9px] uppercase">Password</span>
                 <span className="text-zinc-200">admin123</span>
               </div>
@@ -104,7 +104,7 @@ export function AdminSignInForm() {
               <div className="relative mt-2">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
                 <input
-                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/40 transition"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   type="email"
                   placeholder="admin@reikai.arcade"
                   value={email}
@@ -121,7 +121,7 @@ export function AdminSignInForm() {
               <div className="relative mt-2">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
                 <input
-                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/40 transition"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   type="password"
                   placeholder="••••••••••••"
                   value={password}
@@ -142,11 +142,11 @@ export function AdminSignInForm() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-extrabold text-white shadow-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+            className="mt-6 w-full rounded-xl bg-white px-4 py-3.5 text-sm font-bold text-black shadow-lg hover:bg-zinc-200 disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
           >
             {pending ? (
               <>
-                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
                 Authenticating…
               </>
             ) : (

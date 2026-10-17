@@ -62,7 +62,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
             <ChevronRight className="h-3 w-3" />
             <span className="text-white/80 font-semibold">Gift Cards</span>
           </nav>
-          <span className="font-mono text-[11px] text-[#a0e4f1]">{filtered.length} cards</span>
+          <span className="font-mono text-[11px] text-white/50">{filtered.length} cards</span>
         </div>
 
         {/* Responsive Compact Filter Bar */}
@@ -75,7 +75,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
               placeholder="Search PSN, Steam, Apple..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+              className="w-full h-9 rounded-xl border border-white/10 bg-white/5 pl-9 pr-3 text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                className="h-9 rounded-xl border border-white/10 bg-black/90 px-3 text-xs text-white focus:outline-none focus:border-[#a0e4f1]"
+                className="h-9 rounded-xl border border-white/10 bg-black/90 px-3 text-xs text-white focus:outline-none focus:border-white/40"
               >
                 <option value="all">All Brands</option>
                 {brands.map((b) => <option key={b} value={b}>{b}</option>)}
@@ -96,7 +96,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
 
         {/* Results: 2 columns on phone, multi-column wrap on PC */}
         {filtered.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl border border-white/5 bg-black/60 backdrop-blur-xl p-8">
+          <div className="py-20 text-center rounded-3xl border border-white/10 bg-zinc-950 p-8 shadow-2xl">
             <p className="text-4xl mb-3">🎁</p>
             <p className="text-white/60">
               {products.length === 0 ? 'No gift card products in the catalog yet.' : 'No gift cards match your search.'}
@@ -104,7 +104,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
             {(searchQuery || selectedBrand !== 'all') && (
               <button
                 onClick={() => { setSearchQuery(''); setSelectedBrand('all'); }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#a0e4f1] hover:underline cursor-pointer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-white underline hover:text-white/80 cursor-pointer"
               >
                 Clear all filters
               </button>
@@ -116,7 +116,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
               <Link
                 key={product.id}
                 href={`/gift-cards/${product.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-white/20 hover:shadow-[0_12px_36px_rgba(0,0,0,0.8),0_0_24px_rgba(160,228,241,0.2)] hover:-translate-y-1"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-white/25 hover:bg-white/[0.06] hover:shadow-2xl hover:-translate-y-1"
               >
                 {/* Banner */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
@@ -135,7 +135,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
                   )}
                   <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-transparent" />
                   {product.featured && (
-                    <span className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-[#4b22d2] to-[#c673e2] px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-lg">
+                    <span className="absolute left-2 top-2 rounded-full bg-white px-2 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-black shadow-md">
                       Featured
                     </span>
                   )}
@@ -147,7 +147,7 @@ export default function GiftCardsClient({ products }: { products: GiftCardProduc
                     {product.name}
                   </p>
                   {(product.minPrice !== null || product.maxPrice !== null) && (
-                    <p className="mt-1 font-mono text-[11px] sm:text-xs font-semibold text-[#a0e4f1]">
+                    <p className="mt-1 font-mono text-[11px] sm:text-xs font-bold text-white">
                       {product.minPrice !== null ? formatBDT(product.minPrice) : ''}
                       {product.minPrice !== product.maxPrice && product.maxPrice !== null
                         ? ` - ${formatBDT(product.maxPrice)}`

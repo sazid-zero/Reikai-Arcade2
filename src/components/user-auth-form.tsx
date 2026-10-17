@@ -162,29 +162,26 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
 
   return (
     <main className="site-shell min-h-screen px-4 py-16 sm:py-24 flex items-center justify-center relative overflow-hidden bg-black">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#4b22d2]/15 via-[#a0e4f1]/10 to-transparent blur-[120px] pointer-events-none -z-10" />
-
       <div className="w-full max-w-md">
-        <div className="relative rounded-3xl border border-white/10 bg-black/95 p-6 sm:p-8 shadow-lg backdrop-blur-2xl">
+        <div className="relative rounded-3xl border border-white/10 bg-zinc-950/95 p-6 sm:p-8 shadow-2xl backdrop-blur-2xl">
           {/* Top Brand & Badge */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <img
                 src="/logo.jpeg"
                 alt="ReiKai Arcade"
-                className="w-10 h-10 rounded-xl object-cover border border-[#a0e4f1]/40 shadow-lg group-hover:shadow-lg transition-all"
+                className="w-10 h-10 rounded-xl object-cover border border-white/10 shadow-lg group-hover:border-white/25 transition-all"
               />
               <div>
                 <span className="font-black tracking-tight text-white text-base block leading-none">
-                  REIKAI <span className="text-[#a0e4f1]">ARCADE</span>
+                  REIKAI ARCADE
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mt-0.5">
                   Gaming Vault
                 </span>
               </div>
             </Link>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#a0e4f1]/30 bg-[#a0e4f1]/10 px-2.5 py-1 font-mono text-[10px] font-bold tracking-wider uppercase text-[#a0e4f1]">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[10px] font-semibold tracking-wider uppercase text-zinc-300">
               <Gamepad2 className="h-3 w-3" /> Player Access
             </span>
           </div>
@@ -198,9 +195,9 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                 setError('')
                 setSuccessMsg('')
               }}
-              className={`py-2.5 rounded-xl font-['DM_Mono'] text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`py-2.5 rounded-xl font-['DM_Mono'] text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 mode === 'signin'
-                  ? 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-lg'
+                  ? 'bg-white text-black shadow-md'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
@@ -213,9 +210,9 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                 setError('')
                 setSuccessMsg('')
               }}
-              className={`py-2.5 rounded-xl font-['DM_Mono'] text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              className={`py-2.5 rounded-xl font-['DM_Mono'] text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                 mode === 'signup'
-                  ? 'bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white shadow-lg'
+                  ? 'bg-white text-black shadow-md'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
@@ -226,15 +223,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
           {/* Heading */}
           <div className="mt-5">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-              {mode === 'signin' ? (
-                <>
-                  Access Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c673e2] to-[#a0e4f1]">Gamer Vault</span>
-                </>
-              ) : (
-                <>
-                  Create Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c673e2] to-[#a0e4f1]">Vault Account</span>
-                </>
-              )}
+              {mode === 'signin' ? 'Access Your Vault' : 'Create Your Vault Account'}
             </h1>
             <p className="mt-1.5 text-xs text-zinc-400">
               {mode === 'signin'
@@ -261,7 +250,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     placeholder="017XXXXXXXX or gamer@gmail.com"
                     autoComplete="username"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   />
                 </div>
                 <p className="mt-1 text-[11px] text-zinc-500">
@@ -287,7 +276,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     placeholder="••••••••••••"
                     autoComplete="current-password"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-11 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-11 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   />
                   <button
                     type="button"
@@ -317,7 +306,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               <button
                 type="submit"
                 disabled={pending}
-                className="w-full mt-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                className="w-full mt-2 rounded-xl bg-white text-black px-4 py-3.5 text-sm font-bold uppercase tracking-wider hover:bg-zinc-200 shadow-xl disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
               >
                 {pending ? (
                   <>
@@ -342,7 +331,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                       setError('')
                       setSuccessMsg('')
                     }}
-                    className="font-bold text-[#a0e4f1] hover:underline cursor-pointer"
+                    className="font-bold text-white hover:underline cursor-pointer"
                   >
                     Sign up for free
                   </button>
@@ -367,7 +356,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     placeholder="Arif Rahman"
                     autoComplete="name"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   />
                 </div>
               </div>
@@ -382,9 +371,9 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     <button
                       type="button"
                       onClick={() => setPrimaryType('phone')}
-                      className={`px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
+                      className={`px-2.5 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
                         primaryType === 'phone'
-                          ? 'bg-[#a0e4f1]/20 text-[#a0e4f1] border border-[#a0e4f1]/40'
+                          ? 'bg-white text-black'
                           : 'text-zinc-400 hover:text-white'
                       }`}
                     >
@@ -393,9 +382,9 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     <button
                       type="button"
                       onClick={() => setPrimaryType('email')}
-                      className={`px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
+                      className={`px-2.5 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
                         primaryType === 'email'
-                          ? 'bg-[#c673e2]/20 text-[#c673e2] border border-[#c673e2]/40'
+                          ? 'bg-white text-black'
                           : 'text-zinc-400 hover:text-white'
                       }`}
                     >
@@ -415,11 +404,11 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                         placeholder="017XXXXXXXX"
                         autoComplete="tel"
                         required
-                        className="w-full rounded-xl border border-[#a0e4f1]/30 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition shadow-lg"
+                        className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                       />
                     </div>
                     <p className="mt-1 text-[11px] text-zinc-400 flex items-center gap-1">
-                      <Sparkles className="h-3 w-3 text-[#a0e4f1]" /> Quick mobile verification for instant order tracking
+                      <Sparkles className="h-3 w-3 text-zinc-400" /> Quick mobile verification for instant order tracking
                     </p>
 
                     {/* Optional email field */}
@@ -435,7 +424,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="gamer@domain.com"
                           autoComplete="email"
-                          className="w-full rounded-xl border border-white/5 bg-white/5 pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-600 outline-none focus:border-[#a0e4f1] transition"
+                          className="w-full rounded-xl border border-white/5 bg-white/5 pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-600 outline-none focus:border-white/40 transition"
                         />
                       </div>
                     </div>
@@ -451,9 +440,12 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                         placeholder="gamer@domain.com"
                         autoComplete="email"
                         required
-                        className="w-full rounded-xl border border-[#c673e2]/30 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#c673e2] focus:ring-1 focus:ring-[#c673e2]/50 transition shadow-lg"
+                        className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                       />
                     </div>
+                    <p className="mt-1 text-[11px] text-zinc-400 flex items-center gap-1">
+                      <Sparkles className="h-3 w-3 text-zinc-400" /> Order receipts and digital license keys sent to your inbox
+                    </p>
 
                     {/* Optional phone field */}
                     <div className="mt-3">
@@ -468,7 +460,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="017XXXXXXXX"
                           autoComplete="tel"
-                          className="w-full rounded-xl border border-white/5 bg-white/5 pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-600 outline-none focus:border-[#c673e2] transition"
+                          className="w-full rounded-xl border border-white/5 bg-white/5 pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-600 outline-none focus:border-white/40 transition"
                         />
                       </div>
                     </div>
@@ -489,7 +481,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     placeholder="At least 6 characters"
                     autoComplete="new-password"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-11 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-11 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   />
                   <button
                     type="button"
@@ -515,7 +507,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                     placeholder="Repeat your password"
                     autoComplete="new-password"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-[#a0e4f1] focus:ring-1 focus:ring-[#a0e4f1]/50 transition"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition"
                   />
                 </div>
               </div>
@@ -537,7 +529,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               <button
                 type="submit"
                 disabled={pending}
-                className="w-full mt-2 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] px-4 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg hover:shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                className="w-full mt-2 rounded-xl bg-white text-black px-4 py-3.5 text-sm font-bold uppercase tracking-wider hover:bg-zinc-200 shadow-xl disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
               >
                 {pending ? (
                   <>
@@ -562,7 +554,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
                       setError('')
                       setSuccessMsg('')
                     }}
-                    className="font-bold text-[#a0e4f1] hover:underline cursor-pointer"
+                    className="font-bold text-white hover:underline cursor-pointer"
                   >
                     Sign in here
                   </button>
@@ -583,7 +575,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
               href="/admin/sign-in"
               className="inline-flex items-center gap-1 font-mono text-[11px] text-zinc-500 hover:text-white transition"
             >
-              <ShieldCheck className="h-3 w-3 text-[#a0e4f1]" />
+              <ShieldCheck className="h-3 w-3 text-zinc-400" />
               <span>Admin Portal →</span>
             </Link>
           </div>

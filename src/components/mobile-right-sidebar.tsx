@@ -63,40 +63,40 @@ export function MobileRightSidebar() {
       subtitle: 'DualSense, headsets & gear',
       href: '/accessories',
       icon: Headphones,
-      color: 'text-[#5ba2c0]',
-      bgColor: 'bg-[#5ba2c0]/15 border-[#5ba2c0]/30',
+      color: 'text-white/80',
+      bgColor: 'bg-white/5 border-white/10',
     },
     {
       title: 'PS5 Games',
       subtitle: 'Exclusives, hits & discs',
       href: '/games',
       icon: Gamepad2,
-      color: 'text-[#c673e2]',
-      bgColor: 'bg-[#4b22d2]/20 border-[#c673e2]/30',
+      color: 'text-white/80',
+      bgColor: 'bg-white/5 border-white/10',
     },
     {
       title: 'Game Top-Up',
       subtitle: 'Valorant, PUBG, Genshin',
       href: '/top-up',
       icon: Zap,
-      color: 'text-[#a0e4f1]',
-      bgColor: 'bg-[#a0e4f1]/15 border-[#a0e4f1]/30',
+      color: 'text-white/80',
+      bgColor: 'bg-white/5 border-white/10',
     },
     {
       title: 'Subscriptions',
       subtitle: 'PS Plus, Game Pass & EA',
       href: '/subscriptions',
       icon: Crown,
-      color: 'text-[#c673e2]',
-      bgColor: 'bg-[#c673e2]/15 border-[#c673e2]/30',
+      color: 'text-white/80',
+      bgColor: 'bg-white/5 border-white/10',
     },
     {
       title: 'Gift Cards',
       subtitle: 'PSN, Steam, Google & Apple',
       href: '/gift-cards',
       icon: Gift,
-      color: 'text-[#a0e4f1]',
-      bgColor: 'bg-[#4b22d2]/20 border-[#a0e4f1]/30',
+      color: 'text-white/80',
+      bgColor: 'bg-white/5 border-white/10',
     },
   ];
 
@@ -105,19 +105,19 @@ export function MobileRightSidebar() {
       title: 'Hot Offers & Drops',
       href: '/#browse',
       icon: Sparkles,
-      color: 'text-cyan-400',
+      color: 'text-white/60',
     },
     {
       title: 'Track Orders',
       href: '/orders',
       icon: Package,
-      color: 'text-emerald-400',
+      color: 'text-white/60',
     },
     {
       title: 'My Wishlist',
       href: '/wishlist',
       icon: Heart,
-      color: 'text-pink-400',
+      color: 'text-white/60',
     },
   ];
 
@@ -240,7 +240,7 @@ export function MobileRightSidebar() {
                     href={q.href}
                     onClick={closeMenu}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition ${
-                      isActive ? 'bg-white/10 text-[#a0e4f1]' : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                      isActive ? 'bg-white/10 text-white font-semibold' : 'text-zinc-300 hover:bg-white/5 hover:text-white'
                     }`}
                     data-testid={`sidebar-link-${q.title.toLowerCase().replace(/\s+/g, '-')}`}
                   >
@@ -259,7 +259,7 @@ export function MobileRightSidebar() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4b22d2] to-[#c673e2] flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-lg">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center font-bold text-black text-xs shrink-0 shadow-md">
                     {(user.name || user.email || 'U').slice(0, 2).toUpperCase()}
                   </div>
                   <div className="min-w-0">
@@ -273,7 +273,7 @@ export function MobileRightSidebar() {
                   className={`text-[9px] font-['DM_Mono'] font-bold px-1.5 py-0.5 rounded ${
                     user.role === 'admin'
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                      : 'bg-[#a0e4f1]/20 text-[#a0e4f1] border border-[#a0e4f1]/30'
+                      : 'bg-white/10 text-white border border-white/15'
                   }`}
                 >
                   {user.role === 'admin' ? 'ADMIN' : 'MEMBER'}
@@ -305,7 +305,7 @@ export function MobileRightSidebar() {
               <Link
                 href="/sign-in"
                 onClick={closeMenu}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] text-white font-['DM_Mono'] font-bold text-xs tracking-wider uppercase shadow-lg transition hover:opacity-95 active:scale-98"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white text-black font-['DM_Mono'] font-bold text-xs tracking-wider uppercase shadow-lg transition hover:bg-zinc-200 active:scale-98 cursor-pointer"
                 data-testid="sidebar-sign-in"
               >
                 <User size={14} />

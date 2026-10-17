@@ -15,14 +15,13 @@ export default function WishlistPage() {
       <SiteHeader />
 
       <main className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center text-center py-20 rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl p-8 shadow-2xl">
-          <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c673e2]/20 to-[#4b22d2]/20 border border-[#c673e2]/30 text-[#c673e2] shadow-lg">
-            <Heart size={36} className="fill-[#c673e2]/40 text-[#c673e2]" />
-            <Sparkles size={16} className="absolute -top-1 -right-1 text-[#a0e4f1]" />
+        <div className="flex flex-col items-center justify-center text-center py-20 rounded-3xl border border-white/10 bg-zinc-950/80 backdrop-blur-xl p-8 shadow-2xl">
+          <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/[0.04] border border-white/10 text-white shadow-lg">
+            <Heart size={36} className="text-white/80" />
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Your Wishlist is <span className="bg-gradient-to-r from-[#c673e2] via-[#a0e4f1] to-[#5ba2c0] bg-clip-text text-transparent">Currently Empty</span>
+            Your Wishlist is <span className="text-zinc-400">Currently Empty</span>
           </h1>
           <p className="mt-3 max-w-md text-sm text-zinc-400 leading-relaxed">
             Save your favorite PS5 games, gaming gear, direct top-ups, and subscription passes for later. Tap the heart icon on any product to save it here.
@@ -31,7 +30,7 @@ export default function WishlistPage() {
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <Link
               href="/games"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#4b22d2] via-[#c673e2] to-[#a0e4f1] hover:opacity-90 transition shadow-lg"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition shadow-lg"
             >
               <Gamepad2 size={15} />
               <span>Explore Games</span>
@@ -39,7 +38,7 @@ export default function WishlistPage() {
             </Link>
             <Link
               href="/accessories"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:text-white transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider text-zinc-300 border border-white/15 bg-white/5 hover:bg-white/10 hover:text-white transition"
             >
               <ShoppingBag size={15} />
               <span>Browse Accessories</span>

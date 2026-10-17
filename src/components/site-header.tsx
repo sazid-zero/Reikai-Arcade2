@@ -157,7 +157,7 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-[#c673e2]/70">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
                         <Gamepad2 size={16} />
                       </div>
                       <div>
@@ -173,7 +173,7 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-[#a0e4f1]/60">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
                         <Zap size={16} />
                       </div>
                       <div>
@@ -189,7 +189,7 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-[#5ba2c0]/70">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
                         <Headphones size={16} />
                       </div>
                       <div>
@@ -205,7 +205,7 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-[#c673e2]/70">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
                         <Crown size={16} />
                       </div>
                       <div>
@@ -221,7 +221,7 @@ export function SiteHeader({
                       className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-zinc-400">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
                         <Gift size={16} />
                       </div>
                       <div>

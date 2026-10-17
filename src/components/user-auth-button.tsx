@@ -83,11 +83,11 @@ export function UserAuthButton() {
       <button
         type="button"
         onClick={() => setDropdownOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full border border-[#a0e4f1]/50 bg-black/40 p-1 pr-2.5 transition-all hover:border-white/25 hover:shadow-lg cursor-pointer"
+        className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] p-1 pr-2.5 transition-all hover:border-white/30 hover:bg-white/[0.08] cursor-pointer"
         aria-label="User profile menu"
         data-testid="header-user-profile"
       >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#c673e2] to-[#a0e4f1] text-[11px] font-black text-white shadow-lg">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[11px] font-bold text-black shadow-md">
           {initials}
         </div>
         <span className="hidden sm:inline font-['DM_Mono'] text-[11px] font-bold text-zinc-200 max-w-[120px] truncate">

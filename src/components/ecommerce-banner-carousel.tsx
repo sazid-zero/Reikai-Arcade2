@@ -143,7 +143,7 @@ export function EcommerceBannerCarousel({
             <div className="carousel-tags-row">
               {currentSlide.tags.map((tag) => (
                 <span key={tag} className="carousel-tag-chip">
-                  <Zap size={11} className="text-[#c673e2]" />
+                  <Zap size={11} className="text-white/60" />
                   {tag}
                 </span>
               ))}

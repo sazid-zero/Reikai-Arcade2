@@ -22,11 +22,11 @@ export default async function AdminPage() {
   const totalRevenue = metrics.revenue
 
   const statCards = [
-    { label: 'Total Products', value: catalog.length, icon: Package, href: '/admin/products', color: 'text-violet-400' },
+    { label: 'Total Products', value: catalog.length, icon: Package, href: '/admin/products', color: 'text-white/80' },
     { label: 'Live Products', value: active, icon: Store, href: '/admin/products', color: 'text-emerald-400' },
-    { label: 'Games', value: games, icon: Layers, href: '/admin/products?type=game', color: 'text-primary' },
-    { label: 'Accessories', value: accessories, icon: ShieldCheck, href: '/admin/products?type=accessory', color: 'text-pink-400' },
-    { label: 'Total Orders', value: recentOrders.length, icon: ShoppingCart, href: '/admin/orders', color: 'text-fuchsia-400' },
+    { label: 'Games', value: games, icon: Layers, href: '/admin/products?type=game', color: 'text-white/80' },
+    { label: 'Accessories', value: accessories, icon: ShieldCheck, href: '/admin/products?type=accessory', color: 'text-white/80' },
+    { label: 'Total Orders', value: recentOrders.length, icon: ShoppingCart, href: '/admin/orders', color: 'text-white/80' },
     { label: 'Pending Orders', value: pendingOrders, icon: AlertCircle, href: '/admin/orders', color: 'text-amber-400' },
   ]
 
@@ -39,12 +39,12 @@ export default async function AdminPage() {
             <img
               src="/logo.jpeg"
               alt="ReiKai Arcade"
-              className="w-14 h-14 rounded-2xl object-cover border border-[#a0e4f1]/40 shadow-lg shrink-0"
+              className="w-14 h-14 rounded-2xl object-cover border border-white/15 shadow-lg shrink-0"
             />
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#a0e4f1]">ReiKai Control Room</p>
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-white/60">ReiKai Control Room</p>
               <h1 className="mt-1 text-3xl font-black tracking-tight md:text-4xl text-white">
-                Admin <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c673e2] to-[#a0e4f1]">Dashboard</span>
+                Admin <span className="text-white">Dashboard</span>
               </h1>
               <p className="mt-1 text-xs text-muted-foreground">Signed in as <span className="text-foreground">{session.user.email}</span></p>
             </div>
@@ -62,7 +62,7 @@ export default async function AdminPage() {
                 <LogOut className="h-4 w-4" /> Sign Out
               </button>
             </form>
-            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#c673e2] to-[#a0e4f1] px-5 py-3 font-extrabold text-white shadow-lg hover:shadow-lg transition-all">
+            <Link href="/admin/products/new" className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-bold text-black shadow-lg hover:bg-zinc-200 transition-all">
               + New Product
             </Link>
           </div>
@@ -116,6 +116,7 @@ export default async function AdminPage() {
               { href: '/admin/products', label: 'Manage Products', desc: `${catalog.length} total`, icon: Package },
               { href: '/admin/subscriptions', label: 'Subscriptions', desc: 'PS Plus, Game Pass & more', icon: Crown },
               { href: '/admin/tutorial-video', label: 'Tutorial Video', desc: 'Homepage video player & uploads', icon: Video },
+              { href: '/admin/banners', label: 'Banner Carousel', desc: 'Homepage showcase slides & order', icon: Layers },
               { href: '/admin/digital-codes', label: 'Digital Codes Vault', desc: 'Keys & Instant Delivery', icon: Key },
               { href: '/admin/inventory', label: 'Inventory', desc: 'Stock levels', icon: Layers },
               { href: '/admin/orders', label: 'Orders', desc: `${recentOrders.length} total`, icon: ShoppingCart },

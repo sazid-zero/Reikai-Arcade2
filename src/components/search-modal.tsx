@@ -379,7 +379,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
                   </div>
 
                   <div className="search-suggestions-title mt-5">
-                    <Gamepad2 size={13} className="text-[#c673e2]" />
+                    <Gamepad2 size={13} className="text-white/60" />
                     <span>FEATURED IN VAULT</span>
                   </div>
                 </div>
@@ -460,7 +460,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
                 ) : (
                   <div className="search-modal-empty">
                     <div className="search-empty-radar">
-                      <Search size={32} className="text-[#c673e2] opacity-60" />
+                      <Search size={32} className="text-white/40" />
                     </div>
                     <strong>NO SIGNALS DETECTED</strong>
                     <p>
