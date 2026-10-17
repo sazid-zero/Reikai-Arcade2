@@ -54,23 +54,33 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       className="cinematic-hero-section relative w-full flex flex-col justify-between items-center overflow-hidden bg-black select-none"
       id="discover"
     >
-      {/* ── 1. BACKGROUND VIDEO LAYER (Horizontal & Vertical Object-Cover) ── */}
+      {/* ── 1. BACKGROUND VIDEO LAYER ── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/*
+          poster= shows a still image instantly while the video loads.
+          preload="metadata" on mobile saves bandwidth (only fetches first few KB).
+          preload="auto" on desktop starts buffering for smooth instant play.
+          WebM source first — much smaller, natively supported on Chrome/Android.
+        */}
         <video
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
+          poster="/videos/hero-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover object-center"
+          style={{ willChange: 'transform' }}
         >
+          <source src="/videos/hero.webm" type="video/webm" />
+          <source src="/videos/hero-opt.mp4" type="video/mp4" />
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
 
-        {/* Pure darkened overlay (black/20) - no colored overlay */}
+        {/* Pure darkened overlay */}
         <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
-        {/* Soft bottom vignette melting seamlessly into the void */}
+        {/* Soft bottom vignette */}
         <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
       </div>
 

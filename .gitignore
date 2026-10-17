@@ -59,6 +59,9 @@ Thumbs.db
 .cache/
 .local/
 
+# Video backups
+public/videos/*-original*
+
 # Uploads
 public/uploads/*
 !public/uploads/.gitkeep
