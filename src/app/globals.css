@@ -8070,19 +8070,49 @@
   }
 }
 
-/* Ambient Layered Aurora ribbons & chromatic space glow on pure black void */
+/* ── BACKGROUND VIDEO & SIMPLE DARKENED OVERLAY (NO COLORED OVERLAY) ── */
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: #000000;
+}
+
+.hero-bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  will-change: transform;
+}
+
+/* Simple non-colored darkened overlay (black/20) */
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.20);
+}
+
+/* Subtle Layered Aurora ribbons layered above video */
 .hero-aurora-bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 70% 50% at 75% 38%, rgba(198, 115, 226, 0.22) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 45% at 25% 65%, rgba(160, 228, 241, 0.16) 0%, transparent 65%),
-    radial-gradient(circle at 50% 50%, rgba(75, 34, 210, 0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 0%, rgba(91, 162, 192, 0.22) 0%, transparent 60%),
-    #000000;
+  mix-blend-mode: screen;
+  background: transparent;
 }
 
 /* Decorative Accent Ribbons */

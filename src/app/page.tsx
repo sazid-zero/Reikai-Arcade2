@@ -1031,42 +1031,24 @@ export default function StorefrontPage() {
         aria-hidden="true"
       />
 
-      {/* ── REDESIGNED 3D MULTI-STAGE SCROLL TRACK (LOGO PALETTE & VIDEO) ── */}
+      {/* ── REDESIGNED 3D MULTI-STAGE SCROLL TRACK (WITH CINEMATIC HERO VIDEO & INK OVERLAY) ── */}
       <section className="hero-scroll-track" ref={heroTrackRef} id="discover">
         <div className="hero-sticky-viewport">
-          {/* Ambient Aurora Glow Ribbons */}
-          <div className="hero-aurora-bg">
-            <div
-              className="hero-aurora-ribbon hero-aurora-ribbon-1"
-              style={{
-                transform: `rotate(${-15 + heroScrollProgress * 30}deg) translateY(${heroScrollProgress * 60}px)`,
-                opacity: 0.5 + Math.sin(heroScrollProgress * Math.PI) * 0.35,
-              }}
-            />
-            <div
-              className="hero-aurora-ribbon hero-aurora-ribbon-2"
-              style={{
-                transform: `rotate(${18 - heroScrollProgress * 28}deg) translateY(${-heroScrollProgress * 50}px)`,
-                opacity: 0.45 + Math.sin(heroScrollProgress * Math.PI) * 0.4,
-              }}
-            />
+          {/* Cinematic Background Video Layer */}
+          <div className="hero-video-bg" aria-hidden="true">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="hero-bg-video"
+            >
+              <source src="/videos/hero.mp4" type="video/mp4" />
+            </video>
+            {/* Simple darkened overlay (black/20) - no colored overlay */}
+            <div className="hero-video-overlay" />
           </div>
-
-          {/* Sweeping Volumetric Atmospheric Spotlights */}
-          <div
-            className="hero-spotlight-beam hero-spotlight-left"
-            style={{
-              transform: `rotate(${-22 + heroScrollProgress * 36}deg) scaleX(${0.8 + Math.sin(heroScrollProgress * Math.PI) * 0.4})`,
-              opacity: 0.75 + Math.sin(heroScrollProgress * Math.PI) * 0.25,
-            }}
-          />
-          <div
-            className="hero-spotlight-beam hero-spotlight-right"
-            style={{
-              transform: `rotate(${24 - heroScrollProgress * 38}deg) scaleX(${0.8 + Math.cos(heroScrollProgress * Math.PI) * 0.3})`,
-              opacity: 0.7 + Math.sin(heroScrollProgress * Math.PI) * 0.3,
-            }}
-          />
 
           {/* Top Header */}
           <Header
