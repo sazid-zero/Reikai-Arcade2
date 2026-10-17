@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export type HomeBannerSlide = {
   id: string;
@@ -45,9 +45,6 @@ export function HomeBannerCarousel({
       .then((data) => {
         if (data?.slides?.length) {
           setSlides(data.slides);
-          if (data.autoPlayInterval) {
-            // override default if admin set it
-          }
         }
         setLoaded(true);
       })
@@ -66,6 +63,7 @@ export function HomeBannerCarousel({
   const prev = () => setCurrent((p) => (p - 1 + slides.length) % slides.length);
   const next = () => setCurrent((p) => (p + 1) % slides.length);
 
+  // Touch swipe
   const touchStartX = useRef<number>(0);
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -83,81 +81,83 @@ export function HomeBannerCarousel({
   const slide = slides[current];
 
   return (
-    <section
-      className="hbc-section"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      aria-label="Featured promotions carousel"
-    >
-      {/* Background slides */}
-      <div className="hbc-backdrop">
-        {slides.map((s, i) => (
-          <div
-            key={s.id}
-            className={`hbc-backdrop-slide${i === current ? ' active' : ''}`}
-            aria-hidden={i !== current}
-          >
-            {s.imageUrl && (
-              <img
-                src={s.imageUrl}
-                alt=""
-                className="hbc-backdrop-img"
-                draggable={false}
-              />
-            )}
-            {/* Darkened gradient overlay — no color */}
+    <div className="hbc-wrapper">
+      {/* Banner */}
+      <section
+        className="hbc-section"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        aria-label="Featured promotions carousel"
+      >
+        {/* Background slides */}
+        <div className="hbc-backdrop">
+          {slides.map((s, i) => (
             <div
-              className="hbc-overlay"
-              style={s.overlayColor ? { background: s.overlayColor } : undefined}
-            />
-          </div>
-        ))}
-      </div>
+              key={s.id}
+              className={`hbc-backdrop-slide${i === current ? ' active' : ''}`}
+              aria-hidden={i !== current}
+            >
+              {s.imageUrl && (
+                <img
+                  src={s.imageUrl}
+                  alt=""
+                  className="hbc-backdrop-img"
+                  draggable={false}
+                />
+              )}
+              <div
+                className="hbc-overlay"
+                style={s.overlayColor ? { background: s.overlayColor } : undefined}
+              />
+            </div>
+          ))}
+        </div>
 
-      {/* Content */}
-      <div className="hbc-content">
-        <div className="hbc-text" key={slide.id}>
-          {slide.label && (
-            <p className="hbc-label">{slide.label}</p>
-          )}
-          <h2 className="hbc-title">{slide.title}</h2>
-          {slide.subtitle && (
-            <p className="hbc-subtitle">{slide.subtitle}</p>
-          )}
-          {slide.description && (
-            <p className="hbc-desc">{slide.description}</p>
-          )}
-          <div className="hbc-actions">
-            <Link href={slide.ctaHref} className="hbc-btn-primary">
-              <span>{slide.ctaText}</span>
-              <ArrowRight size={15} />
-            </Link>
-            {slide.secondaryCtaText && slide.secondaryCtaHref && (
-              <Link href={slide.secondaryCtaHref} className="hbc-btn-secondary">
-                <span>{slide.secondaryCtaText}</span>
-              </Link>
+        {/* Content */}
+        <div className="hbc-content">
+          <div className="hbc-text" key={slide.id}>
+            {slide.label && (
+              <p className="hbc-label">{slide.label}</p>
             )}
+            <h2 className="hbc-title">{slide.title}</h2>
+            {slide.subtitle && (
+              <p className="hbc-subtitle">{slide.subtitle}</p>
+            )}
+            {slide.description && (
+              <p className="hbc-desc">{slide.description}</p>
+            )}
+            <div className="hbc-actions">
+              <Link href={slide.ctaHref} className="hbc-btn-primary">
+                <span>{slide.ctaText}</span>
+                <ArrowRight size={13} />
+              </Link>
+              {slide.secondaryCtaText && slide.secondaryCtaHref && (
+                <Link href={slide.secondaryCtaHref} className="hbc-btn-secondary">
+                  <span>{slide.secondaryCtaText}</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Navigation arrows — only show if >1 slide */}
-      {slides.length > 1 && (
-        <>
-          <button type="button" className="hbc-nav hbc-nav--prev" onClick={prev} aria-label="Previous slide">
-            <ChevronLeft size={18} />
-          </button>
-          <button type="button" className="hbc-nav hbc-nav--next" onClick={next} aria-label="Next slide">
-            <ChevronRight size={18} />
-          </button>
-        </>
-      )}
+        {/* Prev / Next arrows — always shown on both sides */}
+        {slides.length > 1 && (
+          <>
+            <button type="button" className="hbc-nav hbc-nav--prev" onClick={prev} aria-label="Previous slide">
+              <ChevronLeft size={16} />
+            </button>
+            <button type="button" className="hbc-nav hbc-nav--next" onClick={next} aria-label="Next slide">
+              <ChevronRight size={16} />
+            </button>
+          </>
+        )}
+      </section>
 
-      {/* Bottom dock: dots + pause */}
+      {/* Dots indicator — OUTSIDE the banner, below it */}
       {slides.length > 1 && (
-        <div className="hbc-dock">
+        <div className="hbc-dock-outer">
           <div className="hbc-dots">
             {slides.map((s, i) => (
               <button
@@ -169,16 +169,8 @@ export function HomeBannerCarousel({
               />
             ))}
           </div>
-          <button
-            type="button"
-            className="hbc-pause"
-            onClick={() => setPaused((p) => !p)}
-            aria-label={paused ? 'Resume' : 'Pause'}
-          >
-            {paused ? <Play size={11} /> : <Pause size={11} />}
-          </button>
         </div>
       )}
-    </section>
+    </div>
   );
 }
