@@ -67,7 +67,8 @@ export function UserAuthButton() {
           className="header-signin-btn inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-3.5 py-1.5 font-['DM_Mono'] text-xs font-bold text-white transition-all duration-200 hover:border-white/25 hover:bg-white/[0.08] hover:shadow-lg active:scale-95"
           data-testid="header-sign-in"
         >
-          <User size={13} className="text-white/60" />`n          <span>SIGN IN</span>
+          <User size={13} className="text-white/60" />
+          <span>SIGN IN</span>
         </Link>
       </div>
     )
