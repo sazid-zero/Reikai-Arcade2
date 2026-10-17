@@ -66,6 +66,18 @@ export function HomeBannerCarousel({
   const prev = () => setCurrent((p) => (p - 1 + slides.length) % slides.length);
   const next = () => setCurrent((p) => (p + 1) % slides.length);
 
+  const touchStartX = useRef<number>(0);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) next();
+      else prev();
+    }
+  };
+
   if (!loaded || slides.length === 0) return null;
 
   const slide = slides[current];
@@ -75,6 +87,8 @@ export function HomeBannerCarousel({
       className="hbc-section"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       aria-label="Featured promotions carousel"
     >
       {/* Background slides */}
