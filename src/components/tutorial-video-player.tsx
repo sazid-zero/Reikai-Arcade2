@@ -95,8 +95,10 @@ export function TutorialVideoPlayer({
     setProgress(parseFloat(e.target.value));
   };
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const toggleFullscreen = () => {
-    const el = containerRef.current;
+    const el = wrapperRef.current || containerRef.current;
     if (!el) return;
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
@@ -112,83 +114,48 @@ export function TutorialVideoPlayer({
     video.play().then(() => setIsPlaying(true)).catch(() => {});
   };
 
-  const handleMouseMove = () => {
-    setShowControls(true);
-    if (hideControlsTimeout.current) clearTimeout(hideControlsTimeout.current);
-    if (isPlaying) {
-      hideControlsTimeout.current = setTimeout(() => {
-        setShowControls(false);
-      }, 2500);
-    }
-  };
-
   return (
-    <div
-      ref={containerRef}
-      className="tutorial-player-container group"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => isPlaying && setShowControls(false)}
-    >
-      <video
-        ref={videoRef}
-        src={videoUrl}
-        poster={posterUrl}
-        className="tutorial-video-media"
-        playsInline
-        autoPlay={false}
-        loop
-        muted={isMuted}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleTimeUpdate}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
+    <div ref={wrapperRef} className="tutorial-player-wrapper w-full flex flex-col gap-3">
+      {/* ── Clean Video Player Window (No overlays or text) ── */}
+      <div
+        ref={containerRef}
+        className="tutorial-player-container group"
         onClick={togglePlay}
-      />
+      >
+        <video
+          ref={videoRef}
+          src={videoUrl}
+          poster={posterUrl}
+          className="tutorial-video-media"
+          playsInline
+          autoPlay={false}
+          loop
+          muted={isMuted}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleTimeUpdate}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        />
 
-      {/* Ambient gradient darkening overlay */}
-      <div className="tutorial-overlay-scrim" onClick={togglePlay} />
-
-      {/* Top HUD Kicker Badge */}
-      <div className="tutorial-top-hud">
-        <div className="tutorial-kicker-pill">
-          <span className="tutorial-live-indicator" />
-          <Sparkles size={11} className="text-[#a0e4f1]" />
-          <span>{kicker}</span>
-        </div>
-        <button
-          type="button"
-          onClick={toggleMute}
-          className="tutorial-quick-mute-btn"
-          aria-label={isMuted ? 'Unmute tutorial video' : 'Mute tutorial video'}
-        >
-          {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-[#a0e4f1]" />}
-          <span>{isMuted ? 'SOUND OFF' : 'SOUND ON'}</span>
-        </button>
+        {/* Center Big Play Button (shown only when paused) */}
+        {!isPlaying && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlay();
+            }}
+            className="tutorial-center-play-btn"
+            aria-label="Play tutorial video"
+          >
+            <div className="tutorial-play-pulse" />
+            <Play size={26} className="text-white fill-white translate-x-0.5" />
+          </button>
+        )}
       </div>
 
-      {/* Center Big Play Button (when paused) */}
-      {!isPlaying && (
-        <button
-          type="button"
-          onClick={togglePlay}
-          className="tutorial-center-play-btn"
-          aria-label="Play tutorial video"
-        >
-          <div className="tutorial-play-pulse" />
-          <Play size={26} className="text-white fill-white translate-x-0.5" />
-        </button>
-      )}
-
-      {/* Lower Title & Tagline HUD */}
-      <div className={`tutorial-info-hud ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-        <h3 className="tutorial-info-title">
-          {title.split(' ')[0]} <span className="text-[#a0e4f1]">{title.split(' ').slice(1).join(' ')}</span>
-        </h3>
-        <p className="tutorial-info-tagline">{tagline}</p>
-      </div>
-
-      {/* Glassmorphic Player Controls Bar */}
-      <div className={`tutorial-controls-bar ${showControls || !isPlaying ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0 pointer-events-none'} transition-all duration-300`}>
+      {/* ── Separate Controller Bar Below Video Player Window ── */}
+      <div className="tutorial-controls-bar-external">
         {/* Scrubber seek progress slider */}
         <div className="tutorial-scrub-wrap">
           <input
@@ -209,14 +176,14 @@ export function TutorialVideoPlayer({
 
         {/* Action icons row */}
         <div className="tutorial-controls-actions">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={togglePlay}
               className="tutorial-ctrl-icon-btn"
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
-              {isPlaying ? <Pause size={15} /> : <Play size={15} className="fill-current" />}
+              {isPlaying ? <Pause size={15} /> : <Play size={15} className="fill-current translate-x-0.5" />}
             </button>
             <button
               type="button"
@@ -232,7 +199,7 @@ export function TutorialVideoPlayer({
               className="tutorial-ctrl-icon-btn"
               aria-label={isMuted ? 'Unmute' : 'Mute'}
             >
-              {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+              {isMuted ? <VolumeX size={15} className="text-red-400" /> : <Volume2 size={15} className="text-[#a0e4f1]" />}
             </button>
             <span className="tutorial-time-text">
               {currentTime} / {duration}

@@ -5008,32 +5008,41 @@
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 .nav-dropdown-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 14px 18px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  text-align: left !important;
+  gap: 14px !important;
+  padding: 10px 14px !important;
   text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  transition: background .15s;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background .15s ease, transform .15s ease;
+  border-radius: 12px;
+}
+.nav-dropdown-item > div:first-child {
+  flex-shrink: 0 !important;
 }
 .nav-dropdown-item:last-child { border-bottom: none; }
 .nav-dropdown-item:hover {
-  background: linear-gradient(90deg, rgba(198, 115, 226, 0.15), rgba(160, 228, 241, 0.1));
+  background: rgba(255, 255, 255, 0.08);
 }
 .nav-dropdown-item strong {
-  font: 700 .68rem 'DM Mono', monospace;
-  letter-spacing: .12em;
+  text-align: left !important;
+  font: 700 .75rem 'DM Mono', monospace;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: rgba(203,213,225,0.9);
+  color: #ffffff;
   transition: color 0.15s ease;
+  display: block;
 }
 .nav-dropdown-item:hover strong {
   color: #a0e4f1;
-  
 }
 .nav-dropdown-item span {
-  font: 500 .72rem 'Space Grotesk', sans-serif;
-  color: rgba(148,163,184,0.6);
+  text-align: left !important;
+  font: 400 .72rem 'Space Grotesk', sans-serif;
+  color: rgba(255, 255, 255, 0.45);
+  display: block;
 }
 .nav-link {
   padding: 6px 12px;
@@ -8767,6 +8776,14 @@
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* INTERACTIVE TUTORIAL VIDEO PLAYER (Cyberpunk / Void Aesthetics)           */
 /* ═══════════════════════════════════════════════════════════════════════════ */
+.tutorial-player-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .tutorial-player-container {
   position: relative;
   width: 100%;
@@ -8776,7 +8793,7 @@
   border-radius: 20px;
   overflow: hidden;
   background: #04010a;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.75);
   border: 1px solid rgba(198, 115, 226, 0.25);
   cursor: pointer;
 }
@@ -8787,86 +8804,12 @@
   aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
-  transform: scale(1.01);
+  transform: scale(1.005);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tutorial-player-container:hover .tutorial-video-media {
-  transform: scale(1.03);
-}
-
-.tutorial-overlay-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(4, 1, 10, 0.65) 0%,
-    rgba(4, 1, 10, 0.1) 40%,
-    rgba(4, 1, 10, 0.3) 65%,
-    rgba(4, 1, 10, 0.9) 100%
-  );
-  pointer-events: auto;
-  z-index: 2;
-}
-
-.tutorial-top-hud {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-.tutorial-kicker-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background: rgba(10, 5, 24, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(160, 228, 241, 0.4);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  font: 700 0.68rem 'DM Mono', monospace;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #ffffff;
-}
-
-.tutorial-live-indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  background: #a0e4f1;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  animation: pulse 1.8s infinite;
-}
-
-.tutorial-quick-mute-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  background: rgba(10, 5, 24, 0.75);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  font: 600 0.65rem 'DM Mono', monospace;
-  letter-spacing: 0.1em;
-  color: #cbd5e1;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tutorial-quick-mute-btn:hover {
-  background: rgba(198, 115, 226, 0.35);
-  border-color: rgba(255,255,255,0.25);
-  color: #ffffff;
+  transform: scale(1.02);
 }
 
 .tutorial-center-play-btn {
@@ -8902,54 +8845,26 @@
   pointer-events: none;
 }
 
-.tutorial-info-hud {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 74px;
-  z-index: 8;
-  pointer-events: none;
-}
-
-.tutorial-info-title {
-  margin: 0 0 6px 0;
-  font-family: 'Space Grotesk', 'Outfit', sans-serif;
-  font-size: clamp(1.4rem, 2.4vw, 2.1rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  text-transform: uppercase;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
-}
-
-.tutorial-info-tagline {
-  margin: 0;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.74rem;
-  letter-spacing: 0.05em;
-  color: #94a3b8;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-  max-width: 440px;
-}
-
-.tutorial-controls-bar {
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 16px;
-  z-index: 15;
-  background: rgba(10, 5, 24, 0.82);
+/* ── External Controller Bar Below Video Player Window ── */
+.tutorial-controls-bar-external {
+  position: relative;
+  width: 100%;
+  background: rgba(10, 5, 24, 0.88);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(198, 115, 226, 0.3);
-  border-radius: 12px;
-  padding: 8px 14px;
+  border: 1px solid rgba(198, 115, 226, 0.28);
+  border-radius: 14px;
+  padding: 10px 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  pointer-events: auto;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  gap: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tutorial-controls-bar-external:hover {
+  border-color: rgba(160, 228, 241, 0.45);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(160, 228, 241, 0.12);
 }
 
 .tutorial-scrub-wrap {
@@ -8957,10 +8872,15 @@
   width: 100%;
   height: 6px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: height 0.15s ease;
+}
+
+.tutorial-scrub-wrap:hover {
+  height: 8px;
 }
 
 .tutorial-scrub-slider {
@@ -8978,7 +8898,7 @@
   height: 100%;
   border-radius: 9999px;
   background: linear-gradient(90deg, #c673e2, #a0e4f1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(160, 228, 241, 0.5);
   pointer-events: none;
 }
 
@@ -8992,27 +8912,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #cbd5e1;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .tutorial-ctrl-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #a0e4f1;
-  transform: scale(1.1);
+  background: rgba(160, 228, 241, 0.15);
+  border-color: rgba(160, 228, 241, 0.4);
+  color: #ffffff;
+  transform: scale(1.06);
 }
 
 .tutorial-time-text {
   font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
   color: #94a3b8;
-  margin-left: 6px;
+  margin-left: 8px;
+  font-weight: 500;
 }
 
 /* ── Cinematic Hero Section ───────────────────────────────────────────────────

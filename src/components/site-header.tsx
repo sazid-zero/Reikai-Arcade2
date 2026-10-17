@@ -147,88 +147,88 @@ export function SiteHeader({
               </button>
               {categoriesDropdown && (
                 <div
-                  className="nav-dropdown-menu absolute top-full left-0 pt-2 w-64 z-50 animate-in fade-in zoom-in-95 duration-150"
+                  className="nav-dropdown-menu absolute top-full left-0 pt-2 w-72 sm:w-80 z-50 animate-in fade-in zoom-in-95 duration-150"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className="rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-xl">
                     <Link
                       href="/games"
-                      className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
-                        <Gamepad2 size={16} />
+                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
+                        <Gamepad2 size={18} />
                       </div>
-                      <div>
-                        <strong className="block text-xs font-bold text-white group-hover:text-white">
+                      <div className="text-left min-w-0">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
                           PS5 Games
                         </strong>
-                        <span className="block text-[11px] text-zinc-400">Exclusives, hits &amp; discs</span>
+                        <span className="block text-[11px] text-zinc-400 text-left truncate">Exclusives, hits &amp; discs</span>
                       </div>
                     </Link>
 
                     <Link
                       href="/top-up"
-                      className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
-                        <Zap size={16} />
+                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
+                        <Zap size={18} />
                       </div>
-                      <div>
-                        <strong className="block text-xs font-bold text-white">
+                      <div className="text-left min-w-0">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
                           Game Top-Up
                         </strong>
-                        <span className="block text-[11px] text-zinc-400">Valorant, PUBG, Genshin</span>
+                        <span className="block text-[11px] text-zinc-400 text-left truncate">Valorant, PUBG, Genshin</span>
                       </div>
                     </Link>
 
                     <Link
                       href="/accessories"
-                      className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
-                        <Headphones size={16} />
+                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
+                        <Headphones size={18} />
                       </div>
-                      <div>
-                        <strong className="block text-xs font-bold text-white">
+                      <div className="text-left min-w-0">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
                           Accessories
                         </strong>
-                        <span className="block text-[11px] text-zinc-400">DualSense, headsets &amp; gear</span>
+                        <span className="block text-[11px] text-zinc-400 text-left truncate">DualSense, headsets &amp; gear</span>
                       </div>
                     </Link>
 
                     <Link
                       href="/subscriptions"
-                      className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
-                        <Crown size={16} />
+                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
+                        <Crown size={18} />
                       </div>
-                      <div>
-                        <strong className="block text-xs font-bold text-white">
+                      <div className="text-left min-w-0">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
                           Subscriptions
                         </strong>
-                        <span className="block text-[11px] text-zinc-400">PS Plus, Game Pass &amp; EA</span>
+                        <span className="block text-[11px] text-zinc-400 text-left truncate">PS Plus, Game Pass &amp; EA</span>
                       </div>
                     </Link>
 
                     <Link
                       href="/gift-cards"
-                      className="nav-dropdown-item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition group"
+                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
                       onClick={() => setCategoriesDropdown(false)}
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/70 group-hover:text-white transition">
-                        <Gift size={16} />
+                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
+                        <Gift size={18} />
                       </div>
-                      <div>
-                        <strong className="block text-xs font-bold text-white">
+                      <div className="text-left min-w-0">
+                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
                           Gift Cards
                         </strong>
-                        <span className="block text-[11px] text-zinc-400">PSN, Steam, Google &amp; Apple</span>
+                        <span className="block text-[11px] text-zinc-400 text-left truncate">PSN, Steam, Google &amp; Apple</span>
                       </div>
                     </Link>
                   </div>
