@@ -248,7 +248,9 @@
    ─────────────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   :root {
-    --header-height: auto;
+    --header-height: 108px;
+    --mobile-header-height: 108px;
+    --mobile-nav-height: 60px;
     --mobile-header-pb: 14px;
   }
 
@@ -8070,6 +8072,33 @@
   }
 }
 
+/* ── ADAPTIVE FULL-VIEWPORT CINEMATIC HERO (EXACT FIT ON ALL DEVICES) ── */
+.cinematic-hero-section {
+  position: relative;
+  width: 100%;
+  /* Desktop: Full screen minus 72px desktop sticky header */
+  height: calc(100vh - 72px);
+  height: calc(100dvh - 72px);
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  background-color: #000000;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .cinematic-hero-section {
+    /* Mobile: EXACT viewport between the mobile top header and bottom nav */
+    height: calc(100dvh - var(--mobile-header-height, 108px) - calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px)));
+    min-height: calc(100dvh - var(--mobile-header-height, 108px) - calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px)));
+    max-height: none;
+    padding-bottom: 6px;
+  }
+}
+
 /* ── BACKGROUND VIDEO & SIMPLE DARKENED OVERLAY (NO COLORED OVERLAY) ── */
 .hero-video-bg {
   position: absolute;
@@ -8991,6 +9020,25 @@
   font-size: 0.68rem;
   color: #94a3b8;
   margin-left: 6px;
+}
+
+/* ── Cinematic Hero Section ───────────────────────────────────────────────────
+   Desktop: full viewport height (minus the sticky header)
+   Mobile:  exact remaining space between mobile header + bottom nav,
+            so the hero always fills precisely one viewport fold
+   ─────────────────────────────────────────────────────────────────────────── */
+.cinematic-hero-section {
+  height: calc(100dvh - var(--header-height, 76px));
+  min-height: 0;
+  max-height: none;
+}
+
+@media (max-width: 768px) {
+  .cinematic-hero-section {
+    height: calc(100dvh - var(--mobile-header-height, 108px) - var(--mobile-nav-height, 60px));
+    min-height: 0;
+    max-height: none;
+  }
 }
 
 

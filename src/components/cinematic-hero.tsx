@@ -11,7 +11,6 @@ interface CinematicHeroProps {
 
 export function CinematicHero({ onExplore }: CinematicHeroProps) {
   const [mounted, setMounted] = useState(false);
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -19,24 +18,14 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
     // Trigger the slow cinematic reveal on mount
     const timer = setTimeout(() => setMounted(true), 100);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (window.innerWidth < 768) return;
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 2; // -1 to 1
-      const y = (e.clientY / innerHeight - 0.5) * 2;
-      setMouseOffset({ x, y });
-    };
-
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -44,14 +33,9 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
   const word1 = 'REIKAI'.split('');
   const word2 = 'ARCADE'.split('');
 
-  // Parallax calculations
-  const textTranslateX = mouseOffset.x * 12;
-  const textTranslateY = mouseOffset.y * 10 + scrollY * 0.24;
+  // Subtle scroll fade only (no cursor/mouse movement)
   const textOpacity = Math.max(0, 1 - scrollY / 550);
-  const textBlur = Math.min(10, scrollY * 0.02);
-
-  const videoTranslateX = mouseOffset.x * -10;
-  const videoTranslateY = mouseOffset.y * -8;
+  const textBlur = Math.min(8, scrollY * 0.02);
 
   const scrollToCatalog = () => {
     if (onExplore) {
@@ -67,7 +51,7 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[calc(100vh-var(--header-height,72px))] min-h-[520px] max-h-[920px] flex flex-col justify-between items-center overflow-hidden bg-black select-none"
+      className="cinematic-hero-section relative w-full flex flex-col justify-between items-center overflow-hidden bg-black select-none"
       id="discover"
     >
       {/* ── 1. BACKGROUND VIDEO LAYER (Horizontal & Vertical Object-Cover) ── */}
@@ -78,10 +62,7 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out"
-          style={{
-            transform: `translate3d(${videoTranslateX}px, ${videoTranslateY}px, 0) scale(1.06)`,
-          }}
+          className="absolute inset-0 w-full h-full object-cover object-center"
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
@@ -97,7 +78,6 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       <div
         className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-10 flex-1 flex flex-col items-center justify-center text-center transition-all duration-300 py-4"
         style={{
-          transform: `translate3d(${textTranslateX}px, ${textTranslateY}px, 0)`,
           opacity: textOpacity,
           filter: textBlur > 0.2 ? `blur(${textBlur}px)` : 'none',
         }}
