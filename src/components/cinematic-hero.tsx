@@ -9,10 +9,23 @@ interface CinematicHeroProps {
   cartCount?: number;
 }
 
+const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
+
+// Smoothstep cubic Hermite interpolation for butter-smooth easing curves
+const smoothProgress = (y: number, start: number, end: number) => {
+  const p = clamp((y - start) / (end - start), 0, 1);
+  return p * p * (3 - 2 * p);
+};
+
 export function CinematicHero({ onExplore }: CinematicHeroProps) {
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const btn1Ref = useRef<HTMLButtonElement>(null);
+  const btn2Ref = useRef<HTMLAnchorElement>(null);
+  const bottomBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Trigger the slow cinematic reveal on mount
@@ -20,8 +33,6 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
     let rafId: number | null = null;
     let isHeroInView = true;
-
-    const isMobile = () => typeof window !== 'undefined' && window.innerWidth <= 768;
 
     // Pause scroll tracking completely when hero is scrolled past viewport
     const observer = new IntersectionObserver(
@@ -49,21 +60,118 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         if (!contentRef.current) return;
         const y = window.scrollY;
         const isSmallScreen = window.innerWidth <= 768;
-        const fadeDistance = isSmallScreen ? 280 : 550;
-        const cutoff = isSmallScreen ? 420 : 750;
 
-        if (y > cutoff) {
-          contentRef.current.style.opacity = '0';
-          contentRef.current.style.pointerEvents = 'none';
-          return;
+        if (isSmallScreen) {
+          // ── PHONE STAGGERED SEQUENTIAL SCROLL EXIT ────────────────────────
+          // On mobile, the main container remains stationary (no container jump).
+          // Each child item exits sequentially one by one:
+          // 1. REIKAI ARCADE title
+          // 2. Description
+          // 3. Button 1 (ENTER VAULT)
+          // 4. Button 2 (BROWSE CATALOG)
+          // ───────────────────────────────────────────────────────────────────
+          contentRef.current.style.opacity = '1';
+          contentRef.current.style.transform = 'none';
+
+          const allGone = y > 460;
+          contentRef.current.style.pointerEvents = allGone ? 'none' : 'auto';
+
+          // 0. Bottom Explore Bar: fades out first (y: 0 -> 75)
+          if (bottomBarRef.current) {
+            bottomBarRef.current.style.transition = 'none';
+            const p0 = smoothProgress(y, 0, 75);
+            bottomBarRef.current.style.opacity = String(Math.max(0, 1 - p0));
+            bottomBarRef.current.style.transform = `translate3d(0, ${p0 * 16}px, 0)`;
+            bottomBarRef.current.style.pointerEvents = p0 >= 0.95 ? 'none' : 'auto';
+          }
+
+          // 1. Title: exits first (y: 15 -> 175)
+          if (titleRef.current) {
+            titleRef.current.style.transition = 'none';
+            const p1 = smoothProgress(y, 15, 175);
+            const op1 = Math.max(0, 1 - p1);
+            titleRef.current.style.opacity = String(op1);
+            titleRef.current.style.transform = `translate3d(0, -${p1 * 30}px, 0) scale(${1 - p1 * 0.04})`;
+            titleRef.current.style.pointerEvents = p1 >= 0.95 ? 'none' : 'auto';
+          }
+
+          // 2. Editorial Description: exits second (y: 105 -> 275)
+          if (descRef.current) {
+            descRef.current.style.transition = 'none';
+            const p2 = smoothProgress(y, 105, 275);
+            const op2 = Math.max(0, 1 - p2);
+            descRef.current.style.opacity = String(op2);
+            descRef.current.style.transform = `translate3d(0, -${p2 * 26}px, 0) scale(${1 - p2 * 0.03})`;
+            descRef.current.style.pointerEvents = p2 >= 0.95 ? 'none' : 'auto';
+          }
+
+          // 3. Button 1 ("ENTER VAULT"): exits third (y: 195 -> 365)
+          if (btn1Ref.current) {
+            btn1Ref.current.style.transition = 'none';
+            const p3 = smoothProgress(y, 195, 365);
+            const op3 = Math.max(0, 1 - p3);
+            btn1Ref.current.style.opacity = String(op3);
+            btn1Ref.current.style.transform = `translate3d(0, -${p3 * 22}px, 0) scale(${1 - p3 * 0.03})`;
+            btn1Ref.current.style.pointerEvents = p3 >= 0.95 ? 'none' : 'auto';
+          }
+
+          // 4. Button 2 ("BROWSE CATALOG"): exits fourth (y: 275 -> 445)
+          if (btn2Ref.current) {
+            btn2Ref.current.style.transition = 'none';
+            const p4 = smoothProgress(y, 275, 445);
+            const op4 = Math.max(0, 1 - p4);
+            btn2Ref.current.style.opacity = String(op4);
+            btn2Ref.current.style.transform = `translate3d(0, -${p4 * 22}px, 0) scale(${1 - p4 * 0.03})`;
+            btn2Ref.current.style.pointerEvents = p4 >= 0.95 ? 'none' : 'auto';
+          }
+        } else {
+          // ── DESKTOP: RETAIN EXISTING PARALLAX (UNTOUCHED) ────────────────
+          // Reset any mobile inline styles on individual child elements
+          if (titleRef.current) {
+            titleRef.current.style.opacity = '';
+            titleRef.current.style.transform = '';
+            titleRef.current.style.pointerEvents = '';
+            titleRef.current.style.transition = '';
+          }
+          if (descRef.current) {
+            descRef.current.style.opacity = '';
+            descRef.current.style.transform = '';
+            descRef.current.style.pointerEvents = '';
+            descRef.current.style.transition = '';
+          }
+          if (btn1Ref.current) {
+            btn1Ref.current.style.opacity = '';
+            btn1Ref.current.style.transform = '';
+            btn1Ref.current.style.pointerEvents = '';
+            btn1Ref.current.style.transition = '';
+          }
+          if (btn2Ref.current) {
+            btn2Ref.current.style.opacity = '';
+            btn2Ref.current.style.transform = '';
+            btn2Ref.current.style.pointerEvents = '';
+            btn2Ref.current.style.transition = '';
+          }
+          if (bottomBarRef.current) {
+            bottomBarRef.current.style.opacity = '';
+            bottomBarRef.current.style.transform = '';
+            bottomBarRef.current.style.pointerEvents = '';
+            bottomBarRef.current.style.transition = '';
+          }
+
+          const fadeDistance = 550;
+          const cutoff = 750;
+
+          if (y > cutoff) {
+            contentRef.current.style.opacity = '0';
+            contentRef.current.style.pointerEvents = 'none';
+            return;
+          }
+
+          const opacity = Math.max(0, 1 - y / fadeDistance);
+          contentRef.current.style.opacity = String(opacity);
+          contentRef.current.style.transform = `translate3d(0, ${y * 0.2}px, 0)`;
+          contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
         }
-
-        const opacity = Math.max(0, 1 - y / fadeDistance);
-        contentRef.current.style.opacity = String(opacity);
-        // On mobile, float upwards (-y) as it dissolves instead of pushing downwards (+y)
-        const translateY = isSmallScreen ? -(y * 0.15) : (y * 0.2);
-        contentRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`;
-        contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
       });
     };
 
@@ -105,12 +213,6 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
     >
       {/* ── 1. BACKGROUND VIDEO LAYER ── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/*
-          poster= shows a still image instantly while the video loads.
-          preload="metadata" on mobile saves bandwidth (only fetches first few KB).
-          preload="auto" on desktop starts buffering for smooth instant play.
-          WebM source first — much smaller, natively supported on Chrome/Android.
-        */}
         <video
           autoPlay
           loop
@@ -141,9 +243,11 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       >
         {/* Letter-by-Letter Cinematic Title: "REIKAI ARCADE" */}
         <h1
+          ref={titleRef}
           className="font-['Cinzel',serif] text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-[0.14em] sm:tracking-[0.19em] uppercase text-white leading-tight mb-4 sm:mb-6 flex flex-wrap justify-center gap-x-4 sm:gap-x-7"
           style={{
             textShadow: '0 20px 45px rgba(0, 0, 0, 0.95), 0 4px 14px rgba(0,0,0,0.85)',
+            willChange: 'transform, opacity',
           }}
           aria-label="REIKAI ARCADE"
         >
@@ -194,12 +298,13 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
         {/* Editorial Subtitle / Manifesto Description */}
         <p
+          ref={descRef}
           className={`max-w-xl font-['Space_Grotesk',sans-serif] text-xs sm:text-sm md:text-base text-zinc-300/90 font-light leading-relaxed tracking-wide mb-6 sm:mb-8 px-4 transition-all duration-[1400ms] ease-out ${
             mounted
               ? 'opacity-100 translate-y-0 blur-0'
               : 'opacity-0 translate-y-5 blur-sm'
           }`}
-          style={{ transitionDelay: '1400ms' }}
+          style={{ transitionDelay: '1400ms', willChange: 'transform, opacity' }}
         >
           Curated PlayStation hardware, verified digital vouchers, and tournament artefacts.
           Engineered for those who demand absolute distinction.
@@ -216,9 +321,11 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         >
           {/* Primary Action Button */}
           <button
+            ref={btn1Ref}
             type="button"
             onClick={scrollToCatalog}
             className="group relative inline-flex items-center justify-center gap-3 px-8 sm:px-9 py-3 sm:py-3.5 rounded-full bg-white text-black font-['Space_Grotesk',sans-serif] font-bold text-xs uppercase tracking-[0.22em] shadow-[0_8px_30px_rgba(255,255,255,0.18)] hover:bg-zinc-200 hover:shadow-[0_12px_40px_rgba(255,255,255,0.28)] transition-all duration-300 active:scale-95 cursor-pointer w-full sm:w-auto"
+            style={{ willChange: 'transform, opacity' }}
             data-testid="hero-primary-cta"
           >
             <span>ENTER VAULT</span>
@@ -230,8 +337,10 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
           {/* Secondary Action Button */}
           <Link
+            ref={btn2Ref}
             href="/games"
             className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-9 py-3 sm:py-3.5 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-xl text-white font-['Space_Grotesk',sans-serif] font-medium text-xs uppercase tracking-[0.22em] hover:bg-white/[0.09] hover:border-white/40 transition-all duration-300 active:scale-95 cursor-pointer w-full sm:w-auto"
+            style={{ willChange: 'transform, opacity' }}
             data-testid="hero-secondary-cta"
           >
             <span>BROWSE CATALOG</span>
@@ -240,7 +349,11 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       </div>
 
       {/* ── 3. BOTTOM AMBIENT STATUS BAR & SCROLL PROMPT ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 pb-4 sm:pb-6 flex items-center justify-between text-[10px] font-['DM_Mono'] tracking-[0.25em] uppercase text-zinc-300/80 pointer-events-none">
+      <div
+        ref={bottomBarRef}
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 pb-4 sm:pb-6 flex items-center justify-between text-[10px] font-['DM_Mono'] tracking-[0.25em] uppercase text-zinc-300/80 pointer-events-none"
+        style={{ willChange: 'transform, opacity' }}
+      >
         {/* Left Specification Index */}
         <div className="hidden sm:block flex-1 text-left">
           <span>01 // STOREFRONT INDEX</span>
