@@ -257,7 +257,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: -52px;
+  bottom: 0;
   pointer-events: none;
   z-index: 0;
   opacity: 0;
@@ -276,11 +276,16 @@
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
 }
 
-.site-header::after {
+ .site-header::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.14) 58%,
+    rgba(0, 0, 0, 0.05) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
   backdrop-filter: blur(22px) saturate(100%);
   -webkit-backdrop-filter: blur(22px) saturate(100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
 }
 
 .site-header.site-header--scrolled::before,
@@ -4883,7 +4888,7 @@ body:not(:has(.cinematic-hero-section)) main {
 
 /* ─────────────────────────────────────────────────────────────────── */
 /* GAMES CATALOG page: catalog-hero subtle game variant               */
-/* ─────────────────────────────────────────────────────────────────── */
+/* ─────��───────────────────────────────────────────────────────────── */
 .catalog-hero.games-hero {
   background:
     radial-gradient(ellipse 80% 60% at 50% 0%, hsl(260 70% 30% / 0.24), transparent 60%),
