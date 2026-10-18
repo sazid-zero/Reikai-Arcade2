@@ -118,7 +118,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
   })
 
   return (
-    <main className="min-h-screen bg-[#08080f] px-5 py-8 text-slate-100 selection:bg-purple-600 md:px-10">
+    <main className="min-h-screen bg-[#08080f] px-5 py-8 text-slate-100 selection:bg-white selection:text-black md:px-10">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <header className="flex flex-col justify-between gap-5 border-b border-white/10 pb-8 md:flex-row md:items-end">
@@ -126,13 +126,13 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
             <div className="flex items-center gap-3">
               <Link
                 href="/admin"
-                className="inline-flex items-center gap-1.5 text-xs text-purple-400 hover:text-purple-300 font-mono"
+                className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white font-mono"
               >
                 <ArrowLeft size={14} /> Back to Dashboard
               </Link>
             </div>
             <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white md:text-4xl flex items-center gap-3">
-              <Key className="text-purple-400 h-8 w-8" />
+              <Key className="text-zinc-300 h-8 w-8" />
               Digital Codes &amp; Vouchers
             </h1>
             <p className="mt-1 text-sm text-slate-400">
@@ -144,7 +144,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
             <Link
               href="/top-up"
               target="_blank"
-              className="inline-flex items-center gap-2 rounded-xl border border-purple-500/30 bg-purple-950/30 px-4 py-2.5 text-xs font-bold text-purple-300 hover:bg-purple-900/40 transition"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-xs font-bold text-zinc-200 hover:bg-white/10 transition"
             >
               <Zap size={14} /> View Top-Up Storefront
             </Link>
@@ -168,9 +168,9 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
             <span className="text-xs font-mono uppercase tracking-wider text-emerald-400">Available to Sell</span>
             <p className="mt-2 text-3xl font-black text-emerald-400">{availableCount}</p>
           </div>
-          <div className="rounded-2xl border border-purple-500/20 bg-purple-950/10 p-5">
-            <span className="text-xs font-mono uppercase tracking-wider text-purple-400">Delivered to Orders</span>
-            <p className="mt-2 text-3xl font-black text-purple-300">{deliveredCount}</p>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <span className="text-xs font-mono uppercase tracking-wider text-zinc-300">Delivered to Orders</span>
+            <p className="mt-2 text-3xl font-black text-zinc-200">{deliveredCount}</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
             <span className="text-xs font-mono uppercase tracking-wider text-slate-400">Digital Denominations</span>
@@ -179,9 +179,9 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
         </div>
 
         {/* ── BATCH ADD CODES FORM ───────────────────────────────────────── */}
-        <section className="mt-8 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-950/20 via-black/40 to-black/60 p-6">
+        <section className="mt-8 rounded-2xl border border-white/15 bg-gradient-to-br from-white/[0.04] via-black/40 to-black/60 p-6">
           <div className="flex items-center gap-2 mb-3">
-            <Plus className="text-purple-400 h-5 w-5" />
+            <Plus className="text-zinc-300 h-5 w-5" />
             <h2 className="text-lg font-bold text-white">Batch Add New Digital Voucher Codes</h2>
           </div>
           <p className="text-xs text-slate-400 mb-5">
@@ -209,7 +209,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
                 <select
                   value={selectedVariantId}
                   onChange={(e) => setSelectedVariantId(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-[#120f24] px-3.5 py-2.5 text-sm text-white focus:border-purple-500 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-zinc-900/60 px-3.5 py-2.5 text-sm text-white focus:border-white/30 focus:outline-none"
                   required
                 >
                   {variants.map((v) => (
@@ -230,7 +230,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
                   value={batchText}
                   onChange={(e) => setBatchText(e.target.value)}
                   placeholder={`e.g.\nPSN-US50-X21P-8834\nPSN-US50-Y76L-4412\nPSN-US50-K19M-3321`}
-                  className="w-full rounded-xl border border-white/10 bg-[#120f24] p-3 text-sm font-mono text-purple-200 placeholder:text-slate-600 focus:border-purple-500 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-zinc-900/60 p-3 text-sm font-mono text-white placeholder:text-slate-600 focus:border-white/30 focus:outline-none"
                 />
               </div>
             </div>
@@ -239,7 +239,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
               <button
                 type="submit"
                 disabled={isPending || !batchText.trim()}
-                className="flex items-center gap-2 rounded-xl bg-purple-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-purple-500 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="flex items-center gap-2 rounded-xl bg-white text-black hover:bg-zinc-200 px-6 py-2.5 text-xs font-bold text-white  active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 {isPending ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Plus size={16} />}
                 <span>Add Codes to Vault</span>
@@ -265,14 +265,14 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search code or order..."
-                  className="rounded-xl border border-white/10 bg-black/40 pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:border-purple-500 focus:outline-none"
+                  className="rounded-xl border border-white/10 bg-black/40 pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-slate-600 focus:border-white/30 focus:outline-none"
                 />
               </div>
 
               <select
                 value={filterVariant}
                 onChange={(e) => setFilterVariant(e.target.value)}
-                className="rounded-xl border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white focus:border-purple-500 focus:outline-none"
+                className="rounded-xl border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white focus:border-white/30 focus:outline-none"
               >
                 <option value="all">All Denominations</option>
                 {variants.map((v) => (
@@ -285,7 +285,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="rounded-xl border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white focus:border-purple-500 focus:outline-none"
+                className="rounded-xl border border-white/10 bg-black/40 px-3 py-1.5 text-xs text-white focus:border-white/30 focus:outline-none"
               >
                 <option value="all">All Statuses</option>
                 <option value="available">Available Only</option>
@@ -316,7 +316,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
                 ) : (
                   filteredCodes.map((item) => (
                     <tr key={item.id} className="hover:bg-white/[0.02] transition">
-                      <td className="py-3 px-3 font-mono text-purple-300 font-bold">
+                      <td className="py-3 px-3 font-mono text-zinc-200 font-bold">
                         <div className="flex items-center gap-2">
                           <span>{item.code}</span>
                           <button
@@ -339,7 +339,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
                             ● Available
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-purple-500/30 bg-purple-950/40 px-2 py-0.5 text-[10px] font-bold text-purple-300">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] font-bold text-zinc-200">
                             ✓ Delivered
                           </span>
                         )}
@@ -348,7 +348,7 @@ export function DigitalCodesClient({ variants, codes: initialCodes }: Props) {
                         {item.orderId ? (
                           <Link
                             href={`/admin/orders/${item.orderId}`}
-                            className="font-mono text-xs text-purple-400 hover:underline"
+                            className="font-mono text-xs text-zinc-300 hover:underline"
                           >
                             #{item.orderId.slice(0, 8)}
                           </Link>

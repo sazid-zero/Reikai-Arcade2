@@ -19,7 +19,6 @@ import {
   Gift,
   Crown,
   Headphones,
-
   Package,
 } from 'lucide-react';
 import { UserAuthButton } from '@/components/user-auth-button';
@@ -38,12 +37,23 @@ export function SiteHeader({
   onStageJump?: (index: number) => void;
 }) {
   const pathname = usePathname();
-  const { cartCount, setCartOpen } = useCart();
+  const { cartCount } = useCart();
   const { openSearch } = useSearch();
   const { isOpen: isMobileMenuOpen, toggleMenu: toggleMobileMenu } = useMobileMenu();
   const [categoriesDropdown, setCategoriesDropdown] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Scroll detection for transparent → smooth blur transition without visible edge
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -69,7 +79,6 @@ export function SiteHeader({
     };
   }, []);
 
-  // Close dropdown on route change
   useEffect(() => {
     setCategoriesDropdown(false);
   }, [pathname]);
@@ -82,40 +91,33 @@ export function SiteHeader({
       } else if (onHomeClick) {
         e.preventDefault();
         onHomeClick();
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
   };
 
   return (
     <>
-      <header className="site-header site-header-capsule">
+      <header className={`site-header${scrolled ? ' site-header--scrolled' : ''}`}>
         <div className="header-inner">
-          {/* Row 1: Logo (Left) and UserAuthButton (Right on mobile, or right actions on desktop) */}
-          <div className="site-header-row1 flex items-center justify-between w-full md:w-auto">
-            <Link
-              href="/"
-              onClick={handleLogoClick}
-              className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-2.5 sm:gap-3 shrink-0"
-              data-testid="button-home"
-            >
-              <img
-                src="/logo.jpeg"
-                alt="Reikai Arcade"
-                className="header-logo-img"
-              />
-              <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm sm:text-base">
-                REIKAI <span className="wordmark-highlight text-[#a0e4f1]/80">ARCADE</span>
-              </span>
-            </Link>
 
-            {/* Mobile Only: Sign in or Profile icon based on sign in logic */}
-            <div className="flex md:hidden items-center gap-2">
-              <UserAuthButton />
-            </div>
-          </div>
+          {/* ── DESKTOP LAYOUT (>= 769px) ── */}
+          {/* Logo — left */}
+          <Link
+            href="/"
+            onClick={handleLogoClick}
+            className="header-logo-badge hidden md:flex items-center gap-2.5 shrink-0 border-0 bg-transparent p-0 cursor-pointer text-white"
+            data-testid="button-home"
+          >
+            <img src="/logo.jpeg" alt="Reikai Arcade" className="header-logo-img h-8 w-8 rounded-full object-cover border border-white/20" />
+            <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm">
+              REIKAI <span className="text-white/60">ARCADE</span>
+            </span>
+          </Link>
 
-          {/* Desktop Navigation — Categories dropdown */}
-          <nav className="header-nav hidden md:flex items-center" aria-label="Main navigation">
+          {/* Desktop Nav — center */}
+          <nav className="header-nav hidden md:flex items-center gap-1" aria-label="Main navigation">
             <div
               ref={dropdownRef}
               className="nav-dropdown-wrapper relative py-2"
@@ -125,25 +127,25 @@ export function SiteHeader({
               <button
                 type="button"
                 onClick={() => setCategoriesDropdown((prev) => !prev)}
-                className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition cursor-pointer ${
+                className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-400 hover:text-white hover:bg-white/5 transition cursor-pointer ${
                   categoriesDropdown ||
                   pathname.startsWith('/accessories') ||
                   pathname.startsWith('/games') ||
                   pathname.startsWith('/top-up') ||
                   pathname.startsWith('/gift-cards') ||
                   pathname.startsWith('/subscriptions')
-                    ? 'text-white bg-white/8'
+                    ? 'text-white bg-white/10'
                     : ''
                 }`}
                 aria-expanded={categoriesDropdown}
                 aria-haspopup="true"
               >
-                <Layers size={13} className="text-white/50" />
+                <Layers size={13} className="text-white/60" />
                 <span>Categories</span>
                 <ChevronDown
                   size={12}
-                  className={`nav-chevron text-zinc-400 transition-transform duration-200 ${
-                    categoriesDropdown ? 'rotate-180 text-white/70' : ''
+                  className={`nav-chevron text-zinc-500 transition-transform duration-200 ${
+                    categoriesDropdown ? 'rotate-180 text-white' : ''
                   }`}
                 />
               </button>
@@ -153,106 +155,51 @@ export function SiteHeader({
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-xl">
-                    <Link
-                      href="/games"
-                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
-                      onClick={() => setCategoriesDropdown(false)}
-                    >
-                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
-                        <Gamepad2 size={18} />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
-                          PS5 Games
-                        </strong>
-                        <span className="block text-[11px] text-zinc-400 text-left truncate">Exclusives, hits &amp; discs</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/top-up"
-                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
-                      onClick={() => setCategoriesDropdown(false)}
-                    >
-                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
-                        <Zap size={18} />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
-                          Game Top-Up
-                        </strong>
-                        <span className="block text-[11px] text-zinc-400 text-left truncate">Valorant, PUBG, Genshin</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/accessories"
-                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
-                      onClick={() => setCategoriesDropdown(false)}
-                    >
-                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
-                        <Headphones size={18} />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
-                          Accessories
-                        </strong>
-                        <span className="block text-[11px] text-zinc-400 text-left truncate">DualSense, headsets &amp; gear</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/subscriptions"
-                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
-                      onClick={() => setCategoriesDropdown(false)}
-                    >
-                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
-                        <Crown size={18} />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
-                          Subscriptions
-                        </strong>
-                        <span className="block text-[11px] text-zinc-400 text-left truncate">PS Plus, Game Pass &amp; EA</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/gift-cards"
-                      className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
-                      onClick={() => setCategoriesDropdown(false)}
-                    >
-                      <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition">
-                        <Gift size={18} />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">
-                          Gift Cards
-                        </strong>
-                        <span className="block text-[11px] text-zinc-400 text-left truncate">PSN, Steam, Google &amp; Apple</span>
-                      </div>
-                    </Link>
+                  <div className="rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-2xl">
+                    {[
+                      { href: '/games', icon: <Gamepad2 size={18} />, label: 'PS5 Games', desc: 'Exclusives, hits & discs' },
+                      { href: '/top-up', icon: <Zap size={18} />, label: 'Game Top-Up', desc: 'Valorant, PUBG, Genshin' },
+                      { href: '/accessories', icon: <Headphones size={18} />, label: 'Accessories', desc: 'DualSense, headsets & gear' },
+                      { href: '/subscriptions', icon: <Crown size={18} />, label: 'Subscriptions', desc: 'PS Plus, Game Pass & EA' },
+                      { href: '/gift-cards', icon: <Gift size={18} />, label: 'Gift Cards', desc: 'PSN, Steam, Google & Apple' },
+                    ].map(({ href, icon, label, desc }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left"
+                        onClick={() => setCategoriesDropdown(false)}
+                      >
+                        <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/60 group-hover:text-white group-hover:bg-white/10 transition">
+                          {icon}
+                        </div>
+                        <div className="text-left min-w-0">
+                          <strong className="block text-xs font-bold text-white/80 group-hover:text-white text-left transition-colors">
+                            {label}
+                          </strong>
+                          <span className="block text-[11px] text-zinc-500 text-left truncate">{desc}</span>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Offers Link */}
+            {/* Offers */}
             <Link
               href="/#browse"
-              className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition"
+              className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-400 hover:text-white hover:bg-white/5 transition"
               data-testid="nav-link-offers"
             >
-              <Gift size={13} className="text-[#a0e4f1]" />
+              <Gift size={13} className="text-white/60" />
               <span>Offers</span>
             </Link>
 
-            {/* Orders Link */}
+            {/* Orders */}
             <Link
               href="/orders"
-              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition ${
-                pathname.startsWith('/orders') ? 'text-white bg-white/8' : ''
+              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-400 hover:text-white hover:bg-white/5 transition ${
+                pathname.startsWith('/orders') ? 'text-white bg-white/10' : ''
               }`}
               data-testid="nav-link-orders"
             >
@@ -261,82 +208,92 @@ export function SiteHeader({
             </Link>
           </nav>
 
-          {/* Desktop Actions */}
+          {/* Desktop Actions — right */}
           <div className="header-actions hidden md:flex items-center gap-2">
-            {/* Desktop Search Bar */}
             <button
               type="button"
-              className="header-search-bar inline-flex"
+              className="header-search-bar inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 hover:border-white/20 hover:text-white transition cursor-pointer text-xs"
               onClick={() => openSearch()}
               aria-label="Search store"
               data-testid="header-search-bar"
             >
-              <Search size={14} className="header-search-bar-icon" />
-              <span className="header-search-bar-text">Search store...</span>
-              <kbd className="header-search-bar-kbd">⌘K</kbd>
+              <Search size={14} className="text-white/60" />
+              <span className="font-['DM_Mono']">Search store...</span>
+              <kbd className="text-[10px] font-mono px-1 py-0.5 rounded bg-white/10 text-zinc-400">⌘K</kbd>
             </button>
 
-            {/* Wishlist Button */}
             <Link
               href="/wishlist"
-              className="header-icon-button inline-flex"
+              className="header-icon-button inline-flex items-center justify-center h-8 w-8 rounded-full border border-white/10 bg-white/5 text-zinc-300 hover:border-white/20 hover:text-white transition"
               aria-label="View saved wishlist"
               data-testid="button-wishlist"
             >
-              <Heart size={15} className="text-pink-400 hover:fill-pink-400/40 transition" />
+              <Heart size={15} />
             </Link>
 
-            {/* Cart Pill Link */}
             <Link
               href="/cart"
-              className="header-icon-button cart-pill-btn inline-flex"
+              className="header-icon-button cart-pill-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 bg-white/10 text-white hover:bg-white/15 transition text-xs font-mono font-bold"
               aria-label={`Open shopping bag with ${cartCount} items`}
               data-testid="button-cart"
             >
-              <ShoppingBag size={15} />
-              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+              <ShoppingBag size={14} />
+              <span>CART ({cartCount})</span>
             </Link>
 
-            {/* User Sign In / Profile Button */}
             <UserAuthButton />
           </div>
 
-          {/* Mobile Only: Row 2 - Search bar on left/center, Menu toggle on right */}
-          <div className="site-header-row2 flex md:hidden items-center gap-2 w-full min-w-0 mt-2.5">
-            <button
-              type="button"
-              onClick={() => openSearch()}
-              className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-white/25 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
-              aria-label="Search store"
-              data-testid="mobile-search-bar"
-            >
-              <span className="text-zinc-400 font-['DM_Mono'] truncate min-w-0 flex-1 text-left">
-                Search games, accessories, top up...
-              </span>
-              <Search size={16} className="text-white/40 shrink-0 ml-2" />
-            </button>
-
+          {/* ── MOBILE LAYOUT (<= 768px) — single row: menu (left) | logo (center, no text) | cart (right) ── */}
+          <div className="mobile-header-row md:hidden">
+            {/* Left: Hamburger menu toggle */}
             <button
               type="button"
               onClick={toggleMobileMenu}
-              className={`mobile-menu-toggle-btn h-10 w-10 shrink-0 rounded-xl border flex items-center justify-center transition active:scale-95 cursor-pointer ${
-                isMobileMenuOpen
-                  ? 'border-white/25 text-white bg-white/10 shadow-md'
-                  : 'bg-white/[0.06] border-white/10 text-white/70 hover:text-white hover:border-white/20'
-              }`}
+              className="mobile-header-menu-btn"
               aria-label="Toggle navigation menu"
               data-testid="mobile-menu-toggle"
             >
-              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {isMobileMenuOpen ? (
+                <X size={22} strokeWidth={1.75} />
+              ) : (
+                <Menu size={22} strokeWidth={1.75} />
+              )}
             </button>
+
+            {/* Middle: Logo emblem only, no text, strictly centered */}
+            <Link
+              href="/"
+              onClick={handleLogoClick}
+              className="mobile-header-logo-center"
+              data-testid="button-home-mobile"
+              aria-label="Reikai Arcade Home"
+            >
+              <img
+                src="/logo.jpeg"
+                alt="Reikai Arcade"
+                className="h-8 w-8 rounded-full object-cover border border-white/20 shadow-md"
+              />
+            </Link>
+
+            {/* Right: Cart */}
+            <Link
+              href="/cart"
+              className="mobile-header-cart-btn"
+              aria-label={`Cart with ${cartCount} items`}
+              data-testid="mobile-cart-btn"
+            >
+              <span className="mobile-header-cart-text">CART ({cartCount})</span>
+            </Link>
           </div>
+
         </div>
       </header>
 
-      {/* Persistent mobile bottom navigation bar */}
+      {/* Mobile bottom nav: Home | Offers | Search | Orders | Account */}
       <MobileBottomNav onHomeClick={onHomeClick} />
 
-      {/* Right slide-in sidebar drawer */}
+      {/* Right slide-in drawer sidebar */}
       <MobileRightSidebar />
     </>
   );

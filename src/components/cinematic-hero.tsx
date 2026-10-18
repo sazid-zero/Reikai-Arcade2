@@ -35,20 +35,7 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       observer.observe(containerRef.current);
     }
 
-    const resetMobileStyles = () => {
-      if (contentRef.current) {
-        contentRef.current.style.opacity = '1';
-        contentRef.current.style.transform = 'none';
-        contentRef.current.style.pointerEvents = 'auto';
-      }
-    };
-
     const onScroll = () => {
-      // On phone, disable disappear/reappear on scroll for pure 120Hz performance & stability
-      if (isMobile()) {
-        resetMobileStyles();
-        return;
-      }
       if (!isHeroInView || !contentRef.current) return;
       if (rafId !== null) return;
 
@@ -56,29 +43,26 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         rafId = null;
         if (!contentRef.current) return;
         const y = window.scrollY;
-        if (y > 750) {
+        const isSmallScreen = window.innerWidth <= 768;
+        const fadeDistance = isSmallScreen ? 380 : 550;
+        const cutoff = isSmallScreen ? 500 : 750;
+
+        if (y > cutoff) {
           contentRef.current.style.opacity = '0';
           contentRef.current.style.pointerEvents = 'none';
           return;
         }
-        const opacity = Math.max(0, 1 - y / 550);
+
+        const opacity = Math.max(0, 1 - y / fadeDistance);
         contentRef.current.style.opacity = String(opacity);
-        contentRef.current.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
+        contentRef.current.style.transform = `translate3d(0, ${y * (isSmallScreen ? 0.18 : 0.22)}px, 0)`;
         contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
       });
     };
 
     const onResize = () => {
-      if (isMobile()) {
-        resetMobileStyles();
-      } else {
-        onScroll();
-      }
+      onScroll();
     };
-
-    if (isMobile()) {
-      resetMobileStyles();
-    }
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });

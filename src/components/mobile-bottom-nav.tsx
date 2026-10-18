@@ -5,14 +5,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/components/cart-context';
 import { useMobileMenu } from '@/components/mobile-menu-context';
+import { useSearch } from '@/components/search-modal';
 import {
   Home,
   Gift,
-  ShoppingBag,
+  Search,
   Package,
-  Menu,
-  X,
+  User,
 } from 'lucide-react';
+import { UserAuthButton } from '@/components/user-auth-button';
 
 export function MobileBottomNav({
   onHomeClick,
@@ -20,8 +21,9 @@ export function MobileBottomNav({
   onHomeClick?: () => void;
 }) {
   const pathname = usePathname();
-  const { cartCount, setCartOpen, cartOpen } = useCart();
-  const { isOpen, toggleMenu, closeMenu } = useMobileMenu();
+  const { cartCount } = useCart();
+  const { closeMenu } = useMobileMenu();
+  const { openSearch } = useSearch();
 
   const isHome = pathname === '/';
   const isOrders = pathname.startsWith('/orders');
@@ -49,9 +51,10 @@ export function MobileBottomNav({
     }
   };
 
-  const handleCartClick = () => {
+  const handleSearchClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     closeMenu();
-    setCartOpen(true);
+    openSearch();
   };
 
   return (
@@ -60,7 +63,7 @@ export function MobileBottomNav({
       <Link
         href="/"
         onClick={handleHomeClick}
-        className={`mobile-bottom-nav__item${isHome && !isOpen ? ' active' : ''}`}
+        className={`mobile-bottom-nav__item${isHome ? ' active' : ''}`}
         aria-label="Home"
         data-testid="bottom-nav-home"
       >
@@ -84,22 +87,19 @@ export function MobileBottomNav({
         <span className="mobile-bottom-nav__label">Offers</span>
       </Link>
 
-      {/* 3. Cart Page */}
-      <Link
-        href="/cart"
-        onClick={() => closeMenu()}
-        className={`mobile-bottom-nav__item${pathname === '/cart' ? ' active' : ''}`}
-        aria-label={`Cart with ${cartCount} items`}
-        data-testid="bottom-nav-cart"
+      {/* 3. Search (replaces Cart — cart moved to top mobile header) */}
+      <button
+        type="button"
+        onClick={handleSearchClick}
+        className="mobile-bottom-nav__item"
+        aria-label="Search"
+        data-testid="bottom-nav-search"
       >
         <span className="mobile-bottom-nav__icon">
-          <ShoppingBag size={19} />
-          {cartCount > 0 && (
-            <span className="mobile-bottom-nav__badge">{cartCount}</span>
-          )}
+          <Search size={19} />
         </span>
-        <span className="mobile-bottom-nav__label">Cart</span>
-      </Link>
+        <span className="mobile-bottom-nav__label">Search</span>
+      </button>
 
       {/* 4. Orders */}
       <Link
@@ -115,19 +115,13 @@ export function MobileBottomNav({
         <span className="mobile-bottom-nav__label">Orders</span>
       </Link>
 
-      {/* 5. Menu */}
-      <button
-        type="button"
-        onClick={toggleMenu}
-        className={`mobile-bottom-nav__item${isOpen ? ' active' : ''}`}
-        aria-label="Toggle navigation menu"
-        data-testid="bottom-nav-menu"
-      >
+      {/* 5. Profile — replaces Menu (menu moved to top mobile header) */}
+      <div className="mobile-bottom-nav__item mobile-bottom-nav__profile" data-testid="bottom-nav-profile">
         <span className="mobile-bottom-nav__icon">
-          {isOpen ? <X size={19} /> : <Menu size={19} />}
+          <UserAuthButton compact />
         </span>
-        <span className="mobile-bottom-nav__label">Menu</span>
-      </button>
+        <span className="mobile-bottom-nav__label">Account</span>
+      </div>
     </nav>
   );
 }

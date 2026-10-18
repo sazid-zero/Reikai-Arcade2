@@ -225,121 +225,180 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
 }
 
-/* Topline & Glass Header */
+/* ── ULTRA-PREMIUM TRANSPARENT-TO-SMOOTH-BLUR HEADER ─────────────────────────
+   Completely transparent at top, smoothly dissolves into feathered blur
+   without ANY visible edge, border line, or box-shadow when scrolled.
+   ─────────────────────────────────────────────────────────────────────────── */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 30;
-  height: var(--header-height);
-  background: #000000;
-  backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.95);
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 76px;
+  z-index: 100;
+  background: transparent;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── Mobile Capsule Topbar ────────────────────────────────────────────────────
-   On mobile the header becomes a beautiful pill/capsule shape with
-   rounded bottom corners, a 2-row layout, and a pure black glassy background.
-   ─────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  :root {
-    --header-height: 108px;
-    --mobile-header-height: 108px;
-    --mobile-nav-height: 60px;
-    --mobile-header-pb: 14px;
-  }
+/* Feathered backdrop blur & dark gradient without sharp cutoff or borders */
+.site-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -48px; /* extends past the navbar so the blur melts smoothly into content */
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.96) 0%,
+    rgba(0, 0, 0, 0.85) 45%,
+    rgba(0, 0, 0, 0.35) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 45%,
+    rgba(0, 0, 0, 0.25) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 45%,
+    rgba(0, 0, 0, 0.25) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  .site-header.site-header-capsule {
-    height: auto;
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    background: #000000;
-    backdrop-filter: blur(28px) saturate(1.6);
-    -webkit-backdrop-filter: blur(28px) saturate(1.6);
-    /* Beautifully rounded bottom corners — the capsule shape */
-    border-radius: 0 0 24px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-top: none;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.95);
-    padding: 12px 16px var(--mobile-header-pb);
-  }
-
-  .site-header.site-header-capsule .header-inner {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 0;
-    height: auto;
-    gap: 0;
-  }
-
-  /* Row 1: Logo + User auth — full width row */
-  .site-header-row1 {
-    width: 100%;
-  }
-
-  /* Row 2: Search bar + Menu toggle — full width row */
-  .site-header-row2 {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-  }
-
-  /* Force-hide desktop-only nav and actions inside mobile capsule */
-  .site-header.site-header-capsule .header-nav,
-  .site-header.site-header-capsule .header-actions {
-    display: none !important;
-  }
-
-  /* Prevent any child from overflowing the capsule's rounded bottom corners */
-  .site-header.site-header-capsule {
-    overflow: hidden;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Ensure header-inner doesn't overflow and respects box model */
-  .site-header.site-header-capsule .header-inner {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    min-width: 0;
-    justify-content: flex-start;
-  }
-
-  /* Mobile search capsule bar must shrink smoothly without pushing menu toggle */
-  .mobile-search-capsule-bar {
-    flex: 1 1 0% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-  }
-  .mobile-search-capsule-bar span {
-    min-width: 0 !important;
-    flex: 1 1 0% !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-  .mobile-menu-toggle-btn {
-    flex-shrink: 0 !important;
-  }
+.site-header.site-header--scrolled::before,
+.site-header.scrolled::before {
+  opacity: 1;
 }
 
 .header-inner {
-  height: 100%;
-  max-width: 1380px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 28px;
+  height: 76px;
+  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  padding: 0 36px;
+  position: relative;
+  box-sizing: border-box;
 }
+
+/* Ensure non-hero pages have clearance below fixed header */
+body:not(:has(.cinematic-hero-section)) main {
+  padding-top: 76px;
+}
+
+/* ── Mobile Layout (<= 768px): Single Row: Menu | Logo | Cart ── */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 56px;
+    --mobile-header-height: 56px;
+    --mobile-nav-height: 60px;
+  }
+
+  .site-header {
+    height: 56px;
+    border-radius: 0 !important;
+  }
+
+  .header-inner {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  body:not(:has(.cinematic-hero-section)) main {
+    padding-top: 56px;
+  }
+
+  .mobile-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 56px;
+    position: relative;
+  }
+
+  .mobile-header-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.2s ease;
+  }
+  .mobile-header-menu-btn:active {
+    opacity: 0.6;
+  }
+
+  .mobile-header-logo-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-header-logo-center img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .mobile-header-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.2s ease;
+  }
+  .mobile-header-cart-btn:active {
+    opacity: 0.6;
+  }
+
+  .mobile-header-cart-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+
 .wordmark {
   color: #ffffff;
   font-family: 'Syne', sans-serif;
@@ -3403,10 +3462,9 @@
   position: sticky;
   top: 0;
   z-index: 800;
-  backdrop-filter: blur(18px) saturate(160%);
-  background: hsl(265 42% 4% / .88);
-  border-bottom: 1px solid rgba(198,115,226,0.18);
-  box-shadow: 0 2px 30px hsl(265 40% 2% / .4);
+  backdrop-filter: blur(20px) saturate(140%);
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .site-header-inner {
   max-width: 1380px;
@@ -3429,16 +3487,16 @@
   font: 600 .72rem 'DM Mono', monospace;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: rgba(148,163,184,0.8);
+  color: rgba(255, 255, 255, 0.7);
   transition: color .2s, background .2s;
 }
 .site-nav-link:hover,
 .site-nav-link.active {
-  color: #c084fc;
-  background: rgba(198,115,226,0.1);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
 }
 .site-nav-link.active {
-  box-shadow: inset 0 -2px 0 rgba(198,115,226,0.6);
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.8);
 }
 .site-header-actions {
   display: flex;
@@ -3452,17 +3510,17 @@
   gap: 8px;
   padding: 8px 16px;
   border-radius: 9999px;
-  background: rgba(198,115,226,0.12);
-  border: 1px solid rgba(198,115,226,0.35);
-  color: #c084fc;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   font: 700 .68rem 'DM Mono', monospace;
   letter-spacing: .1em;
   cursor: pointer;
   transition: background .2s, border-color .2s, box-shadow .2s, transform .2s;
 }
 .site-cart-btn:hover {
-  background: rgba(198,115,226,0.22);
-  border-color: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   transform: translateY(-1px);
 }
@@ -3473,8 +3531,8 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #c673e2, #9333ea);
-  color: #fff;
+  background: #ffffff;
+  color: #000000;
   font: 700 .6rem 'DM Mono', monospace;
   display: grid;
   place-items: center;
@@ -8058,15 +8116,15 @@
 /* ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --reikai-violet: #c673e2;
-  --reikai-purple-deep: #4b22d2;
-  --reikai-cyan: #a0e4f1;
-  --reikai-turquoise: #5ba2c0;
-  --reikai-magenta: #c673e2;
-  --reikai-pink: #a0e4f1;
+  --reikai-violet: #ffffff;
+  --reikai-purple-deep: #18181b;
+  --reikai-cyan: #e4e4e7;
+  --reikai-turquoise: #a1a1aa;
+  --reikai-magenta: #ffffff;
+  --reikai-pink: #d4d4d8;
   --reikai-abyss: #000000;
   --reikai-glass: rgba(0, 0, 0, 0.85);
-  --reikai-glass-border: rgba(198, 115, 226, 0.3);
+  --reikai-glass-border: rgba(255, 255, 255, 0.15);
 }
 
 /* Hero section: 380vh scroll track on PC for scroll-triggered tab transitions, 100vh on phone */
@@ -8106,10 +8164,12 @@
 .cinematic-hero-section {
   position: relative;
   width: 100%;
-  /* Desktop: Full screen minus 72px desktop sticky header */
-  height: calc(100vh - 72px);
-  height: calc(100dvh - 72px);
-  min-height: 560px;
+  /* Full screen 100vh viewport — marquee stays below the fold */
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: 76px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -8117,15 +8177,20 @@
   overflow: hidden;
   background-color: #000000;
   user-select: none;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .cinematic-hero-section {
-    /* Mobile: EXACT viewport between the mobile top header and bottom nav */
-    height: calc(100dvh - var(--mobile-header-height, 108px) - calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px)));
-    min-height: calc(100dvh - var(--mobile-header-height, 108px) - calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px)));
+    /* Mobile: Full viewport height with bottom padding for bottom nav */
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
     max-height: none;
-    padding-bottom: 6px;
+    padding-top: 58px;
+    padding-bottom: calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px) + 8px);
+    box-sizing: border-box;
   }
 }
 
@@ -8971,19 +9036,7 @@
    Mobile:  exact remaining space between mobile header + bottom nav,
             so the hero always fills precisely one viewport fold
    ─────────────────────────────────────────────────────────────────────────── */
-.cinematic-hero-section {
-  height: calc(100dvh - var(--header-height, 76px));
-  min-height: 0;
-  max-height: none;
-}
-
-@media (max-width: 768px) {
-  .cinematic-hero-section {
-    height: calc(100dvh - var(--mobile-header-height, 108px) - var(--mobile-nav-height, 60px));
-    min-height: 0;
-    max-height: none;
-  }
-}/* ─────────────────────────────────────────────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────────────────────
    PREMIUM SF- STOREFRONT SECTION SYSTEM
    Monochromatic dark design to match the cinematic hero.
    ───────────────────────────────────────────────────────────────────────────── */

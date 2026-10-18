@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { LogOut, Shield, User, ChevronDown, Key, ShoppingBag, Heart, Gamepad2 } from 'lucide-react'
+import { LogOut, Shield, User, ChevronDown, Key, ShoppingBag, Heart } from 'lucide-react'
 
 export interface AuthUser {
   id: string
@@ -13,7 +13,7 @@ export interface AuthUser {
   role: string
 }
 
-export function UserAuthButton() {
+export function UserAuthButton({ compact }: { compact?: boolean } = {}) {
   const router = useRouter()
   const [user, setUser] = useState<AuthUser | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -54,12 +54,28 @@ export function UserAuthButton() {
   }
 
   if (loading) {
+    if (compact) {
+      return <div className="h-5 w-5 rounded-full bg-white/10 animate-pulse" />
+    }
     return (
       <div className="h-8 w-20 animate-pulse rounded-full bg-white/5" />
     )
   }
 
   if (!user) {
+    if (compact) {
+      return (
+        <Link
+          href="/sign-in"
+          className="flex items-center justify-center text-inherit hover:text-white transition"
+          aria-label="Sign In"
+          data-testid="bottom-nav-signin"
+        >
+          <User size={19} />
+        </Link>
+      )
+    }
+
     return (
       <div className="flex items-center gap-2">
         <Link
@@ -77,6 +93,99 @@ export function UserAuthButton() {
   const initials = (user.name || user.email || 'U').slice(0, 2).toUpperCase()
   const displayIdentifier = user.phone || (user.email.includes('@phone.reikai.arcade') ? user.email.replace('@phone.reikai.arcade', '') : user.email)
   const isAdmin = user.role === 'admin'
+
+  // Dropdown menu content
+  const dropdownContent = (
+    <>
+      <div className="border-b border-white/10 px-3 py-2.5">
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-bold text-white truncate">{user.name || 'Player'}</p>
+          <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/80 border border-white/15">
+            {isAdmin ? 'ADMIN' : 'MEMBER'}
+          </span>
+        </div>
+        <p className="font-mono text-[10px] text-zinc-400 truncate mt-0.5">{displayIdentifier}</p>
+      </div>
+
+      <div className="py-1">
+        {/* User links */}
+        <Link
+          href="/orders"
+          onClick={() => setDropdownOpen(false)}
+          className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
+        >
+          <ShoppingBag size={14} className="text-white/60" />
+          <span>My Orders</span>
+        </Link>
+        <Link
+          href="/wishlist"
+          onClick={() => setDropdownOpen(false)}
+          className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
+        >
+          <Heart size={14} className="text-white/60" />
+          <span>Wishlist</span>
+        </Link>
+
+        {/* Admin only links */}
+        {isAdmin && (
+          <>
+            <div className="my-1 border-t border-white/5" />
+            <Link
+              href="/admin"
+              onClick={() => setDropdownOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
+            >
+              <Shield size={14} className="text-white/60" />
+              <span>Admin Control Room</span>
+            </Link>
+            <Link
+              href="/admin/orders"
+              onClick={() => setDropdownOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
+            >
+              <Key size={14} className="text-white/60" />
+              <span>Manage Orders</span>
+            </Link>
+          </>
+        )}
+      </div>
+
+      <div className="border-t border-white/10 pt-1">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-400 hover:bg-white/5 hover:text-white transition cursor-pointer"
+        >
+          <LogOut size={14} />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </>
+  )
+
+  if (compact) {
+    return (
+      <div className="relative flex items-center justify-center" ref={menuRef}>
+        <button
+          type="button"
+          onClick={() => setDropdownOpen((prev) => !prev)}
+          className="flex items-center justify-center cursor-pointer"
+          aria-label="User profile menu"
+          data-testid="bottom-nav-user-profile"
+        >
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-[9px] font-bold text-black shadow-sm">
+            {initials}
+          </div>
+        </button>
+
+        {dropdownOpen && (
+          <div className="fixed bottom-[70px] right-3 w-56 rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-2xl z-[300] animate-in fade-in slide-in-from-bottom-2 duration-150">
+            {dropdownContent}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="relative" ref={menuRef}>
@@ -98,71 +207,7 @@ export function UserAuthButton() {
 
       {dropdownOpen && (
         <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
-          <div className="border-b border-white/10 px-3 py-2.5">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-bold text-white truncate">{user.name || 'Player'}</p>
-              <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/10 text-white/70 border border-white/15'
-              }`}>
-                {isAdmin ? 'ADMIN' : 'MEMBER'}
-              </span>
-            </div>
-            <p className="font-mono text-[10px] text-zinc-400 truncate mt-0.5">{displayIdentifier}</p>
-          </div>
-
-          <div className="py-1">
-            {/* User links */}
-            <Link
-              href="/orders"
-              onClick={() => setDropdownOpen(false)}
-              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
-            >
-              <ShoppingBag size={14} className="text-white/40" />
-              <span>My Orders</span>
-            </Link>
-            <Link
-              href="/wishlist"
-              onClick={() => setDropdownOpen(false)}
-              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/10 hover:text-white transition"
-            >
-              <Heart size={14} className="text-pink-400" />
-              <span>Wishlist</span>
-            </Link>
-
-            {/* Admin only links */}
-            {isAdmin && (
-              <>
-                <div className="my-1 border-t border-white/5" />
-                <Link
-                  href="/admin"
-                  onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-amber-300 hover:bg-amber-500/10 transition"
-                >
-                  <Shield size={14} className="text-amber-400" />
-                  <span>Admin Control Room</span>
-                </Link>
-                <Link
-                  href="/admin/orders"
-                  onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-amber-300 hover:bg-amber-500/10 transition"
-                >
-                  <Key size={14} className="text-amber-400" />
-                  <span>Manage Orders</span>
-                </Link>
-              </>
-            )}
-          </div>
-
-          <div className="border-t border-white/10 pt-1">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-rose-300 hover:bg-rose-500/10 hover:text-rose-200 transition cursor-pointer"
-            >
-              <LogOut size={14} />
-              <span>Sign Out</span>
-            </button>
-          </div>
+          {dropdownContent}
         </div>
       )}
     </div>

@@ -189,17 +189,17 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
       : 0
 
   return (
-    <div className="min-h-screen bg-[#000000] text-slate-100 selection:bg-purple-600 selection:text-white">
+    <div className="min-h-screen bg-[#000000] text-slate-100 selection:bg-white selection:text-black">
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs font-medium text-slate-400">
-          <Link href="/" className="hover:text-purple-400 transition">
+          <Link href="/" className="hover:text-white transition">
             Home
           </Link>
           <ChevronRight size={13} className="text-slate-600" />
-          <Link href="/accessories" className="hover:text-purple-400 transition">
+          <Link href="/accessories" className="hover:text-white transition">
             Accessories
           </Link>
           {accessory.category && (
@@ -209,7 +209,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
             </>
           )}
           <ChevronRight size={13} className="text-slate-600" />
-          <span className="truncate text-purple-300 font-semibold">{accessory.name}</span>
+          <span className="truncate text-zinc-200 font-semibold">{accessory.name}</span>
         </nav>
 
         {/* ── 2-COLUMN MAIN PRODUCT HERO ─────────────────────────────────── */}
@@ -253,7 +253,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
 
               {discountPercent > 0 && (
                 <div className="absolute top-4 right-4">
-                  <span className="rounded-full border border-purple-500/30 bg-purple-600/90 px-3 py-1 text-xs font-extrabold text-white shadow-lg backdrop-blur-md">
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-extrabold text-white shadow-lg backdrop-blur-md">
                     {discountPercent}% OFF
                   </span>
                 </div>
@@ -270,7 +270,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                     onClick={() => setMainImage(img)}
                     className={`relative h-20 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-all bg-white/[0.02] p-1 ${
                       mainImage === img
-                        ? 'border-purple-500 shadow-md shadow-purple-500/20 opacity-100 scale-102'
+                        ? 'border-white shadow-md shadow-white/20 opacity-100 scale-102'
                         : 'border-white/10 opacity-60 hover:opacity-100 hover:border-white/30'
                     }`}
                   >
@@ -283,7 +283,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
             {/* Guarantees & Trust Badges */}
             <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/[0.02] p-3">
-                <Truck className="h-5 w-5 text-purple-400 shrink-0" />
+                <Truck className="h-5 w-5 text-zinc-400 shrink-0" />
                 <div className="text-xs">
                   <p className="font-semibold text-slate-200 leading-tight">Fast Shipping</p>
                   <p className="text-[11px] text-slate-400">24-48h in BD</p>
@@ -317,7 +317,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
           <div className="lg:col-span-5 flex flex-col justify-start">
             {/* Brand & Category kicker */}
             <div className="flex items-center justify-between gap-2 mb-2">
-              <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-purple-400">
+              <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
                 {accessory.category || 'Gaming Hardware'}
               </span>
               {selectedVariant?.sku && (
@@ -354,7 +354,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
               <button
                 type="button"
                 onClick={() => setActiveTab('reviews')}
-                className="text-xs text-purple-400 hover:text-purple-300 underline underline-offset-2 transition"
+                className="text-xs text-zinc-400 hover:text-white underline underline-offset-2 transition"
               >
                 {(accessory.reviewCount || reviews.length).toLocaleString()} Verified Ratings
               </button>
@@ -407,7 +407,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                   <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
                     Select Model / Color:
                   </span>
-                  <span className="text-xs font-semibold text-purple-300">
+                  <span className="text-xs font-semibold text-zinc-200">
                     {selectedVariant?.title}
                   </span>
                 </div>
@@ -419,13 +419,13 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                       onClick={() => setSelectedVariantIdx(idx)}
                       className={`flex flex-col rounded-xl border p-3 text-left transition-all ${
                         selectedVariantIdx === idx
-                          ? 'border-purple-500 bg-purple-950/30 shadow-md shadow-purple-500/10'
+                          ? 'border-white bg-white/10 shadow-md shadow-white/10'
                           : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.05]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-sm text-white">{v.title}</span>
-                        <span className="text-xs font-bold text-purple-300 font-mono">
+                        <span className="text-xs font-bold text-zinc-200 font-mono">
                           {formatTaka(v.price)}
                         </span>
                       </div>
@@ -479,7 +479,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 type="button"
                 disabled={!inStock}
                 onClick={() => handleAddToCart(false)}
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-6 py-3.5 font-bold text-sm text-white shadow-lg shadow-purple-600/30 hover:bg-purple-500 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-sm text-black shadow-lg shadow-white/10 hover:bg-zinc-200 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
               >
                 <ShoppingBag size={18} />
                 <span>{inStock ? 'Add to Cart' : 'Out of Stock'}</span>
@@ -489,9 +489,9 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 <button
                   type="button"
                   onClick={() => handleAddToCart(true)}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-purple-500/40 bg-purple-950/40 px-6 py-3.5 font-bold text-sm text-purple-200 hover:bg-purple-900/50 hover:border-purple-400 active:scale-[0.98] transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 font-bold text-sm text-white hover:bg-white/10 hover:border-white/40 active:scale-[0.98] transition-all"
                 >
-                  <Sparkles size={16} className="text-purple-400" />
+                  <Sparkles size={16} className="text-zinc-400" />
                   <span>Buy Now</span>
                 </button>
               )}
@@ -544,7 +544,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
               onClick={() => setActiveTab('overview')}
               className={`border-b-2 px-5 py-3 text-sm font-bold transition-all ${
                 activeTab === 'overview'
-                  ? 'border-purple-500 text-purple-300'
+                  ? 'border-white/30 text-zinc-200'
                   : 'border-transparent text-slate-400 hover:text-white'
               }`}
             >
@@ -556,7 +556,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 onClick={() => setActiveTab('features')}
                 className={`border-b-2 px-5 py-3 text-sm font-bold transition-all ${
                   activeTab === 'features'
-                    ? 'border-purple-500 text-purple-300'
+                    ? 'border-white/30 text-zinc-200'
                     : 'border-transparent text-slate-400 hover:text-white'
                 }`}
               >
@@ -569,7 +569,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 onClick={() => setActiveTab('specs')}
                 className={`border-b-2 px-5 py-3 text-sm font-bold transition-all ${
                   activeTab === 'specs'
-                    ? 'border-purple-500 text-purple-300'
+                    ? 'border-white/30 text-zinc-200'
                     : 'border-transparent text-slate-400 hover:text-white'
                 }`}
               >
@@ -581,7 +581,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
               onClick={() => setActiveTab('reviews')}
               className={`border-b-2 px-5 py-3 text-sm font-bold transition-all ${
                 activeTab === 'reviews'
-                  ? 'border-purple-500 text-purple-300'
+                  ? 'border-white/30 text-zinc-200'
                   : 'border-transparent text-slate-400 hover:text-white'
               }`}
             >
@@ -614,9 +614,9 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 {accessory.features.map((feat, idx) => (
                   <div
                     key={idx}
-                    className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 hover:border-purple-500/30 transition"
+                    className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 hover:border-white/30/30 transition"
                   >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-purple-600/20 border border-purple-500/30 font-mono text-xs font-bold text-purple-300">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/10 border border-white/30/30 font-mono text-xs font-bold text-zinc-200">
                       0{idx + 1}
                     </span>
                     <p className="text-sm text-slate-200 leading-relaxed pt-0.5">{feat}</p>
@@ -695,7 +695,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                     <button
                       type="button"
                       onClick={() => setShowReviewForm(!showReviewForm)}
-                      className="rounded-xl border border-purple-500/40 bg-purple-950/30 px-4 py-2.5 text-xs font-bold text-purple-300 hover:bg-purple-900/40 transition"
+                      className="rounded-xl border border-white/30/40 bg-white/5 px-4 py-2.5 text-xs font-bold text-zinc-200 hover:bg-white/10 transition"
                     >
                       {showReviewForm ? 'Close Form' : 'Write a Review'}
                     </button>
@@ -713,7 +713,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 {showReviewForm && (
                   <form
                     onSubmit={handleReviewSubmit}
-                    className="rounded-2xl border border-purple-500/20 bg-purple-950/20 p-6 space-y-4"
+                    className="rounded-2xl border border-white/30/20 bg-white/[0.02] p-6 space-y-4"
                   >
                     <h3 className="text-base font-bold text-white">Review This Hardware</h3>
 
@@ -728,7 +728,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                           value={newReviewAuthor}
                           onChange={(e) => setNewReviewAuthor(e.target.value)}
                           placeholder="e.g. Mahir Faisal"
-                          className="w-full rounded-xl border border-white/10 bg-black/40 px-3.5 py-2 text-sm text-white placeholder:text-slate-600 focus:border-purple-500 focus:outline-none"
+                          className="w-full rounded-xl border border-white/10 bg-black/40 px-3.5 py-2 text-sm text-white placeholder:text-slate-600 focus:border-white/30 focus:outline-none"
                         />
                       </div>
                       <div>
@@ -740,7 +740,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                           value={newReviewTitle}
                           onChange={(e) => setNewReviewTitle(e.target.value)}
                           placeholder="e.g. Incredible build quality"
-                          className="w-full rounded-xl border border-white/10 bg-black/40 px-3.5 py-2 text-sm text-white placeholder:text-slate-600 focus:border-purple-500 focus:outline-none"
+                          className="w-full rounded-xl border border-white/10 bg-black/40 px-3.5 py-2 text-sm text-white placeholder:text-slate-600 focus:border-white/30 focus:outline-none"
                         />
                       </div>
                     </div>
@@ -781,7 +781,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                         value={newReviewComment}
                         onChange={(e) => setNewReviewComment(e.target.value)}
                         placeholder="Share your thoughts on build quality, battery, feel, etc."
-                        className="w-full rounded-xl border border-white/10 bg-black/40 p-3.5 text-sm text-white placeholder:text-slate-600 focus:border-purple-500 focus:outline-none"
+                        className="w-full rounded-xl border border-white/10 bg-black/40 p-3.5 text-sm text-white placeholder:text-slate-600 focus:border-white/30 focus:outline-none"
                       />
                     </div>
 
@@ -795,7 +795,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                       </button>
                       <button
                         type="submit"
-                        className="px-5 py-2 rounded-xl bg-purple-600 text-xs font-bold text-white hover:bg-purple-500 transition"
+                        className="px-5 py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold transition"
                       >
                         Submit Review
                       </button>
@@ -812,7 +812,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-600/20 border border-purple-500/30 font-bold text-xs text-purple-300">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/30/30 font-bold text-xs text-zinc-200">
                             {rev.author.slice(0, 2).toUpperCase()}
                           </div>
                           <div>
@@ -849,7 +849,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                       <div className="flex items-center gap-2 text-[11px] text-slate-500 pt-1">
                         <button
                           type="button"
-                          className="flex items-center gap-1 hover:text-purple-400 transition"
+                          className="flex items-center gap-1 hover:text-white transition"
                         >
                           <ThumbsUp size={12} />
                           Helpful ({rev.helpful})
@@ -868,7 +868,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
           <section className="mt-14 border-t border-white/10 pt-10">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-xs font-mono uppercase tracking-[0.2em] text-purple-400 mb-1">
+                <p className="text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 mb-1">
                   Complete Your Setup
                 </p>
                 <h2 className="text-xl sm:text-2xl font-black text-white">
@@ -877,7 +877,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
               </div>
               <Link
                 href="/accessories"
-                className="flex items-center gap-1.5 text-xs font-bold text-purple-400 hover:text-purple-300 transition"
+                className="flex items-center gap-1.5 text-xs font-bold text-zinc-400 hover:text-white transition"
               >
                 <span>Browse All</span>
                 <ArrowRight size={14} />
@@ -889,7 +889,7 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                 <Link
                   key={item.id}
                   href={`/accessories/${item.slug}`}
-                  className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden hover:border-purple-500/40 hover:bg-white/[0.05] transition-all"
+                  className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/30/40 hover:bg-white/[0.05] transition-all"
                 >
                   <div className="relative aspect-[4/3] w-full overflow-hidden bg-white/5 p-2">
                     {item.imageUrl ? (
@@ -906,10 +906,10 @@ export function AccessoryDetailClient({ accessory, relatedAccessories }: Props) 
                   </div>
                   <div className="flex flex-1 flex-col justify-between p-3">
                     <div>
-                      <span className="text-[10px] font-mono text-purple-400 uppercase tracking-wider block mb-1">
+                      <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mb-1">
                         {item.category || item.brand || 'Gear'}
                       </span>
-                      <h4 className="text-xs font-bold text-white line-clamp-2 group-hover:text-purple-300 transition leading-snug">
+                      <h4 className="text-xs font-bold text-white line-clamp-2 group-hover:text-zinc-200 transition leading-snug">
                         {item.name}
                       </h4>
                     </div>

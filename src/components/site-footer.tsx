@@ -73,10 +73,10 @@ export function SiteFooter() {
                 <img
                   src="/logo.jpeg"
                   alt="Reikai Arcade"
-                  className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-lg transition-transform duration-300 hover:scale-105"
+                  className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-lg transition-transform duration-300 hover:scale-105"
                 />
                 <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-base">
-                  REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
+                  REIKAI <span className="wordmark-highlight text-white/60">ARCADE</span>
                 </span>
               </Link>
 
@@ -111,11 +111,11 @@ export function SiteFooter() {
               {/* Trust Markers */}
               <div className="mt-4 flex flex-col gap-1.5 text-xs text-zinc-400 font-['DM_Mono']">
                 <div className="flex items-center gap-2 text-zinc-300">
-                  <CheckCircle2 size={13} className="text-[#a0e4f1] shrink-0" />
+                  <CheckCircle2 size={13} className="text-white/70 shrink-0" />
                   <span>100% Genuine Hardware &amp; Vouchers</span>
                 </div>
                 <div className="flex items-center gap-2 text-zinc-300">
-                  <Zap size={13} className="text-[#a0e4f1] shrink-0" />
+                  <Zap size={13} className="text-white/70 shrink-0" />
                   <span>Fast Digital Top-Up Delivery</span>
                 </div>
               </div>
@@ -180,9 +180,9 @@ export function SiteFooter() {
                 All physical items are authentic Sony PlayStation products. Digital vouchers are delivered directly with verifiable codes.
               </p>
               <div className="pt-2 flex flex-col gap-2 text-zinc-400 text-xs font-['DM_Mono']">
-                <span className="flex items-center gap-1.5"><span className="text-[#a0e4f1]">✓</span> Authorized Retail Standard</span>
-                <span className="flex items-center gap-1.5"><span className="text-[#a0e4f1]">✓</span> Verified Payment Processing</span>
-                <span className="flex items-center gap-1.5"><span className="text-[#a0e4f1]">✓</span> Nationwide Fast Courier</span>
+                <span className="flex items-center gap-1.5"><span className="text-white/70">✓</span> Authorized Retail Standard</span>
+                <span className="flex items-center gap-1.5"><span className="text-white/70">✓</span> Verified Payment Processing</span>
+                <span className="flex items-center gap-1.5"><span className="text-white/70">✓</span> Nationwide Fast Courier</span>
               </div>
             </div>
           </div>

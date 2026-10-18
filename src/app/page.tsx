@@ -40,9 +40,7 @@ import { TutorialVideoPlayer } from '@/components/tutorial-video-player';
 import { UserAuthButton } from '@/components/user-auth-button';
 import { CinematicHero } from '@/components/cinematic-hero';
 import { HomeBannerCarousel } from '@/components/home-banner-carousel';
-import { MobileBottomNav } from '@/components/mobile-bottom-nav';
-import { MobileRightSidebar } from '@/components/mobile-right-sidebar';
-import { useMobileMenu } from '@/components/mobile-menu-context';
+import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 
 
@@ -425,202 +423,7 @@ function scrollToId(id: string, lenis?: ReturnType<typeof useLenis>) {
 
 
 
-function Header({
-  cartCount,
-  onCart,
-  onStageJump,
-}: {
-  cartCount: number;
-  onCart: () => void;
-  onStageJump?: (index: number) => void;
-}) {
-  const [categoriesDropdown, setCategoriesDropdown] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { openSearch } = useSearch();
-  const { isOpen: isMobileMenuOpen, toggleMenu: toggleMobileMenu } = useMobileMenu();
 
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setCategoriesDropdown(true);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setCategoriesDropdown(false);
-    }, 220);
-  };
-
-  return (
-    <header className="site-header site-header-capsule">
-      <div className="header-inner">
-        {/* Row 1: Logo (left) + UserAuthButton (right, mobile only) */}
-        <div className="site-header-row1 flex items-center justify-between w-full md:w-auto">
-          <button
-            type="button"
-            className="header-logo-badge border-0 bg-transparent p-0 cursor-pointer flex items-center gap-2.5 sm:gap-3 shrink-0"
-            onClick={() => {
-              if (onStageJump) onStageJump(0);
-              else scrollToId('top');
-            }}
-            data-testid="button-home"
-          >
-            <img
-              src="/logo.jpeg"
-              alt="Reikai Arcade Logo"
-              className="header-logo-img"
-            />
-            <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm sm:text-base">
-              REIKAI <span className="wordmark-highlight text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
-            </span>
-          </button>
-
-          {/* Mobile Only: user auth button (sign in / profile) */}
-          <div className="flex md:hidden items-center">
-            <UserAuthButton />
-          </div>
-        </div>
-
-        {/* Desktop navigation — hidden on mobile */}
-        <nav className="header-nav hidden md:flex items-center" aria-label="Main navigation">
-          <div
-            className="nav-dropdown-wrapper relative py-2"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <button
-              type="button"
-              onClick={() => setCategoriesDropdown((prev) => !prev)}
-              className={`nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition cursor-pointer ${
-                categoriesDropdown ? 'text-white bg-white/8' : ''
-              }`}
-              data-testid="button-categories-dropdown"
-            >
-              <Layers size={13} className="text-white/60" />
-              <span>Categories</span>
-              <ChevronDown size={12} className={`nav-chevron text-zinc-400 transition-transform duration-200 ${categoriesDropdown ? 'rotate-180 text-white' : ''}`} />
-            </button>
-            {categoriesDropdown && (
-              <div
-                className="nav-dropdown-menu absolute top-full left-0 pt-2 w-72 sm:w-80 z-50 animate-in fade-in zoom-in-95 duration-150"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <div className="rounded-2xl border border-white/10 bg-zinc-950/98 p-2 shadow-2xl backdrop-blur-xl">
-                  <Link href="/games" className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition"><Gamepad2 size={18} /></div>
-                    <div className="text-left min-w-0"><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">PS5 Games</strong><span className="block text-[11px] text-zinc-400 text-left truncate">Exclusives, hits &amp; discs</span></div>
-                  </Link>
-                  <Link href="/top-up" className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition"><Zap size={18} /></div>
-                    <div className="text-left min-w-0"><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">Game Top-Up</strong><span className="block text-[11px] text-zinc-400 text-left truncate">Valorant, PUBG, Genshin</span></div>
-                  </Link>
-                  <Link href="/accessories" className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition"><Headphones size={18} /></div>
-                    <div className="text-left min-w-0"><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">Accessories</strong><span className="block text-[11px] text-zinc-400 text-left truncate">DualSense, headsets &amp; gear</span></div>
-                  </Link>
-                  <Link href="/subscriptions" className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition"><Crown size={18} /></div>
-                    <div className="text-left min-w-0"><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">Subscriptions</strong><span className="block text-[11px] text-zinc-400 text-left truncate">PS Plus, Game Pass &amp; EA</span></div>
-                  </Link>
-                  <Link href="/gift-cards" className="nav-dropdown-item flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-white/5 transition group text-left" onClick={() => setCategoriesDropdown(false)}>
-                    <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-white/75 group-hover:text-[#a0e4f1] group-hover:bg-[#a0e4f1]/15 transition"><Gift size={18} /></div>
-                    <div className="text-left min-w-0"><strong className="block text-xs font-bold text-white group-hover:text-[#a0e4f1] text-left transition-colors">Gift Cards</strong><span className="block text-[11px] text-zinc-400 text-left truncate">PSN, Steam, Google &amp; Apple</span></div>
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Offers Link */}
-          <Link
-            href="/#browse"
-            className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-[#a0e4f1] hover:bg-white/5 transition"
-            data-testid="nav-link-offers"
-          >
-            <Gift size={13} className="text-[#a0e4f1]" />
-            <span>Offers</span>
-          </Link>
-
-          {/* Orders Link */}
-          <Link
-            href="/orders"
-            className="nav-dropdown-link flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-['DM_Mono'] text-xs font-semibold tracking-wider uppercase text-zinc-300 hover:text-white hover:bg-white/5 transition"
-            data-testid="nav-link-orders"
-          >
-            <Package size={13} className="text-white/60" />
-            <span>Orders</span>
-          </Link>
-        </nav>
-
-        {/* Desktop actions */}
-        <div className="header-actions hidden md:flex items-center gap-1.5 sm:gap-2">
-          <button
-            type="button"
-            className="header-search-bar inline-flex"
-            onClick={() => openSearch()}
-            aria-label="Search store"
-            data-testid="header-search-bar"
-          >
-            <Search size={14} className="header-search-bar-icon" />
-            <span className="header-search-bar-text">Search store...</span>
-            <kbd className="header-search-bar-kbd">⌘K</kbd>
-          </button>
-
-          <Link
-            href="/wishlist"
-            className="header-icon-button inline-flex"
-            aria-label="View saved wishlist"
-            data-testid="header-wishlist"
-          >
-            <Heart size={15} className="text-pink-400 hover:fill-pink-400/40 transition" />
-          </Link>
-
-          <Link
-            href="/cart"
-            className="header-icon-button cart-pill-btn inline-flex"
-            aria-label={`Open cart with ${cartCount} items`}
-            data-testid="button-open-cart"
-          >
-            <ShoppingBag size={15} />
-            <span className="cart-count" data-testid="text-cart-count">{cartCount}</span>
-          </Link>
-
-          <UserAuthButton />
-        </div>
-
-        {/* Mobile Row 2: search bar (left/center) + menu toggle (right) */}
-        <div className="site-header-row2 flex md:hidden items-center gap-2 w-full min-w-0 mt-2.5">
-          <button
-            type="button"
-            onClick={() => openSearch()}
-            className="mobile-search-capsule-bar flex-1 min-w-0 h-10 px-3.5 rounded-xl bg-white/[0.06] border border-white/10 hover:border-white/20 flex items-center justify-between text-xs text-zinc-300 transition active:scale-[0.99] cursor-pointer overflow-hidden"
-            aria-label="Search store"
-            data-testid="mobile-search-bar"
-          >
-            <span className="text-zinc-400 font-['DM_Mono'] truncate min-w-0 flex-1 text-left">
-              Search games, accessories, top up...
-            </span>
-            <Search size={16} className="text-[#a0e4f1] shrink-0 ml-2" />
-          </button>
-
-          <button
-            type="button"
-            onClick={toggleMobileMenu}
-            className={`mobile-menu-toggle-btn h-10 w-10 shrink-0 rounded-xl border flex items-center justify-center transition active:scale-95 cursor-pointer ${
-              isMobileMenuOpen
-                ? 'border-[#a0e4f1] text-white bg-white/8 shadow-lg'
-                : 'bg-white/[0.06] border-white/10 text-white hover:text-white hover:border-white/20'
-            }`}
-            aria-label="Toggle navigation menu"
-            data-testid="mobile-menu-toggle"
-          >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 
 
@@ -836,9 +639,8 @@ export default function StorefrontPage() {
       />
 
       {/* Top Header */}
-      <Header
-        cartCount={cartCount}
-        onCart={() => setCartOpen(true)}
+      <SiteHeader
+        onHomeClick={() => scrollToId('top', lenis)}
       />
 
       {/* ── CINEMATIC LUXURY HERO ── */}
@@ -1155,15 +957,6 @@ export default function StorefrontPage() {
 
       {/* ── FOOTER ── */}
       <SiteFooter />
-
-      {/* Mobile bottom nav – only renders at ≤768px via CSS */}
-      <MobileBottomNav
-        onHomeClick={() => scrollToId('top', lenis)}
-      />
-
-      {/* Mobile right sidebar drawer */}
-      <MobileRightSidebar />
-
     </main>
   );
 }

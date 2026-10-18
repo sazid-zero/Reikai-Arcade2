@@ -152,10 +152,10 @@ export function MobileRightSidebar() {
               <img
                 src="/logo.jpeg"
                 alt="Reikai Arcade"
-                className="w-8 h-8 rounded-lg object-cover border border-[#a0e4f1]/40 shadow-lg"
+                className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-lg"
               />
               <span className="font-['Outfit'] font-black tracking-[0.14em] text-white text-sm">
-                REIKAI <span className="text-[#a0e4f1] drop-shadow-lg">ARCADE</span>
+                REIKAI <span className="text-white/60">ARCADE</span>
               </span>
             </Link>
 
@@ -182,7 +182,7 @@ export function MobileRightSidebar() {
               data-testid="sidebar-search-trigger"
             >
               <span className="font-['DM_Mono'] truncate">Search games, accessories...</span>
-              <Search size={15} className="text-[#a0e4f1] shrink-0 ml-2" />
+              <Search size={15} className="text-white/60 shrink-0 ml-2" />
             </button>
           </div>
 
@@ -201,7 +201,7 @@ export function MobileRightSidebar() {
                     href={p.href}
                     onClick={closeMenu}
                     className={`flex items-center justify-between p-2.5 rounded-xl transition group ${
-                      isActive ? 'bg-[#a0e4f1]/10 border border-[#a0e4f1]/30 text-white' : 'hover:bg-white/5 text-zinc-200'
+                      isActive ? 'bg-white/10 border border-white/20 text-white' : 'hover:bg-white/5 text-zinc-200'
                     }`}
                     data-testid={`sidebar-page-${p.title.toLowerCase().replace(/\s+/g, '-')}`}
                   >
