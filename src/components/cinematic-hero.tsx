@@ -9,27 +9,18 @@ interface CinematicHeroProps {
   cartCount?: number;
 }
 
-const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
-
-// Smoothstep cubic Hermite interpolation for butter-smooth easing curves
-const smoothProgress = (y: number, start: number, end: number) => {
-  const p = clamp((y - start) / (end - start), 0, 1);
-  return p * p * (3 - 2 * p);
-};
-
 export function CinematicHero({ onExplore }: CinematicHeroProps) {
   const [mounted, setMounted] = useState(false);
+  const [entranceDone, setEntranceDone] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const descRef = useRef<HTMLParagraphElement>(null);
-  const btn1Ref = useRef<HTMLButtonElement>(null);
-  const btn2Ref = useRef<HTMLAnchorElement>(null);
   const bottomBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Trigger the slow cinematic reveal on mount
-    const timer = setTimeout(() => setMounted(true), 100);
+    // 1. Initial slow cinematic entrance
+    const timer1 = setTimeout(() => setMounted(true), 100);
+    // 2. Mark entrance done so transitions are cleared and scroll is 100% zero-latency GPU driven
+    const timer2 = setTimeout(() => setEntranceDone(true), 2400);
 
     let rafId: number | null = null;
     let isHeroInView = true;
@@ -61,121 +52,41 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         const y = window.scrollY;
         const isSmallScreen = window.innerWidth <= 768;
 
-        if (isSmallScreen) {
-          // ── PHONE STAGGERED SEQUENTIAL SCROLL EXIT ────────────────────────
-          // On mobile, the main container remains stationary (no container jump).
-          // Each child item exits sequentially one by one:
-          // 1. REIKAI ARCADE title
-          // 2. Description
-          // 3. Button 1 (ENTER VAULT)
-          // 4. Button 2 (BROWSE CATALOG)
-          // ───────────────────────────────────────────────────────────────────
-          contentRef.current.style.opacity = '1';
-          contentRef.current.style.transform = 'none';
+        // Ensure CSS transitions never fight real-time touch scroll
+        if (!entranceDone) setEntranceDone(true);
 
-          const allGone = y > 460;
-          contentRef.current.style.pointerEvents = allGone ? 'none' : 'auto';
+        const fadeDistance = isSmallScreen ? 440 : 550;
+        const cutoff = isSmallScreen ? 560 : 750;
 
-          // 0. Bottom Explore Bar: fades out first (y: 0 -> 75)
-          if (bottomBarRef.current) {
-            bottomBarRef.current.style.transition = 'none';
-            const p0 = smoothProgress(y, 0, 75);
-            bottomBarRef.current.style.opacity = String(Math.max(0, 1 - p0));
-            bottomBarRef.current.style.transform = `translate3d(0, ${p0 * 16}px, 0)`;
-            bottomBarRef.current.style.pointerEvents = p0 >= 0.95 ? 'none' : 'auto';
-          }
-
-          // 1. Title: exits first (y: 15 -> 175)
-          if (titleRef.current) {
-            titleRef.current.style.transition = 'none';
-            const p1 = smoothProgress(y, 15, 175);
-            const op1 = Math.max(0, 1 - p1);
-            titleRef.current.style.opacity = String(op1);
-            titleRef.current.style.transform = `translate3d(0, -${p1 * 30}px, 0) scale(${1 - p1 * 0.04})`;
-            titleRef.current.style.pointerEvents = p1 >= 0.95 ? 'none' : 'auto';
-          }
-
-          // 2. Editorial Description: exits second (y: 105 -> 275)
-          if (descRef.current) {
-            descRef.current.style.transition = 'none';
-            const p2 = smoothProgress(y, 105, 275);
-            const op2 = Math.max(0, 1 - p2);
-            descRef.current.style.opacity = String(op2);
-            descRef.current.style.transform = `translate3d(0, -${p2 * 26}px, 0) scale(${1 - p2 * 0.03})`;
-            descRef.current.style.pointerEvents = p2 >= 0.95 ? 'none' : 'auto';
-          }
-
-          // 3. Button 1 ("ENTER VAULT"): exits third (y: 195 -> 365)
-          if (btn1Ref.current) {
-            btn1Ref.current.style.transition = 'none';
-            const p3 = smoothProgress(y, 195, 365);
-            const op3 = Math.max(0, 1 - p3);
-            btn1Ref.current.style.opacity = String(op3);
-            btn1Ref.current.style.transform = `translate3d(0, -${p3 * 22}px, 0) scale(${1 - p3 * 0.03})`;
-            btn1Ref.current.style.pointerEvents = p3 >= 0.95 ? 'none' : 'auto';
-          }
-
-          // 4. Button 2 ("BROWSE CATALOG"): exits fourth (y: 275 -> 445)
-          if (btn2Ref.current) {
-            btn2Ref.current.style.transition = 'none';
-            const p4 = smoothProgress(y, 275, 445);
-            const op4 = Math.max(0, 1 - p4);
-            btn2Ref.current.style.opacity = String(op4);
-            btn2Ref.current.style.transform = `translate3d(0, -${p4 * 22}px, 0) scale(${1 - p4 * 0.03})`;
-            btn2Ref.current.style.pointerEvents = p4 >= 0.95 ? 'none' : 'auto';
-          }
-        } else {
-          // ── DESKTOP: RETAIN EXISTING PARALLAX (UNTOUCHED) ────────────────
-          // Reset any mobile inline styles on individual child elements
-          if (titleRef.current) {
-            titleRef.current.style.opacity = '';
-            titleRef.current.style.transform = '';
-            titleRef.current.style.pointerEvents = '';
-            titleRef.current.style.transition = '';
-          }
-          if (descRef.current) {
-            descRef.current.style.opacity = '';
-            descRef.current.style.transform = '';
-            descRef.current.style.pointerEvents = '';
-            descRef.current.style.transition = '';
-          }
-          if (btn1Ref.current) {
-            btn1Ref.current.style.opacity = '';
-            btn1Ref.current.style.transform = '';
-            btn1Ref.current.style.pointerEvents = '';
-            btn1Ref.current.style.transition = '';
-          }
-          if (btn2Ref.current) {
-            btn2Ref.current.style.opacity = '';
-            btn2Ref.current.style.transform = '';
-            btn2Ref.current.style.pointerEvents = '';
-            btn2Ref.current.style.transition = '';
-          }
-          if (bottomBarRef.current) {
-            bottomBarRef.current.style.opacity = '';
-            bottomBarRef.current.style.transform = '';
-            bottomBarRef.current.style.pointerEvents = '';
-            bottomBarRef.current.style.transition = '';
-          }
-
-          const fadeDistance = 550;
-          const cutoff = 750;
-
-          if (y > cutoff) {
-            contentRef.current.style.opacity = '0';
-            contentRef.current.style.pointerEvents = 'none';
-            return;
-          }
-
-          const opacity = Math.max(0, 1 - y / fadeDistance);
-          contentRef.current.style.opacity = String(opacity);
-          contentRef.current.style.transform = `translate3d(0, ${y * 0.2}px, 0)`;
-          contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
+        // Bottom explore prompt fades out smoothly in the initial scroll
+        if (bottomBarRef.current) {
+          const bFade = isSmallScreen ? 90 : 140;
+          const bOpacity = Math.max(0, 1 - y / bFade);
+          bottomBarRef.current.style.opacity = String(bOpacity);
+          bottomBarRef.current.style.pointerEvents = bOpacity <= 0.05 ? 'none' : 'auto';
         }
+
+        if (y > cutoff) {
+          contentRef.current.style.opacity = '0';
+          contentRef.current.style.pointerEvents = 'none';
+          return;
+        }
+
+        // Buttery-smooth slow transition: real-time instant response, zero delay/buffering
+        const opacity = Math.max(0, 1 - y / fadeDistance);
+        contentRef.current.style.opacity = String(opacity);
+
+        // On mobile, float upwards (-y) with scroll; on desktop, gentle downward parallax (+y)
+        const translateY = isSmallScreen ? -(y * 0.18) : (y * 0.2);
+        contentRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`;
+        contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
       });
     };
 
     const onResize = () => {
+      if (typeof window !== 'undefined' && window.innerWidth <= 768 && containerRef.current) {
+        containerRef.current.style.height = `${window.innerHeight}px`;
+      }
       onScroll();
     };
 
@@ -183,13 +94,14 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
     window.addEventListener('resize', onResize, { passive: true });
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
       observer.disconnect();
       if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [entranceDone]);
 
   const word1 = 'REIKAI'.split('');
   const word2 = 'ARCADE'.split('');
@@ -235,19 +147,20 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
       </div>
 
-      {/* ── 2. CINEMATIC HERO CENTERPIECE (Perfect Vertical Centering Inside Viewport) ── */}
+      {/* ── 2. CINEMATIC HERO CENTERPIECE ──
+          Shifted upwards on phone (-translate-y-7 sm:translate-y-0) so it is perfectly
+          balanced in the visible screen above the bottom nav, giving breathing room to Explore.
+      */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-10 flex-1 flex flex-col items-center justify-center text-center py-4"
+        className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-10 flex-1 flex flex-col items-center justify-center text-center py-2 sm:py-4 -translate-y-7 sm:translate-y-0"
         style={{ willChange: 'transform, opacity' }}
       >
         {/* Letter-by-Letter Cinematic Title: "REIKAI ARCADE" */}
         <h1
-          ref={titleRef}
           className="font-['Cinzel',serif] text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-[0.14em] sm:tracking-[0.19em] uppercase text-white leading-tight mb-4 sm:mb-6 flex flex-wrap justify-center gap-x-4 sm:gap-x-7"
           style={{
             textShadow: '0 20px 45px rgba(0, 0, 0, 0.95), 0 4px 14px rgba(0,0,0,0.85)',
-            willChange: 'transform, opacity',
           }}
           aria-label="REIKAI ARCADE"
         >
@@ -298,13 +211,14 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
         {/* Editorial Subtitle / Manifesto Description */}
         <p
-          ref={descRef}
-          className={`max-w-xl font-['Space_Grotesk',sans-serif] text-xs sm:text-sm md:text-base text-zinc-300/90 font-light leading-relaxed tracking-wide mb-6 sm:mb-8 px-4 transition-all duration-[1400ms] ease-out ${
+          className={`max-w-xl font-['Space_Grotesk',sans-serif] text-xs sm:text-sm md:text-base text-zinc-300/90 font-light leading-relaxed tracking-wide mb-6 sm:mb-8 px-4 ${
+            !entranceDone ? 'transition-all duration-[1400ms] ease-out' : ''
+          } ${
             mounted
               ? 'opacity-100 translate-y-0 blur-0'
               : 'opacity-0 translate-y-5 blur-sm'
           }`}
-          style={{ transitionDelay: '1400ms', willChange: 'transform, opacity' }}
+          style={{ transitionDelay: !entranceDone ? '1400ms' : '0ms' }}
         >
           Curated PlayStation hardware, verified digital vouchers, and tournament artefacts.
           Engineered for those who demand absolute distinction.
@@ -312,20 +226,20 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
         {/* Essential Premium Action Buttons */}
         <div
-          className={`flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto px-4 transition-all duration-[1400ms] ease-out ${
+          className={`flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto px-4 ${
+            !entranceDone ? 'transition-all duration-[1400ms] ease-out' : ''
+          } ${
             mounted
               ? 'opacity-100 translate-y-0 blur-0'
               : 'opacity-0 translate-y-5 blur-sm'
           }`}
-          style={{ transitionDelay: '1750ms' }}
+          style={{ transitionDelay: !entranceDone ? '1750ms' : '0ms' }}
         >
           {/* Primary Action Button */}
           <button
-            ref={btn1Ref}
             type="button"
             onClick={scrollToCatalog}
             className="group relative inline-flex items-center justify-center gap-3 px-8 sm:px-9 py-3 sm:py-3.5 rounded-full bg-white text-black font-['Space_Grotesk',sans-serif] font-bold text-xs uppercase tracking-[0.22em] shadow-[0_8px_30px_rgba(255,255,255,0.18)] hover:bg-zinc-200 hover:shadow-[0_12px_40px_rgba(255,255,255,0.28)] transition-all duration-300 active:scale-95 cursor-pointer w-full sm:w-auto"
-            style={{ willChange: 'transform, opacity' }}
             data-testid="hero-primary-cta"
           >
             <span>ENTER VAULT</span>
@@ -337,10 +251,8 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
           {/* Secondary Action Button */}
           <Link
-            ref={btn2Ref}
             href="/games"
             className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-9 py-3 sm:py-3.5 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-xl text-white font-['Space_Grotesk',sans-serif] font-medium text-xs uppercase tracking-[0.22em] hover:bg-white/[0.09] hover:border-white/40 transition-all duration-300 active:scale-95 cursor-pointer w-full sm:w-auto"
-            style={{ willChange: 'transform, opacity' }}
             data-testid="hero-secondary-cta"
           >
             <span>BROWSE CATALOG</span>
@@ -348,30 +260,34 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         </div>
       </div>
 
-      {/* ── 3. BOTTOM AMBIENT STATUS BAR & SCROLL PROMPT ── */}
+      {/* ── 3. BOTTOM AMBIENT STATUS BAR & SCROLL PROMPT ──
+          Positioned cleanly above the mobile bottom navigation bar in the natural flex flow.
+      */}
       <div
         ref={bottomBarRef}
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 pb-4 sm:pb-6 flex items-center justify-between text-[10px] font-['DM_Mono'] tracking-[0.25em] uppercase text-zinc-300/80 pointer-events-none"
-        style={{ willChange: 'transform, opacity' }}
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between text-[10px] font-['DM_Mono'] tracking-[0.25em] uppercase text-zinc-300/80 pointer-events-none pb-2 sm:pb-6"
+        style={{ willChange: 'opacity' }}
       >
         {/* Left Specification Index */}
         <div className="hidden sm:block flex-1 text-left">
           <span>01 // STOREFRONT INDEX</span>
         </div>
 
-        {/* Center Scroll Prompt — anchored at exact 50% dead horizontal center */}
-        <button
-          type="button"
-          onClick={scrollToCatalog}
-          className="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-6 pointer-events-auto flex flex-col items-center gap-1 text-zinc-300/80 hover:text-white transition-colors cursor-pointer group"
-          aria-label="Scroll to explore products"
-        >
-          <span className="tracking-[0.3em]">EXPLORE</span>
-          <ChevronDown
-            size={13}
-            className="animate-bounce transition-transform duration-300 group-hover:translate-y-0.5"
-          />
-        </button>
+        {/* Center Scroll Prompt — cleanly visible above the mobile bottom navigation bar */}
+        <div className="flex-1 flex justify-center items-center">
+          <button
+            type="button"
+            onClick={scrollToCatalog}
+            className="pointer-events-auto flex flex-col items-center gap-1 text-zinc-300/80 hover:text-white transition-colors cursor-pointer group"
+            aria-label="Scroll to explore products"
+          >
+            <span className="tracking-[0.3em]">EXPLORE</span>
+            <ChevronDown
+              size={13}
+              className="animate-bounce transition-transform duration-300 group-hover:translate-y-0.5"
+            />
+          </button>
+        </div>
 
         {/* Right Status Indicator */}
         <div className="hidden sm:flex flex-1 justify-end items-center gap-2 text-right">
