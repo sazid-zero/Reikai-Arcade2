@@ -110,7 +110,7 @@ export function SiteHeader({
             className="header-logo-badge hidden md:flex items-center gap-2.5 shrink-0 border-0 bg-transparent p-0 cursor-pointer text-white"
             data-testid="button-home"
           >
-            <img src="/logo.jpeg" alt="Reikai Arcade" className="header-logo-img h-8 w-8 rounded-full object-cover border border-white/20" />
+            <img src="/videos/reikai_logo.jpeg" alt="Reikai Arcade" className="header-logo-img h-8 w-8 rounded-full object-cover border border-white/20" />
             <span className="wordmark-text font-['Outfit'] font-black tracking-[0.14em] text-white text-sm">
               REIKAI <span className="text-white/60">ARCADE</span>
             </span>
@@ -270,9 +270,9 @@ export function SiteHeader({
               aria-label="Reikai Arcade Home"
             >
               <img
-                src="/logo.jpeg"
+                src="/videos/reikai_logo.jpeg"
                 alt="Reikai Arcade"
-                className="h-8 w-8 rounded-full object-cover border border-white/20 shadow-md"
+                className="h-8 w-8 rounded-full object-cover shadow-md"
               />
             </Link>
 

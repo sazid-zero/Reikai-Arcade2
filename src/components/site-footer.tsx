@@ -71,7 +71,7 @@ export function SiteFooter() {
                 data-testid="button-footer-home"
               >
                 <img
-                  src="/logo.jpeg"
+                  src="/videos/reikai_logo.jpeg"
                   alt="Reikai Arcade"
                   className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-lg transition-transform duration-300 hover:scale-105"
                 />
