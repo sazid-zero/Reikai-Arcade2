@@ -246,7 +246,22 @@
   background: transparent;
   border: none !important;
   box-shadow: none !important;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), -webkit-backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Apply the blur to the fixed header itself. This matches the production-safe
+   pattern used by the catalog controls instead of relying on a pseudo-element. */
+.site-header.site-header--scrolled,
+.site-header.scrolled {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.86) 0%,
+    rgba(0, 0, 0, 0.72) 52%,
+    rgba(0, 0, 0, 0.42) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-backdrop-filter: blur(12px) saturate(100%);
+  backdrop-filter: blur(12px) saturate(100%);
 }
 
 /* Keep the original black overlay as its own layer so the feathered blur remains reliable in production. */
@@ -2593,7 +2608,7 @@ body:not(:has(.cinematic-hero-section)) main {
   .trust-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ─────────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────���───── */
 /* PHONE & MOBILE RESPONSIVE OVERHAUL (max-width: 768px)               */
 /* Desktop styles remain 100% untouched above 768px                   */
 /* ─────────────────────────────────────────────────────────────────── */
@@ -3142,7 +3157,7 @@ body:not(:has(.cinematic-hero-section)) main {
   .site-footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
 
-/* ── Mobile Bottom Navigation Bar ───────────────────────────────────────── */
+/* ── Mobile Bottom Navigation Bar ──���────────────────────────────────────── */
 /* Shown only on mobile (<= 768px) */
 .mobile-bottom-nav {
   display: none;
@@ -4888,7 +4903,7 @@ body:not(:has(.cinematic-hero-section)) main {
 
 /* ─────────────────────────────────────────────────────────────────── */
 /* GAMES CATALOG page: catalog-hero subtle game variant               */
-/* ─────��───────────────────────────────────────────────────────────── */
+/* ─────��──────────────────��────────────────────────────────────────── */
 .catalog-hero.games-hero {
   background:
     radial-gradient(ellipse 80% 60% at 50% 0%, hsl(260 70% 30% / 0.24), transparent 60%),
