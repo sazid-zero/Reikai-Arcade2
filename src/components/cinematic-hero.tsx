@@ -35,6 +35,11 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
       observer.observe(containerRef.current);
     }
 
+    // Lock hero height on phone to prevent address bar collapse/expand from causing layout jumps
+    if (typeof window !== 'undefined' && window.innerWidth <= 768 && containerRef.current) {
+      containerRef.current.style.height = `${window.innerHeight}px`;
+    }
+
     const onScroll = () => {
       if (!isHeroInView || !contentRef.current) return;
       if (rafId !== null) return;
@@ -44,8 +49,8 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
         if (!contentRef.current) return;
         const y = window.scrollY;
         const isSmallScreen = window.innerWidth <= 768;
-        const fadeDistance = isSmallScreen ? 380 : 550;
-        const cutoff = isSmallScreen ? 500 : 750;
+        const fadeDistance = isSmallScreen ? 280 : 550;
+        const cutoff = isSmallScreen ? 420 : 750;
 
         if (y > cutoff) {
           contentRef.current.style.opacity = '0';
@@ -55,7 +60,9 @@ export function CinematicHero({ onExplore }: CinematicHeroProps) {
 
         const opacity = Math.max(0, 1 - y / fadeDistance);
         contentRef.current.style.opacity = String(opacity);
-        contentRef.current.style.transform = `translate3d(0, ${y * (isSmallScreen ? 0.18 : 0.22)}px, 0)`;
+        // On mobile, float upwards (-y) as it dissolves instead of pushing downwards (+y)
+        const translateY = isSmallScreen ? -(y * 0.15) : (y * 0.2);
+        contentRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`;
         contentRef.current.style.pointerEvents = opacity <= 0.05 ? 'none' : 'auto';
       });
     };

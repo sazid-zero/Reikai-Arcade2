@@ -2589,31 +2589,15 @@ body:not(:has(.cinematic-hero-section)) main {
 @media (max-width: 768px) {
   .topline { font-size: .54rem; padding: 4px 12px; }
 
-  /* ── MOBILE TOP HEADER: Ultra-minimal — Logo left, Profile right ──── */
-  /* Bottom nav handles Search, Cart, Games & More — no duplication     */
-  .header-inner {
-    padding: 0 16px;
-    height: 54px;
-    gap: 0;
-    justify-content: space-between;
+  /* ── MOBILE HEADER OVERRIDES: Enforce single minimal row (menu | logo | cart) ──── */
+  .header-logo-badge,
+  .header-nav,
+  .header-actions {
+    display: none !important;
   }
-
-  /* Hide everything in header-nav on mobile — bottom nav covers it */
-  .header-nav { display: none !important; }
-
-  /* Header actions: hide search bar, search icon, wishlist, cart on mobile */
-  /* Only UserAuthButton (sign-in / profile) stays visible */
-  .header-search-bar { display: none !important; }
-  .cart-pill-btn { display: none !important; }
-  .header-actions { gap: 0; }
-  .header-icon-button { display: none !important; }
-  /* Keep sign-in button visible — it gets the class header-signin-btn or UserAuthButton */
-  .header-signin-btn { display: inline-flex !important; }
-
-  /* Logo stays clean and legible */
-  .header-logo-badge { gap: 8px; }
-  .header-logo-img { width: 32px; height: 32px; border-radius: 8px; }
-  .wordmark-text { font-size: 0.92rem; letter-spacing: 0.12em; }
+  .mobile-header-row {
+    display: flex !important;
+  }
 
   /* 3D Model Stage - HIDDEN on phone (too heavy, poor UX on small screens) */
   .model-dock { display: none !important; }
@@ -8182,11 +8166,11 @@ body:not(:has(.cinematic-hero-section)) main {
 
 @media (max-width: 768px) {
   .cinematic-hero-section {
-    /* Mobile: Full viewport height with bottom padding for bottom nav */
+    /* Mobile: Stable small viewport height — never resizes or shifts when mobile browser address bar scrolls */
+    height: 100svh;
     height: 100vh;
-    height: 100dvh;
+    min-height: 100svh;
     min-height: 100vh;
-    min-height: 100dvh;
     max-height: none;
     padding-top: 58px;
     padding-bottom: calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px) + 8px);
