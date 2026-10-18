@@ -225,6 +225,12 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
 }
 
+@media (max-width: 768px) {
+  .noise::after {
+    display: none !important;
+  }
+}
+
 /* ── ULTRA-PREMIUM TRANSPARENT-TO-SMOOTH-BLUR HEADER ─────────────────────────
    Completely transparent at top, smoothly dissolves into feathered blur
    without ANY visible edge, border line, or box-shadow when scrolled.
@@ -8175,6 +8181,66 @@ body:not(:has(.cinematic-hero-section)) main {
     padding-top: 58px;
     padding-bottom: calc(var(--mobile-nav-height, 60px) + env(safe-area-inset-bottom, 0px) + 8px);
     box-sizing: border-box;
+  }
+}
+
+/* ── 120HZ HARDWARE-ACCELERATED MOBILE SCROLL-DRIVEN EXIT ───────────────────
+   Executed natively on Chrome's GPU compositor thread at 120 FPS.
+   Zero JavaScript event loop latency, zero touch throttling, pure PC-like fluidity.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes mobileHeroFadeOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -28px, 0);
+  }
+}
+
+@keyframes mobileExploreFadeOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  @supports (animation-timeline: scroll()) {
+    .mobile-scroll-explore {
+      animation: mobileExploreFadeOut linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 45px;
+    }
+
+    .mobile-scroll-title {
+      animation: mobileHeroFadeOut linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 90px;
+    }
+
+    .mobile-scroll-desc {
+      animation: mobileHeroFadeOut linear both;
+      animation-timeline: scroll(root);
+      animation-range: 45px 150px;
+    }
+
+    .mobile-scroll-btn1 {
+      animation: mobileHeroFadeOut linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 210px;
+    }
+
+    .mobile-scroll-btn2 {
+      animation: mobileHeroFadeOut linear both;
+      animation-timeline: scroll(root);
+      animation-range: 160px 270px;
+    }
   }
 }
 
