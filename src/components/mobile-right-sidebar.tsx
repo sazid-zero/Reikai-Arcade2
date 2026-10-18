@@ -150,7 +150,7 @@ export function MobileRightSidebar() {
               className="flex items-center gap-2.5 shrink-0"
             >
               <img
-                src="/logo.jpeg"
+                src="/videos/reikai_logo.jpeg"
                 alt="Reikai Arcade"
                 className="w-8 h-8 rounded-lg object-cover border border-white/20 shadow-lg"
               />

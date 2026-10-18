@@ -150,10 +150,10 @@ export function Home3dScene({
     platformGroup.add(innerRimMesh);
 
     // ── FLOATING HOLOGRAPHIC REIKAI LOGO EMBLEM ───────────────────────
-    // Load the logo texture from /logo.jpeg
+    // Load the logo texture from /videos/reikai_logo.jpeg
     const textureLoader = new THREE.TextureLoader();
     let logoMesh: THREE.Mesh | null = null;
-    textureLoader.load('/logo.jpeg', (texture) => {
+    textureLoader.load('/videos/reikai_logo.jpeg', (texture) => {
       texture.wrapS = THREE.ClampToEdgeWrapping;
       texture.wrapT = THREE.ClampToEdgeWrapping;
       const logoGeo = new THREE.PlaneGeometry(1.05, 1.05);
@@ -389,7 +389,7 @@ export function Home3dScene({
         mat.emissiveIntensity = 1.2 + Math.sin(elapsedTime * 3 + idx) * 0.8;
       });
 
-      // ── HOLOGRAPHIC LOGO BOBBING & TURNING ──────────────────────────
+      // ── HOLOGRAPHIC LOGO BOBBING & TURNING ──��───────────────────────
       if (logoMesh) {
         logoMesh.position.y = 0.76 + Math.sin(elapsedTime * 2.2) * 0.06;
         logoMesh.rotation.y = Math.sin(elapsedTime * 0.8) * 0.35;
@@ -437,7 +437,7 @@ export function Home3dScene({
     return (
       <div className="home-3d-fallback flex items-center justify-center p-8">
         <img
-          src="/logo.jpeg"
+          src="/videos/reikai_logo.jpeg"
           alt="Reikai Arcade 3D Emblem"
           className="w-64 h-64 object-contain filter drop-shadow-lg animate-pulse"
         />

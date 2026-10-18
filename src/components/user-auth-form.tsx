@@ -168,7 +168,7 @@ function UserAuthFormContent({ initialMode = 'signin' }: UserAuthFormProps) {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <img
-                src="/logo.jpeg"
+                src="/videos/reikai_logo.jpeg"
                 alt="ReiKai Arcade"
                 className="w-10 h-10 rounded-xl object-cover border border-white/10 shadow-lg group-hover:border-white/25 transition-all"
               />

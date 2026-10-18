@@ -37,7 +37,7 @@ export default async function AdminPage() {
         <header className="flex flex-col justify-between gap-5 border-b border-white/10 pb-8 md:flex-row md:items-end">
           <div className="flex items-center gap-4">
             <img
-              src="/logo.jpeg"
+              src="/videos/reikai_logo.jpeg"
               alt="ReiKai Arcade"
               className="w-14 h-14 rounded-2xl object-cover border border-white/15 shadow-lg shrink-0"
             />

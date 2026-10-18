@@ -51,7 +51,7 @@ export function SignInForm() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
-                src="/logo.jpeg"
+                src="/videos/reikai_logo.jpeg"
                 alt="ReiKai Arcade"
                 className="w-10 h-10 rounded-xl object-cover border border-white/15 shadow-lg"
               />
