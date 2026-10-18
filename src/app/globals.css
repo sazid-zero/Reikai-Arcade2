@@ -249,8 +249,9 @@
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Keep the original black overlay, then feather it downward with real backdrop blur. */
-.site-header::before {
+/* Keep the original black overlay as its own layer so the feathered blur remains reliable in production. */
+.site-header::before,
+.site-header::after {
   content: '';
   position: absolute;
   top: 0;
@@ -260,6 +261,10 @@
   pointer-events: none;
   z-index: 0;
   opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header::before {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.86) 0%,
@@ -267,15 +272,21 @@
     rgba(0, 0, 0, 0.42) 66%,
     rgba(0, 0, 0, 0) 100%
   );
+  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
+}
+
+.site-header::after {
   backdrop-filter: blur(22px) saturate(100%);
   -webkit-backdrop-filter: blur(22px) saturate(100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.76) 78%, transparent 100%);
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .site-header.site-header--scrolled::before,
-.site-header.scrolled::before {
+.site-header.site-header--scrolled::after,
+.site-header.scrolled::before,
+.site-header.scrolled::after {
   opacity: 1 !important;
 }
 
@@ -5023,7 +5034,7 @@ body:not(:has(.cinematic-hero-section)) main {
 
 /* ──────────────────────���─────────────────────────���────────────────── */
 /* SITE HEADER – dropdown menu & mobile nav                           */
-/* ─────────────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────��────────── */
 .nav-dropdown-wrapper {
   position: relative;
 }
