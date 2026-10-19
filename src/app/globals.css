@@ -1457,8 +1457,8 @@ body:not(:has(.cinematic-hero-section)) main {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: linear-gradient(135deg, #f4f4f5, #71717a);
-  color: #09090b;
+  background: color-mix(in srgb, var(--product-wash, #71717a) 72%, #09090b 28%);
+  color: #ffffff;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   font-weight: 800;
