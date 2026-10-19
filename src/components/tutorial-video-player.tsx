@@ -97,6 +97,27 @@ export function TutorialVideoPlayer({
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().then(() => setIsPlaying(true)).catch(() => {});
+        } else {
+          video.pause();
+          setIsPlaying(false);
+        }
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [videoUrl]);
+
   const toggleFullscreen = () => {
     const el = wrapperRef.current || containerRef.current;
     if (!el) return;
@@ -128,7 +149,7 @@ export function TutorialVideoPlayer({
           poster={posterUrl}
           className="tutorial-video-media"
           playsInline
-          autoPlay={false}
+          autoPlay
           loop
           muted={isMuted}
           onTimeUpdate={handleTimeUpdate}

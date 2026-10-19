@@ -446,7 +446,7 @@ body:not(:has(.cinematic-hero-section)) main {
   gap: 6px;
 }
 .wordmark-highlight {
-  color: #a0e4f1;
+  color: #a1a1aa;
   opacity: 0.92;
 }
 .header-nav {
@@ -1122,7 +1122,7 @@ body:not(:has(.cinematic-hero-section)) main {
   background: linear-gradient(135deg, rgba(198, 115, 226, 0.3), rgba(160, 228, 241, 0.3));
   border: 1px solid rgba(160, 228, 241, 0.4);
   font: 700 0.72rem 'DM Mono', monospace;
-  color: #a0e4f1;
+  color: #a1a1aa;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
@@ -1436,7 +1436,7 @@ body:not(:has(.cinematic-hero-section)) main {
   transition: border-color .22s ease, transform .22s ease, box-shadow .22s ease;
 }
 .standard-product-card:hover {
-  border-color: rgba(160, 228, 241, 0.55);
+  border-color: rgba(255, 255, 255, 0.32);
   transform: translateY(-4px);
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.85);
 }
@@ -1457,7 +1457,7 @@ body:not(:has(.cinematic-hero-section)) main {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: linear-gradient(135deg, #4b22d2, #c673e2);
+  background: color-mix(in srgb, var(--product-wash, #71717a) 72%, #09090b 28%);
   color: #ffffff;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
@@ -1480,7 +1480,7 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 .standard-product-card__category {
   margin: 0;
-  color: #a0e4f1;
+  color: #a1a1aa;
   font-family: 'DM Mono', monospace;
   font-size: .64rem;
   font-weight: 700;
@@ -1501,7 +1501,7 @@ body:not(:has(.cinematic-hero-section)) main {
   transition: color 0.15s ease;
 }
 .standard-product-card:hover .standard-product-card__name {
-  color: #a0e4f1;
+  color: #a1a1aa;
 }
 .standard-product-card__footer {
   display: flex;
@@ -1522,11 +1522,11 @@ body:not(:has(.cinematic-hero-section)) main {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  border: 1px solid rgba(198, 115, 226, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 999px;
-  background: rgba(75, 34, 210, 0.2);
+  background: rgba(255, 255, 255, 0.08);
   padding: 6px 12px;
-  color: #f4e8ff;
+  color: #e4e4e7;
   font-family: 'DM Mono', monospace;
   font-size: .7rem;
   font-weight: 700;
@@ -1535,8 +1535,8 @@ body:not(:has(.cinematic-hero-section)) main {
   transition: background .2s, border-color .2s, color .2s, transform .15s, box-shadow .2s;
 }
 .standard-product-card__button:hover {
-  background: linear-gradient(135deg, #4b22d2, #5ba2c0);
-  border-color: rgba(255,255,255,0.25);
+  background: linear-gradient(135deg, #f4f4f5, #71717a);
+  border-color: rgba(255,255,255,0.45);
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   transform: scale(1.04);
@@ -1596,7 +1596,7 @@ body:not(:has(.cinematic-hero-section)) main {
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #a0e4f1;
+  color: #a1a1aa;
 }
 .store-shelf-title {
   font-family: 'Outfit', sans-serif;
@@ -1625,7 +1625,7 @@ body:not(:has(.cinematic-hero-section)) main {
   border-radius: 9999px;
   background: rgba(160, 228, 241, 0.08);
   border: 1px solid rgba(160, 228, 241, 0.3);
-  color: #a0e4f1;
+  color: #a1a1aa;
   font-family: 'DM Mono', monospace;
   font-size: 0.72rem;
   font-weight: 700;
@@ -2341,7 +2341,7 @@ body:not(:has(.cinematic-hero-section)) main {
   width: fit-content;
 }
 .footer-links a:hover, .footer-quick-filter:hover {
-  color: #a0e4f1;
+  color: #a1a1aa;
   transform: translateX(2px);
 }
 .footer-bottom {
@@ -5074,7 +5074,7 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 .nav-dropdown-link:hover,
 .nav-dropdown-link.active {
-  color: #a0e4f1;
+  color: #a1a1aa;
   background: rgba(160, 228, 241, 0.08);
 }
 .nav-chevron {
@@ -5132,7 +5132,7 @@ body:not(:has(.cinematic-hero-section)) main {
   display: block;
 }
 .nav-dropdown-item:hover strong {
-  color: #a0e4f1;
+  color: #a1a1aa;
 }
 .nav-dropdown-item span {
   text-align: left !important;
@@ -5151,12 +5151,12 @@ body:not(:has(.cinematic-hero-section)) main {
   transition: color .2s, background .2s, box-shadow .2s;
 }
 .nav-link:hover {
-  color: #a0e4f1;
+  color: #a1a1aa;
   background: rgba(160, 228, 241, 0.08);
   
 }
 .nav-link-active {
-  color: #a0e4f1;
+  color: #a1a1aa;
   background: rgba(160, 228, 241, 0.1);
   box-shadow: inset 0 -2px 0 #a0e4f1;
   
@@ -5180,7 +5180,7 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 .mobile-nav-menu a:hover {
   background: rgba(160, 228, 241, 0.1);
-  color: #a0e4f1;
+  color: #a1a1aa;
 }
 
 /* ─────────────────────────────────────────────────────────────────── */
@@ -8441,7 +8441,7 @@ body:not(:has(.cinematic-hero-section)) main {
   justify-content: center;
   background: linear-gradient(135deg, rgba(75, 34, 210, 0.35), rgba(198, 115, 226, 0.2));
   border: 1px solid rgba(198, 115, 226, 0.35);
-  color: #a0e4f1;
+  color: #a1a1aa;
   transition: transform 0.25s ease, color 0.25s ease;
 }
 
@@ -8491,7 +8491,7 @@ body:not(:has(.cinematic-hero-section)) main {
 
 .hero-dock-card:hover .hero-dock-arrow {
   opacity: 1;
-  color: #a0e4f1;
+  color: #a1a1aa;
   transform: translateX(0);
 }
 
@@ -8947,17 +8947,23 @@ body:not(:has(.cinematic-hero-section)) main {
   gap: 14px;
 }
 
+.sf-tutorial-wrap {
+  --sf-section-gutter: 12px;
+  width: calc(100% + 2 * var(--sf-section-gutter));
+  margin-inline: calc(-1 * var(--sf-section-gutter));
+}
+
 .tutorial-player-container {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   height: auto;
   min-height: unset;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
-  background: #04010a;
-  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.75);
-  border: 1px solid rgba(198, 115, 226, 0.25);
+  background: #000;
+  box-shadow: none;
+  border: 0;
   cursor: pointer;
 }
 
@@ -8983,9 +8989,9 @@ body:not(:has(.cinematic-hero-section)) main {
   width: 72px;
   height: 72px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(198, 115, 226, 0.9), rgba(160, 228, 241, 0.85));
+  background: linear-gradient(135deg, rgba(244, 244, 245, 0.95), rgba(113, 113, 122, 0.9));
   border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 35px rgba(160, 228, 241, 0.6), 0 8px 30px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.22), 0 8px 30px rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9003,7 +9009,7 @@ body:not(:has(.cinematic-hero-section)) main {
   position: absolute;
   inset: -8px;
   border-radius: 9999px;
-  border: 2px solid rgba(160, 228, 241, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   animation: ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
   pointer-events: none;
 }
@@ -9012,10 +9018,10 @@ body:not(:has(.cinematic-hero-section)) main {
 .tutorial-controls-bar-external {
   position: relative;
   width: 100%;
-  background: rgba(10, 5, 24, 0.88);
+  background: rgba(10, 10, 10, 0.88);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(198, 115, 226, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 14px;
   padding: 10px 16px;
   display: flex;
@@ -9026,8 +9032,8 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 
 .tutorial-controls-bar-external:hover {
-  border-color: rgba(160, 228, 241, 0.45);
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(160, 228, 241, 0.12);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
 }
 
 .tutorial-scrub-wrap {

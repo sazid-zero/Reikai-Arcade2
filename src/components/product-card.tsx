@@ -18,7 +18,10 @@ export function ProductCard({ product, href, onAdd }: ProductCardProps) {
 
   const content = (
     <>
-      <div className="standard-product-card__image-wrap">
+      <div
+        className="standard-product-card__image-wrap"
+        style={{ '--product-wash': product.wash } as React.CSSProperties}
+      >
         <Image
           src={image}
           alt={product.name}
