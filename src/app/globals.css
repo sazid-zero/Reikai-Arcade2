@@ -8945,15 +8945,42 @@ body:not(:has(.cinematic-hero-section)) main {
 .tutorial-player-wrapper {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  box-sizing: border-box;
+}
+
+.tutorial-player-wrapper,
+.tutorial-player-wrapper * {
+  box-sizing: border-box;
 }
 
 .sf-tutorial-wrap {
   --sf-section-gutter: 12px;
   width: calc(100% + 2 * var(--sf-section-gutter));
   margin-inline: calc(-1 * var(--sf-section-gutter));
+}
+
+@media (max-width: 640px) {
+  .sf-tutorial-wrap {
+    width: 100%;
+    margin-inline: 0;
+    min-width: 0;
+  }
+
+  .tutorial-player-container,
+  .tutorial-video-media,
+  .tutorial-controls-bar-external {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .tutorial-controls-bar-external {
+    padding-inline: 10px;
+  }
 }
 
 .tutorial-player-container {
@@ -9069,9 +9096,14 @@ body:not(:has(.cinematic-hero-section)) main {
 .tutorial-scrub-fill {
   height: 100%;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #c673e2, #a0e4f1);
-  box-shadow: 0 0 10px rgba(160, 228, 241, 0.5);
+  background: linear-gradient(90deg, #71717a, #f4f4f5, #a1a1aa);
+  box-shadow: 0 0 10px rgba(228, 228, 231, 0.35);
   pointer-events: none;
+}
+
+.tutorial-ctrl-icon-btn .text-red-400,
+.tutorial-ctrl-icon-btn .text-\[\#a0e4f1\] {
+  color: #d4d4d8;
 }
 
 .tutorial-controls-actions {
