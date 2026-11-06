@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize, RotateCcw, Sparkles } from 'lucide-react';
+
 
 export type TutorialVideoProps = {
   initialVideoUrl?: string;
@@ -140,8 +140,7 @@ export function TutorialVideoPlayer({
       {/* ── Clean Video Player Window (No overlays or text) ── */}
       <div
         ref={containerRef}
-        className="tutorial-player-container group"
-        onClick={togglePlay}
+        className="tutorial-player-container"
       >
         <video
           ref={videoRef}
@@ -158,85 +157,8 @@ export function TutorialVideoPlayer({
           onPause={() => setIsPlaying(false)}
         />
 
-        {/* Center Big Play Button (shown only when paused) */}
-        {!isPlaying && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              togglePlay();
-            }}
-            className="tutorial-center-play-btn"
-            aria-label="Play tutorial video"
-          >
-            <div className="tutorial-play-pulse" />
-            <Play size={26} className="text-white fill-white translate-x-0.5" />
-          </button>
-        )}
       </div>
 
-      {/* ── Separate Controller Bar Below Video Player Window ── */}
-      <div className="tutorial-controls-bar-external">
-        {/* Scrubber seek progress slider */}
-        <div className="tutorial-scrub-wrap">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            step="0.1"
-            value={progress}
-            onChange={handleSeek}
-            className="tutorial-scrub-slider"
-            aria-label="Seek video"
-          />
-          <div
-            className="tutorial-scrub-fill"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        {/* Action icons row */}
-        <div className="tutorial-controls-actions">
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={togglePlay}
-              className="tutorial-ctrl-icon-btn"
-              aria-label={isPlaying ? 'Pause' : 'Play'}
-            >
-              {isPlaying ? <Pause size={15} /> : <Play size={15} className="fill-current translate-x-0.5" />}
-            </button>
-            <button
-              type="button"
-              onClick={restartVideo}
-              className="tutorial-ctrl-icon-btn"
-              aria-label="Restart video"
-            >
-              <RotateCcw size={14} />
-            </button>
-            <button
-              type="button"
-              onClick={toggleMute}
-              className="tutorial-ctrl-icon-btn"
-              aria-label={isMuted ? 'Unmute' : 'Mute'}
-            >
-              {isMuted ? <VolumeX size={15} className="text-red-400" /> : <Volume2 size={15} className="text-[#a0e4f1]" />}
-            </button>
-            <span className="tutorial-time-text">
-              {currentTime} / {duration}
-            </span>
-          </div>
-
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            className="tutorial-ctrl-icon-btn"
-            aria-label="Toggle fullscreen"
-          >
-            <Maximize size={15} />
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
