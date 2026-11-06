@@ -659,10 +659,6 @@ export default function StorefrontPage() {
       {/* ── ADMIN-CONTROLLED BANNER CAROUSEL ── */}
       <HomeBannerCarousel />
 
-      <section className="sf-tutorial-bleed" aria-label="How it works">
-        <TutorialVideoPlayer />
-      </section>
-
       <section className="sf-section" id="categories" aria-labelledby="categories-title">
         <div className="sf-section-inner">
           <div className="sf-section-head" data-reveal>
@@ -897,6 +893,17 @@ export default function StorefrontPage() {
                 <span className="sf-trust-desc">{desc}</span>
               </div>
             ))}
+          </div>
+          <div className="sf-reikai-image" data-reveal>
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-21%20at%208.59.20%20PM-EAkdHzsPgaBnUDRo5hTkMsr5WswyKW.jpeg"
+              alt="Illuminated ReiKai Arcade emblem"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div className="sf-reikai-video" data-reveal>
+            <TutorialVideoPlayer />
           </div>
         </div>
       </section>

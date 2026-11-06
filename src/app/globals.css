@@ -8958,7 +8958,8 @@ body:not(:has(.cinematic-hero-section)) main {
   box-sizing: border-box;
 }
 
-.sf-tutorial-bleed {
+.sf-tutorial-bleed,
+.sf-reikai-video {
   width: 100vw;
   margin-inline: calc(50% - 50vw);
   padding: 0;
@@ -8966,8 +8967,27 @@ body:not(:has(.cinematic-hero-section)) main {
   overflow: hidden;
 }
 
-.sf-tutorial-bleed .tutorial-player-wrapper {
+.sf-reikai-image {
+  width: 100%;
+  margin-top: 28px;
+  overflow: hidden;
+  background: #050505;
+}
+
+.sf-reikai-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.sf-tutorial-bleed .tutorial-player-wrapper,
+.sf-reikai-video .tutorial-player-wrapper {
   gap: 0;
+}
+
+.sf-reikai-video {
+  margin-top: 0;
 }
 
 .sf-tutorial-wrap {
@@ -8977,9 +8997,14 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 
 @media (max-width: 640px) {
-  .sf-tutorial-bleed {
+  .sf-tutorial-bleed,
+  .sf-reikai-video {
     width: 100vw;
     margin-inline: calc(50% - 50vw);
+  }
+
+  .sf-reikai-image {
+    margin-top: 20px;
   }
 
   .sf-tutorial-wrap {
