@@ -659,6 +659,10 @@ export default function StorefrontPage() {
       {/* ── ADMIN-CONTROLLED BANNER CAROUSEL ── */}
       <HomeBannerCarousel />
 
+      <section className="sf-tutorial-bleed" aria-label="How it works">
+        <TutorialVideoPlayer />
+      </section>
+
       <section className="sf-section" id="categories" aria-labelledby="categories-title">
         <div className="sf-section-inner">
           <div className="sf-section-head" data-reveal>
@@ -893,19 +897,6 @@ export default function StorefrontPage() {
                 <span className="sf-trust-desc">{desc}</span>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TUTORIAL VIDEOS ── */}
-      <section className="sf-section sf-section--alt" aria-labelledby="tutorial-title">
-        <div className="sf-section-inner">
-          <div className="sf-section-head" data-reveal>
-            <p className="sf-label">How It Works</p>
-            <h2 id="tutorial-title" className="sf-title">Everything you need to know.</h2>
-          </div>
-          <div className="sf-tutorial-wrap" data-reveal>
-            <TutorialVideoPlayer />
           </div>
         </div>
       </section>

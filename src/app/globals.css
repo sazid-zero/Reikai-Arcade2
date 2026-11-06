@@ -8958,6 +8958,18 @@ body:not(:has(.cinematic-hero-section)) main {
   box-sizing: border-box;
 }
 
+.sf-tutorial-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+.sf-tutorial-bleed .tutorial-player-wrapper {
+  gap: 0;
+}
+
 .sf-tutorial-wrap {
   --sf-section-gutter: 12px;
   width: calc(100% + 2 * var(--sf-section-gutter));
@@ -8965,6 +8977,11 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 
 @media (max-width: 640px) {
+  .sf-tutorial-bleed {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+  }
+
   .sf-tutorial-wrap {
     width: 100%;
     margin-inline: 0;
