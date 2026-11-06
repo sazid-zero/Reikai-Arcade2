@@ -8968,8 +8968,9 @@ body:not(:has(.cinematic-hero-section)) main {
 }
 
 .sf-reikai-image {
-  width: 100%;
+  width: 100vw;
   margin-top: 28px;
+  margin-inline: calc(50% - 50vw);
   overflow: hidden;
   background: #050505;
 }
@@ -9004,7 +9005,9 @@ body:not(:has(.cinematic-hero-section)) main {
   }
 
   .sf-reikai-image {
+    width: 100vw;
     margin-top: 20px;
+    margin-inline: calc(50% - 50vw);
   }
 
   .sf-tutorial-wrap {
