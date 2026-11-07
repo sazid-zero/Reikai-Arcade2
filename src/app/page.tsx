@@ -894,17 +894,15 @@ export default function StorefrontPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── TUTORIAL VIDEOS ── */}
-      <section className="sf-section sf-section--alt" aria-labelledby="tutorial-title">
-        <div className="sf-section-inner">
-          <div className="sf-section-head" data-reveal>
-            <p className="sf-label">How It Works</p>
-            <h2 id="tutorial-title" className="sf-title">Everything you need to know.</h2>
+          <div className="sf-reikai-image" data-reveal>
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-21%20at%208.59.20%20PM-EAkdHzsPgaBnUDRo5hTkMsr5WswyKW.jpeg"
+              alt="Illuminated ReiKai Arcade emblem"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
-          <div className="sf-tutorial-wrap" data-reveal>
+          <div className="sf-reikai-video" data-reveal>
             <TutorialVideoPlayer />
           </div>
         </div>
