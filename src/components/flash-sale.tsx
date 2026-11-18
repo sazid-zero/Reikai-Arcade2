@@ -8,6 +8,14 @@ import { formatTaka } from '@/lib/products';
 import { useCart } from '@/components/cart-context';
 import type { Product } from '@/lib/products';
 
+function getProductHref(item: Product & { originalPrice: number; discount: number }): string {
+  if (item.type === 'games' || item.category === 'games') return `/games/${item.id}`;
+  if (item.type === 'gear' || item.category === 'accessories') return `/accessories/${item.id}`;
+  if (item.subCategory?.toLowerCase().includes('subscription') || item.type === 'top-ups') return `/subscriptions/${item.id}`;
+  if (item.subCategory?.toLowerCase().includes('gift') || item.id?.toLowerCase().includes('gift')) return `/gift-cards/${item.id}`;
+  return `/top-up/${item.id}`;
+}
+
 /* ─────────────────────────────────────────
    Static flash-sale items (can be replaced
    with a DB-driven API call later)
@@ -134,16 +142,21 @@ export function FlashSale() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   /* drag-to-scroll */
-  const dragState = useRef({ dragging: false, startX: 0, scrollX: 0 });
+  const dragState = useRef({ dragging: false, startX: 0, scrollX: 0, moved: false });
   const onMouseDown = (e: React.MouseEvent) => {
-    dragState.current = { dragging: true, startX: e.pageX, scrollX: scrollRef.current?.scrollLeft ?? 0 };
+    dragState.current = { dragging: true, startX: e.pageX, scrollX: scrollRef.current?.scrollLeft ?? 0, moved: false };
   };
   const onMouseMove = (e: React.MouseEvent) => {
     if (!dragState.current.dragging) return;
     const dx = e.pageX - dragState.current.startX;
+    if (Math.abs(dx) > 6) {
+      dragState.current.moved = true;
+    }
     if (scrollRef.current) scrollRef.current.scrollLeft = dragState.current.scrollX - dx;
   };
-  const onMouseUp = () => { dragState.current.dragging = false; };
+  const onMouseUp = () => {
+    dragState.current.dragging = false;
+  };
 
   return (
     <section className="fs-section" id="flash-sale" aria-labelledby="fs-title">
@@ -188,7 +201,18 @@ export function FlashSale() {
         >
           <div className="fs-rail">
             {FLASH_DEALS.map((item) => (
-              <article key={item.id} className="fs-card">
+              <Link
+                key={item.id}
+                href={getProductHref(item)}
+                className="fs-card"
+                aria-label={`View ${item.name}`}
+                onClick={(e) => {
+                  if (dragState.current.moved) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
+                }}
+              >
                 {/* Glass image pane */}
                 <div
                   className="fs-card-img-wrap"
@@ -218,14 +242,18 @@ export function FlashSale() {
                   <button
                     type="button"
                     className="fs-card-btn"
-                    onClick={() => addToCart(item)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      addToCart(item);
+                    }}
                     aria-label={`Add ${item.name} to cart`}
                   >
                     <ShoppingCart size={12} />
                     <span>Add to cart</span>
                   </button>
                 </div>
-              </article>
+              </Link>
             ))}
 
             {/* "View all" card */}
