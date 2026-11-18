@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Package, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export function OrderTracker() {
   const [phone, setPhone] = useState('');
@@ -21,8 +21,7 @@ export function OrderTracker() {
       <div className="ot-glow" aria-hidden="true" />
 
       <div className="ot-inner">
-        {/* left: text + form */}
-        <div className="ot-content" data-reveal>
+        <div className="ot-card" data-reveal>
           <div className="ot-label-row">
             <span className="ot-label-line" aria-hidden="true" />
             <span className="ot-eyebrow">Track Order</span>
@@ -48,23 +47,6 @@ export function OrderTracker() {
               </button>
             </div>
           </form>
-        </div>
-
-        {/* right: glass card stats */}
-        <div className="ot-stats" data-reveal>
-          {[
-            { icon: <Package size={18} />, stat: '12,000+', label: 'Orders delivered' },
-            { icon: <span className="ot-stat-emoji">⚡</span>, stat: 'Same day', label: 'Dhaka dispatch' },
-            { icon: <span className="ot-stat-emoji">🛡️</span>, stat: '100%', label: 'Delivery guarantee' },
-          ].map(({ icon, stat, label }) => (
-            <div className="ot-stat-card" key={label}>
-              <div className="ot-stat-icon">{icon}</div>
-              <div className="ot-stat-info">
-                <strong className="ot-stat-num">{stat}</strong>
-                <span className="ot-stat-label">{label}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
