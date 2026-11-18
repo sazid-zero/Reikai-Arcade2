@@ -67,26 +67,25 @@ export function TutorialVideoPlayer({
   }, [videoUrl]);
 
   return (
-    <div className="tutorial-player-wrapper w-full flex flex-col gap-3">
+    <div className="tutorial-player-wrapper w-full flex flex-col gap-3 rounded-none" style={{ borderRadius: 0 }}>
       {/* ── Clean Video Player Window (No overlays or text) ── */}
       <div
         ref={containerRef}
-        className="tutorial-player-container"
+        className="tutorial-player-container rounded-none"
+        style={{ borderRadius: 0 }}
       >
         <video
           ref={videoRef}
           src={videoUrl}
           poster={posterUrl}
-          className="tutorial-video-media"
+          className="tutorial-video-media rounded-none"
+          style={{ borderRadius: 0 }}
           playsInline
           autoPlay
           loop
           muted={isMuted}
-
         />
-
       </div>
-
     </div>
   );
 }

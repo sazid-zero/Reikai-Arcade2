@@ -902,7 +902,7 @@ export default function StorefrontPage() {
               decoding="async"
             />
           </div>
-          <div className="sf-reikai-video" data-reveal>
+          <div className="sf-reikai-video rounded-none" style={{ borderRadius: 0 }} data-reveal>
             <TutorialVideoPlayer />
           </div>
         </div>
