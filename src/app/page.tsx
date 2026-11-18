@@ -42,6 +42,8 @@ import { CinematicHero } from '@/components/cinematic-hero';
 import { HomeBannerCarousel } from '@/components/home-banner-carousel';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { FlashSale } from '@/components/flash-sale';
+import { OrderTracker } from '@/components/order-tracker';
 
 
 const products: Product[] = [
@@ -659,6 +661,9 @@ export default function StorefrontPage() {
       {/* ── ADMIN-CONTROLLED BANNER CAROUSEL ── */}
       <HomeBannerCarousel />
 
+      {/* ── FLASH SALE ── */}
+      <FlashSale />
+
       <section className="sf-section" id="categories" aria-labelledby="categories-title">
         <div className="sf-section-inner">
           <div className="sf-section-head" data-reveal>
@@ -907,6 +912,9 @@ export default function StorefrontPage() {
           </div>
         </div>
       </section>
+
+      {/* ── ORDER TRACKER ── */}
+      <OrderTracker />
 
       {/* ── NEWSLETTER ── */}
       <section className="sf-signal-section" id="signal" aria-labelledby="signal-title">
