@@ -452,6 +452,9 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: (product: Pr
 function mapDbRowsToProducts(rows: any[]): Product[] {
   const map = new Map<string, any>()
   for (const r of rows) {
+    if (r.slug === 'free-fire' || r.type === 'topup') {
+      continue; // Game top-ups belong on the dedicated /top-up portal, not in the homepage console vault
+    }
     if (!map.has(r.id)) {
       const isGame = r.type === 'game';
       const isTopUpOrSub = r.type === 'topup' || r.type === 'giftcard' || r.type === 'subscription';
@@ -726,7 +729,7 @@ export default function StorefrontPage() {
               <ArrowDownRight size={16} className="sf-cat-arrow" />
             </button>
 
-            <button type="button" className="sf-cat-card" onClick={() => setCategory('top-ups')} data-testid="button-category-topups">
+            <button type="button" className="sf-cat-card" onClick={() => { window.location.href = '/top-up'; }} data-testid="button-category-topups">
               <div className="sf-cat-card-bg">
                 <img
                   src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80&auto=format&fit=crop"

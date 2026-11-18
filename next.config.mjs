@@ -23,7 +23,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:image(astro-bot|cyberpunk|elden-ring|fc24|forza5|gow-ragnarok|gta5|hogwarts|minecraft|ps5-slim|rdr2|re4-remake|spider-man|tlou1|wallet-50|wukong).jpg',
+        source: '/:image(astro-bot|cyberpunk|elden-ring|fc24|forza5|free-fire|gow-ragnarok|gta5|hogwarts|minecraft|ps5-slim|rdr2|re4-remake|spider-man|tlou1|wallet-50|wukong).jpg',
         destination: '/covers/:image.jpg',
       },
       {

@@ -272,7 +272,7 @@ export function SiteHeader({
               <img
                 src="/reikai_logo.jpeg"
                 alt="Reikai Arcade"
-                className="h-8 w-8 rounded-full object-cover shadow-md"
+                className="h-8 w-8 object-contain"
               />
             </Link>
 
